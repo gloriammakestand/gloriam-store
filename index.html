@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GLORIAM</title>
+<title>Gloriam Store</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
 
 <style>
 *{box-sizing:border-box}
-body{
+html,body{
 margin:0;
 font-family:'Montserrat',sans-serif;
 background:#0a0a0a;
@@ -17,76 +17,107 @@ color:#fff;
 overflow-x:hidden;
 }
 
-/* LOADER */
-.loader{
-position:fixed;
-width:100%;
-height:100%;
-background:#000;
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:9999;
-font-size:22px;
-}
-.hide{display:none}
-
-/* PAGE */
-.page{display:none;padding-bottom:120px}
-.active{display:block}
-
 /* HEADER */
 header{
-height:60vh;
+height:70vh;
 display:flex;
+flex-direction:column;
 justify-content:center;
 align-items:center;
-flex-direction:column;
+text-align:center;
 }
 
 /* PRODUCTS */
 .products{
-padding:20px;
 display:flex;
 flex-direction:column;
-gap:25px;
 align-items:center;
+gap:50px;
+padding:40px 15px;
 }
+
+/* CARD */
 .card{
 width:100%;
-max-width:420px;
+max-width:500px;
 background:#111;
-border-radius:12px;
+border-radius:14px;
 overflow:hidden;
 text-align:center;
 position:relative;
 }
-.card img{width:100%}
+.card img{width:100%;display:block}
 
-/* BADGE */
 .badge{
 position:absolute;
-top:10px;
-left:10px;
-padding:5px 10px;
+top:12px;
+left:12px;
+padding:6px 12px;
+font-size:11px;
+font-weight:600;
 border-radius:6px;
-font-size:12px;
 }
 .pre{background:#00c853}
 .ready{background:#fff;color:#000}
 .out{background:#ff3b3b}
 
+.disabled{opacity:0.3}
+
 /* BUTTON */
 button{
-width:100%;
-padding:14px;
 background:#fff;
 color:#000;
 border:none;
+padding:14px;
+width:100%;
 font-weight:600;
 }
+button:disabled{
+background:#333;
+color:#888;
+}
 
-/* OPTIONS */
+/* PAGE */
+.page{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+overflow-y:auto;
+overflow-x:hidden;
+opacity:0;
+transform:translateX(30px);
+transition:0.4s;
+pointer-events:none;
+z-index:0;
+}
+.page.active{
+opacity:1;
+transform:translateX(0);
+pointer-events:auto;
+z-index:10;
+}
+
+/* DETAIL */
+.detail-container{
+max-width:600px;
+margin:auto;
+padding:20px;
+padding-top:80px;
+padding-bottom:100px;
+}
+
+.swipe{
+display:grid;
+gap:12px;
+}
+.swipe img{
+width:100%;
+border-radius:12px;
+}
+
+/* OPTION */
 .option-box{
 display:grid;
 grid-template-columns:repeat(3,1fr);
@@ -94,17 +125,31 @@ gap:10px;
 margin-top:10px;
 }
 .option-box div{
-padding:12px;
+padding:14px;
 border:1px solid #555;
 text-align:center;
 border-radius:8px;
 cursor:pointer;
 }
-.activeOpt{background:#fff;color:#000}
-.disabled{opacity:0.3;pointer-events:none}
+.option-box div.active{
+background:#fff;
+color:#000;
+}
+.size-disabled{
+opacity:0.2;
+pointer-events:none;
+}
 
-/* FORM */
-.container{padding:20px}
+.section-label{margin-top:20px;font-size:14px}
+
+/* CHECKOUT */
+.checkout-container{
+max-width:500px;
+margin:auto;
+padding:20px;
+padding-top:80px;
+}
+
 input{
 width:100%;
 padding:14px;
@@ -114,23 +159,64 @@ border:1px solid #333;
 color:#fff;
 border-radius:10px;
 }
-.error{border:1px solid red}
 
-/* STICKY */
-.sticky{
-position:fixed;
-bottom:0;
-width:100%;
-background:#000;
-padding:10px;
-display:flex;
-justify-content:center;
+/* SUMMARY */
+.summary-box{
+background:#111;
+padding:15px;
+border-radius:10px;
+border:1px solid #222;
+margin-bottom:15px;
+}
+.summary-box p{
+margin:5px 0;
+font-size:14px;
 }
 
-/* TEXT */
-.label{opacity:0.6;font-size:12px}
-.price{font-size:20px;font-weight:600}
-.line{height:1px;background:#333;margin:10px 0}
+/* STICKY */
+.sticky-bar{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+padding:10px 15px;
+background:#000;
+z-index:20;
+}
+
+/* BACK */
+.back-btn{
+position:fixed;
+top:15px;
+left:15px;
+background:#111;
+padding:8px 14px;
+border-radius:20px;
+border:1px solid #333;
+z-index:30;
+}
+
+/* LOADER */
+.loader{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#000;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999;
+font-size:26px;
+letter-spacing:4px;
+font-weight:600;
+transition:0.5s;
+}
+.loader.hide{
+opacity:0;
+pointer-events:none;
+}
 
 /* TOAST */
 .toast{
@@ -138,12 +224,23 @@ position:fixed;
 top:-60px;
 left:50%;
 transform:translateX(-50%);
-background:#ff3b3b;
-padding:10px 20px;
-border-radius:6px;
-transition:0.3s;
+padding:12px 20px;
+border-radius:8px;
+color:#fff;
+transition:0.4s;
 }
 .toast.show{top:20px}
+.toast.error{background:#ff3b3b}
+
+/* SHAKE */
+@keyframes shake{
+0%{transform:translateX(-50%)}
+25%{transform:translateX(-55%)}
+50%{transform:translateX(-45%)}
+75%{transform:translateX(-55%)}
+100%{transform:translateX(-50%)}
+}
+.toast.shake{animation:shake 0.3s}
 </style>
 </head>
 
@@ -152,10 +249,11 @@ transition:0.3s;
 <div id="loader" class="loader">GLORIAM</div>
 
 <!-- HOME -->
-<div id="home" class="page">
+<div id="home" class="page active">
 <header>
 <h1>GLORIAM</h1>
-<p>MAKE STAND WITH PRIDE</p>
+<p>GLORIAM - MAKE STAND WITH PRIDE</p>
+<p>Scroll to explore</p>
 </header>
 
 <div class="products">
@@ -163,28 +261,28 @@ transition:0.3s;
 <div class="card">
 <div class="badge pre">PRE ORDER</div>
 <img src="images/soccer-addict.jpg">
-<h3>SOCCER ADDICT</h3>
-<p>Black / Green</p>
+<h3>Soccer Addict</h3>
+<p>Rp110000 (DP 60000)</p>
 <button onclick="goDetail('Soccer Addict',110000,'pre')">SELECT</button>
 </div>
 
 <div class="card">
-<div class="badge ready">READY STOCK</div>
+<div class="badge ready">IN STOCK</div>
 <img src="images/sleman-soccer.jpg">
 <h3>Sleman Soccer</h3>
-<p>White (S - XXXL)</p>
-<button onclick="goDetail('Sleman Soccer',100000,'full')">SELECT</button>
+<p>Rp100000</p>
+<button onclick="goDetail('Sleman Soccer',100000,'ready')">SELECT</button>
 </div>
 
 <div class="card">
-<div class="badge ready">READY STOCK</div>
+<div class="badge ready">IN STOCK</div>
 <img src="images/bless-home.jpg">
 <h3>Bless Home</h3>
-<p>Black (M / L only)</p>
+<p>Rp100000</p>
 <button onclick="goDetail('Bless Home',100000,'limited')">SELECT</button>
 </div>
 
-<div class="card">
+<div class="card disabled">
 <div class="badge out">SOLD OUT</div>
 <img src="images/take-me-home.jpg">
 <h3>Take Me Home</h3>
@@ -197,195 +295,180 @@ transition:0.3s;
 
 <!-- DETAIL -->
 <div id="detail" class="page">
-<div class="container">
+<div class="back-btn" onclick="goBackHome()">← Back</div>
+
+<div class="detail-container">
+
+<div class="swipe">
+<img src="images/detail1.jpg">
+<img src="images/detail2.jpg">
+</div>
 
 <h2 id="pname"></h2>
+<p id="pprice"></p>
 
-<p>SIZE</p>
-<div id="sizeBox" class="option-box"></div>
-
-<p>COLOR</p>
-<div id="colorBox" class="option-box"></div>
+<div id="sizeWrap"></div>
+<div id="colorWrap"></div>
 
 </div>
 
-<div class="sticky">
-<button onclick="goForm()">NEXT</button>
+<div class="sticky-bar">
+<button onclick="goCheckout()">ADD TO CART</button>
 </div>
 </div>
 
-<!-- FORM -->
-<div id="form" class="page">
-<div class="container">
+<!-- CHECKOUT -->
+<div id="checkout" class="page">
+<div class="back-btn" onclick="goBackDetail()">← Back</div>
 
-<input id="name" placeholder="Nama">
-<input id="phone" placeholder="No HP">
-<input id="address" placeholder="Alamat">
+<div class="checkout-container">
 
-<p style="font-size:12px;opacity:0.6">
-Isi sesuai dan lengkap untuk memudahkan proses pengiriman
-</p>
+<h3>Order Summary</h3>
 
+<div class="summary-box">
+<p><b>Product:</b> <span id="sumProduct"></span></p>
+<p><b>Size:</b> <span id="sumSize"></span></p>
+<p><b>Color:</b> <span id="sumColor"></span></p>
+<p><b>Price:</b> <span id="sumPrice"></span></p>
+<p><b>Status:</b> <span id="sumStatus"></span></p>
 </div>
 
-<div class="sticky">
-<button onclick="goSummary()">CONTINUE</button>
-</div>
-</div>
+<input id="name" placeholder="Full Name">
+<input id="phone" placeholder="Phone Number">
+<input id="address" placeholder="Full Address">
 
-<!-- SUMMARY -->
-<div id="summary" class="page">
-<div class="container">
+<button onclick="sendWA()">Checkout</button>
 
-<p class="label">PRODUCT</p>
-<p id="sumProduct"></p>
-
-<p class="label">PRICE</p>
-<p id="sumPrice" class="price"></p>
-
-<div class="line"></div>
-
-<p id="sumName"></p>
-<p id="sumPhone"></p>
-<p id="sumAddress"></p>
-
-<p style="font-size:12px">Pastikan semua sesuai</p>
-
-<div class="line"></div>
-
-<p>
-Payment:<br>
-A.N Dias Adhitya Purnama Putra<br>
-Mandiri: 1370023790229<br>
-DANA: 081910421976
-</p>
-
-</div>
-
-<div class="sticky">
-<button onclick="sendWA()">CHECKOUT</button>
 </div>
 </div>
 
 <script>
-// ✅ DEFINE SEMUA DOM ELEMENTS DULU
-const loader = document.getElementById('loader');
-const home = document.getElementById('home');
-const pname = document.getElementById('pname');
-const sizeBox = document.getElementById('sizeBox');
-const colorBox = document.getElementById('colorBox');
-const nameInput = document.getElementById('name');
-const phoneInput = document.getElementById('phone');
-const addressInput = document.getElementById('address');
-const sumProduct = document.getElementById('sumProduct');
-const sumPrice = document.getElementById('sumPrice');
-const sumName = document.getElementById('sumName');
-const sumPhone = document.getElementById('sumPhone');
-const sumAddress = document.getElementById('sumAddress');
 
-let product='', price=0, type='', size='', color='';
+// ✅ LOADER FIX (ANTI STUCK)
+window.addEventListener('load', () => {
+  const loader = document.getElementById('loader');
 
-function show(p){
-    document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-    document.getElementById(p).classList.add('active');
-    window.scrollTo(0,0);
-}
-
-function goDetail(n,p,t){
-    product=n; price=p; type=t;
-    pname.innerText=n;
-
-    let sizes=['S','M','L','XL','XXL','XXXL'];
-    let html='';
-    sizes.forEach(s=>{
-        if(t==='limited' && !['M','L'].includes(s)){
-            html+=`<div class="disabled">${s}</div>`;
-        }else{
-            html+=`<div onclick="selectSize(this)">${s}</div>`;
-        }
-    });
-    sizeBox.innerHTML=html;
-
-    // color
-    if(n==='Soccer Addict'){
-        colorBox.innerHTML=`<div onclick="selectColor(this)">Black</div><div onclick="selectColor(this)">Green</div>`;
-    }
-    else if(n==='Sleman Soccer'){
-        colorBox.innerHTML=`<div onclick="selectColor(this)">White</div>`;
-    }
-    else{
-        colorBox.innerHTML=`<div onclick="selectColor(this)">Black</div>`;
-    }
-
-    show('detail');
-}
-
-function selectSize(el){
-    document.querySelectorAll('#sizeBox div').forEach(d=>d.classList.remove('activeOpt'));
-    el.classList.add('activeOpt');
-    size=el.innerText;
-}
-
-function selectColor(el){
-    document.querySelectorAll('#colorBox div').forEach(d=>d.classList.remove('activeOpt'));
-    el.classList.add('activeOpt');
-    color=el.innerText;
-}
-
-function toast(msg){
-    let t=document.createElement('div');
-    t.className='toast';
-    t.innerText=msg;
-    document.body.appendChild(t);
-    setTimeout(()=>t.classList.add('show'),10);
-    setTimeout(()=>t.remove(),2000);
-
-    // GETAR
-    if(navigator.vibrate) navigator.vibrate([100,50,100]);
-}
-
-function goForm(){
-    if(!size || !color){toast('Pilih size & warna');return;}
-    show('form');
-}
-
-function goSummary(){
-    let n=nameInput.value.trim();
-    let p=phoneInput.value.trim();
-    let a=addressInput.value.trim();
-
-    // reset
-    [nameInput,phoneInput,addressInput].forEach(i=>i.classList.remove('error'));
-
-    if(!n||!p||!a){
-        if(!n) nameInput.classList.add('error');
-        if(!p) phoneInput.classList.add('error');
-        if(!a) addressInput.classList.add('error');
-
-        toast('Data belum lengkap');
-        return;
-    }
-
-    sumProduct.innerText=`${product} - ${size} - ${color}`;
-    sumPrice.innerText=`Rp${price.toLocaleString('id-ID')}`;
-    sumName.innerText=n;
-    sumPhone.innerText=p;
-    sumAddress.innerText=a;
-
-    show('summary');
-}
-
-function sendWA(){
-    let msg=`Halo, saya ingin order:%0A%0A${product}%0ASize: ${size}%0AWarna: ${color}%0A%0ANama: ${nameInput.value}%0ANo HP: ${phoneInput.value}%0AAlamat: ${addressInput.value}%0A%0ASudah melakukan pembayaran`;
-
-    window.open(`https://wa.me/6283898588562?text=${msg}`, '_blank');
-}
-
-// LOADER
-setTimeout(()=>{
+  setTimeout(() => {
     loader.classList.add('hide');
-    home.classList.add('active');
-},1000);
+
+    setTimeout(() => {
+      loader.style.display = 'none';
+    }, 500);
+
+  }, 1000);
+});
+
+// fallback anti stuck
+setTimeout(()=>{
+  const loader=document.getElementById('loader');
+  if(loader) loader.style.display='none';
+},3000);
+
+let product='',type='',selectedSize='',selectedColor='';
+
+// DETAIL
+function goDetail(n,p,t){
+window.scrollTo({top:0,behavior:'smooth'});
+
+product=n;type=t;
+home.classList.remove('active');
+detail.classList.add('active');
+pname.innerText=n;
+pprice.innerText='Rp'+p;
+
+let sizes=['S','M','L','XL','XXL','XXXL'];
+let html='<div class="section-label">SIZE</div><div class="option-box">';
+sizes.forEach(s=>{
+if(t==='limited' && !['M','L'].includes(s)){
+html+=`<div class="size-disabled">${s}</div>`;
+}else{
+html+=`<div onclick="selectSize(this,'${s}')">${s}</div>`;
+}
+});
+html+='</div>';
+sizeWrap.innerHTML=html;
+
+if(t==='pre'){
+colorWrap.innerHTML=`
+<div class="section-label">COLOR</div>
+<div class="option-box">
+<div onclick="selectColor(this,'Black')">Black</div>
+<div onclick="selectColor(this,'Green')">Green</div>
+</div>`;
+}else{
+selectedColor='Default';
+colorWrap.innerHTML='';
+}
+}
+
+// NAV
+function goBackHome(){
+detail.classList.remove('active');
+home.classList.add('active');
+}
+function goBackDetail(){
+checkout.classList.remove('active');
+detail.classList.add('active');
+}
+
+// SELECT
+function selectSize(el,size){
+document.querySelectorAll('#sizeWrap div').forEach(d=>d.classList.remove('active'));
+el.classList.add('active');
+selectedSize=size;
+}
+function selectColor(el,color){
+document.querySelectorAll('#colorWrap div').forEach(d=>d.classList.remove('active'));
+el.classList.add('active');
+selectedColor=color;
+}
+
+// TOAST
+function showToast(msg){
+let t=document.createElement('div');
+t.className='toast error';
+t.innerText=msg;
+document.body.appendChild(t);
+setTimeout(()=>t.classList.add('show'),10);
+t.classList.add('shake');
+setTimeout(()=>t.remove(),2000);
+if(navigator.vibrate) navigator.vibrate([100,50,100]);
+}
+
+// CHECKOUT
+function goCheckout(){
+if(!selectedSize){showToast('Select size first');return;}
+if(type==='pre' && !selectedColor){showToast('Select color first');return;}
+
+window.scrollTo({top:0,behavior:'smooth'});
+
+sumProduct.innerText=product;
+sumSize.innerText=selectedSize;
+sumColor.innerText=selectedColor;
+sumStatus.innerText= type==='pre'?'Pre Order':'Ready Stock';
+sumPrice.innerText= type==='pre'?'Rp110000 (DP 60000)':'Rp100000';
+
+detail.classList.remove('active');
+checkout.classList.add('active');
+}
+
+// WA
+function sendWA(){
+let nama=name.value.trim();
+let hp=phone.value.trim();
+let alamat=address.value.trim();
+
+if(!nama||!hp||!alamat){
+showToast('Please fill all fields');
+return;
+}
+
+let status = type==='pre'?'Pre Order':'Ready Stock';
+
+let msg=`Halo, saya ingin order:%0A%0A${product}%0A%0A*Detail Pesanan*%0AProduk: ${product}%0ASize: ${selectedSize}%0AWarna: ${selectedColor}%0AStatus: ${status}%0A%0A*Data Pembeli*%0ANama: ${nama}%0AAlamat: ${alamat}%0ANo HP: ${hp}`;
+
+window.location.href=`https://wa.me/6283898588562?text=${msg}`;
+}
 
 </script>
 
