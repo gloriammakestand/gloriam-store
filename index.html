@@ -71,10 +71,15 @@ border:none;
 padding:14px;
 width:100%;
 font-weight:600;
+border-radius:8px;
+cursor:pointer;
+transition:0.2s;
 }
+button:hover:not(:disabled){background:#f0f0f0}
 button:disabled{
 background:#333;
 color:#888;
+cursor:not-allowed;
 }
 
 /* PAGE */
@@ -130,48 +135,87 @@ border:1px solid #555;
 text-align:center;
 border-radius:8px;
 cursor:pointer;
+transition:0.2s;
 }
 .option-box div.active{
 background:#fff;
 color:#000;
+}
+.option-box div:hover:not(.active){
+background:#222;
 }
 .size-disabled{
 opacity:0.2;
 pointer-events:none;
 }
 
-.section-label{margin-top:20px;font-size:14px}
+.section-label{margin-top:20px;font-size:14px;opacity:0.8}
 
-/* CHECKOUT */
-.checkout-container{
+/* FORM */
+.form-container{
 max-width:500px;
 margin:auto;
 padding:20px;
 padding-top:80px;
+padding-bottom:100px;
 }
-
+.form-group{margin-bottom:20px}
+.form-group label{
+display:block;
+margin-bottom:8px;
+font-size:13px;
+opacity:0.8;
+}
 input{
 width:100%;
 padding:14px;
-margin:10px 0;
 background:#111;
 border:1px solid #333;
 color:#fff;
 border-radius:10px;
+font-size:16px;
+}
+input:focus{
+outline:none;
+border-color:#fff;
+box-shadow:0 0 0 2px rgba(255,255,255,0.1);
 }
 
 /* SUMMARY */
-.summary-box{
+.summary-container{
+max-width:500px;
+margin:auto;
+padding:20px;
+padding-top:80px;
+padding-bottom:120px;
+}
+.product-summary{
 background:#111;
-padding:15px;
-border-radius:10px;
+padding:20px;
+border-radius:12px;
 border:1px solid #222;
-margin-bottom:15px;
+margin-bottom:20px;
 }
-.summary-box p{
-margin:5px 0;
-font-size:14px;
+.product-summary h3{margin:0 0 15px 0;font-size:18px}
+.product-summary p{margin:8px 0;font-size:14px}
+.customer-info{
+background:#111;
+padding:20px;
+border-radius:12px;
+border:1px solid #222;
+margin-bottom:20px;
 }
+.customer-info h4{margin:0 0 15px 0;font-size:16px;opacity:0.9}
+.customer-info p{margin:8px 0;font-size:14px}
+.payment-info{
+background:#1a1a1a;
+padding:20px;
+border-radius:12px;
+border:1px solid #333;
+margin-bottom:20px;
+}
+.payment-info h4{margin:0 0 15px 0;font-size:16px}
+.payment-info p{font-size:13px;line-height:1.5}
 
 /* STICKY */
 .sticky-bar{
@@ -179,9 +223,11 @@ position:fixed;
 bottom:0;
 left:0;
 width:100%;
-padding:10px 15px;
+padding:15px;
 background:#000;
 z-index:20;
+box-shadow:0 -2px 20px rgba(0,0,0,0.5);
+text-align:center;
 }
 
 /* BACK */
@@ -190,11 +236,15 @@ position:fixed;
 top:15px;
 left:15px;
 background:#111;
-padding:8px 14px;
+padding:10px 16px;
 border-radius:20px;
 border:1px solid #333;
+font-size:14px;
 z-index:30;
+cursor:pointer;
+transition:0.2s;
 }
+.back-btn:hover{background:#222}
 
 /* LOADER */
 .loader{
@@ -213,10 +263,7 @@ letter-spacing:4px;
 font-weight:600;
 transition:0.5s;
 }
-.loader.hide{
-opacity:0;
-pointer-events:none;
-}
+.loader.hide{opacity:0;pointer-events:none;}
 
 /* TOAST */
 .toast{
@@ -228,17 +275,19 @@ padding:12px 20px;
 border-radius:8px;
 color:#fff;
 transition:0.4s;
+font-size:14px;
+z-index:1000;
 }
 .toast.show{top:20px}
 .toast.error{background:#ff3b3b}
+.toast.success{background:#00c853}
 
 /* SHAKE */
 @keyframes shake{
-0%{transform:translateX(-50%)}
+0%,100%{transform:translateX(-50%)}
 25%{transform:translateX(-55%)}
 50%{transform:translateX(-45%)}
 75%{transform:translateX(-55%)}
-100%{transform:translateX(-50%)}
 }
 .toast.shake{animation:shake 0.3s}
 </style>
@@ -262,7 +311,7 @@ transition:0.4s;
 <div class="badge pre">PRE ORDER</div>
 <img src="images/soccer-addict.jpg">
 <h3>Soccer Addict</h3>
-<p>Rp110000 (DP 60000)</p>
+<p>Rp110.000 (DP 60.000)</p>
 <button onclick="goDetail('Soccer Addict',110000,'pre')">SELECT</button>
 </div>
 
@@ -270,7 +319,7 @@ transition:0.4s;
 <div class="badge ready">IN STOCK</div>
 <img src="images/sleman-soccer.jpg">
 <h3>Sleman Soccer</h3>
-<p>Rp100000</p>
+<p>Rp100.000</p>
 <button onclick="goDetail('Sleman Soccer',100000,'ready')">SELECT</button>
 </div>
 
@@ -278,7 +327,7 @@ transition:0.4s;
 <div class="badge ready">IN STOCK</div>
 <img src="images/bless-home.jpg">
 <h3>Bless Home</h3>
-<p>Rp100000</p>
+<p>Rp100.000</p>
 <button onclick="goDetail('Bless Home',100000,'limited')">SELECT</button>
 </div>
 
@@ -293,7 +342,7 @@ transition:0.4s;
 </div>
 </div>
 
-<!-- DETAIL -->
+<!-- DETAIL (SIZE & COLOR) -->
 <div id="detail" class="page">
 <div class="back-btn" onclick="goBackHome()">← Back</div>
 
@@ -313,163 +362,241 @@ transition:0.4s;
 </div>
 
 <div class="sticky-bar">
-<button onclick="goCheckout()">ADD TO CART</button>
+<button onclick="goForm()">NEXT</button>
 </div>
 </div>
 
-<!-- CHECKOUT -->
-<div id="checkout" class="page">
+<!-- FORM (ALAMAT) -->
+<div id="form" class="page">
 <div class="back-btn" onclick="goBackDetail()">← Back</div>
 
-<div class="checkout-container">
+<div class="form-container">
 
-<h3>Order Summary</h3>
+<h3>Personal Information & Shipping Address</h3>
 
-<div class="summary-box">
-<p><b>Product:</b> <span id="sumProduct"></span></p>
-<p><b>Size:</b> <span id="sumSize"></span></p>
-<p><b>Color:</b> <span id="sumColor"></span></p>
-<p><b>Price:</b> <span id="sumPrice"></span></p>
-<p><b>Status:</b> <span id="sumStatus"></span></p>
+<div class="form-group">
+<label>Full Name *</label>
+<input id="customerName" placeholder="Enter your full name">
 </div>
 
-<input id="name" placeholder="Full Name">
-<input id="phone" placeholder="Phone Number">
-<input id="address" placeholder="Full Address">
+<div class="form-group">
+<label>Phone Number *</label>
+<input id="customerPhone" placeholder="Enter your phone number" type="tel">
+</div>
 
-<button onclick="sendWA()">Checkout</button>
+<div class="form-group">
+<label>Shipping Address *</label>
+<textarea id="customerAddress" placeholder="Enter complete shipping address" rows="3" style="resize:vertical"></textarea>
+</div>
 
+</div>
+
+<div class="sticky-bar">
+<button onclick="goSummary()">CONTINUE TO SUMMARY</button>
+</div>
+</div>
+
+<!-- SUMMARY -->
+<div id="summary" class="page">
+<div class="back-btn" onclick="goBackForm()">← Back</div>
+
+<div class="summary-container">
+
+<!-- PRODUCT -->
+<div class="product-summary">
+<h3>Product Details</h3>
+<p id="sumProduct"></p>
+<p id="sumSize"></p>
+<p id="sumColor"></p>
+<p id="sumStatus"></p>
+<p id="sumPrice" style="font-weight:600;font-size:16px"></p>
+</div>
+
+<!-- CUSTOMER -->
+<div class="customer-info">
+<h4>Customer Information</h4>
+<p id="sumCustomerName"></p>
+<p id="sumCustomerPhone"></p>
+<p id="sumCustomerAddress"></p>
+</div>
+
+<!-- PAYMENT -->
+<div class="payment-info">
+<h4>Payment Information</h4>
+<p><strong>A.N Dias Adhitya Purnama Putra</strong></p>
+<p><strong>Mandiri:</strong> 1370023790229</p>
+<p><strong>DANA:</strong> 081910421976</p>
+<p style="font-size:11px;opacity:0.7;margin-top:10px">
+Transfer sesuai harga yang tertera dan kirim bukti transfer ke WhatsApp
+</p>
+</div>
+
+</div>
+
+<div class="sticky-bar">
+<p style="font-size:12px;opacity:0.7;margin-bottom:10px">
+Will be redirected to WhatsApp admin
+</p>
+<button onclick="sendWA()">CHECKOUT</button>
 </div>
 </div>
 
 <script>
+// ✅ ALL ELEMENTS DEFINED
+const loader = document.getElementById('loader');
+const home = document.getElementById('home');
+const detail = document.getElementById('detail');
+const form = document.getElementById('form');
+const summary = document.getElementById('summary');
 
-// ✅ LOADER FIX (ANTI STUCK)
+// DOM Elements
+const pname = document.getElementById('pname');
+const pprice = document.getElementById('pprice');
+const sizeWrap = document.getElementById('sizeWrap');
+const colorWrap = document.getElementById('colorWrap');
+const customerName = document.getElementById('customerName');
+const customerPhone = document.getElementById('customerPhone');
+const customerAddress = document.getElementById('customerAddress');
+const sumProduct = document.getElementById('sumProduct');
+const sumSize = document.getElementById('sumSize');
+const sumColor = document.getElementById('sumColor');
+const sumStatus = document.getElementById('sumStatus');
+const sumPrice = document.getElementById('sumPrice');
+const sumCustomerName = document.getElementById('sumCustomerName');
+const sumCustomerPhone = document.getElementById('sumCustomerPhone');
+const sumCustomerAddress = document.getElementById('sumCustomerAddress');
+
+// STATE
+let order = {
+    product: '',
+    price: 0,
+    type: '',
+    size: '',
+    color: '',
+    name: '',
+    phone: '',
+    address: ''
+};
+
+// LOADER
 window.addEventListener('load', () => {
-  const loader = document.getElementById('loader');
-
-  setTimeout(() => {
-    loader.classList.add('hide');
-
     setTimeout(() => {
-      loader.style.display = 'none';
-    }, 500);
-
-  }, 1000);
+        loader.classList.add('hide');
+        setTimeout(() => loader.style.display = 'none', 500);
+    }, 1200);
 });
 
-// fallback anti stuck
-setTimeout(()=>{
-  const loader=document.getElementById('loader');
-  if(loader) loader.style.display='none';
-},3000);
-
-let product='',type='',selectedSize='',selectedColor='';
-
-// DETAIL
-function goDetail(n,p,t){
-window.scrollTo({top:0,behavior:'smooth'});
-
-product=n;type=t;
-home.classList.remove('active');
-detail.classList.add('active');
-pname.innerText=n;
-pprice.innerText='Rp'+p;
-
-let sizes=['S','M','L','XL','XXL','XXXL'];
-let html='<div class="section-label">SIZE</div><div class="option-box">';
-sizes.forEach(s=>{
-if(t==='limited' && !['M','L'].includes(s)){
-html+=`<div class="size-disabled">${s}</div>`;
-}else{
-html+=`<div onclick="selectSize(this,'${s}')">${s}</div>`;
-}
-});
-html+='</div>';
-sizeWrap.innerHTML=html;
-
-if(t==='pre'){
-colorWrap.innerHTML=`
-<div class="section-label">COLOR</div>
-<div class="option-box">
-<div onclick="selectColor(this,'Black')">Black</div>
-<div onclick="selectColor(this,'Green')">Green</div>
-</div>`;
-}else{
-selectedColor='Default';
-colorWrap.innerHTML='';
-}
+// HOME TO DETAIL
+function goDetail(productName, price, type) {
+    order.product = productName;
+    order.price = price;
+    order.type = type;
+    
+    home.classList.remove('active');
+    detail.classList.add('active');
+    
+    pname.innerText = productName;
+    pprice.innerText = `Rp${price.toLocaleString('id-ID')}`;
+    
+    renderOptions();
 }
 
-// NAV
-function goBackHome(){
-detail.classList.remove('active');
-home.classList.add('active');
-}
-function goBackDetail(){
-checkout.classList.remove('active');
-detail.classList.add('active');
+// RENDER OPTIONS
+function renderOptions() {
+    // Size
+    const sizes = ['S','M','L','XL','XXL','XXXL'];
+    let sizeHTML = '<div class="section-label">SIZE</div><div class="option-box">';
+    sizes.forEach(s => {
+        if(order.type === 'limited' && !['M','L'].includes(s)) {
+            sizeHTML += `<div class="size-disabled">${s}</div>`;
+        } else {
+            sizeHTML += `<div onclick="selectOption(this,'size','${s}')">${s}</div>`;
+        }
+    });
+    sizeHTML += '</div>';
+    sizeWrap.innerHTML = sizeHTML;
+    
+    // Color
+    if(order.type === 'pre') {
+        colorWrap.innerHTML = `
+            <div class="section-label">COLOR</div>
+            <div class="option-box">
+                <div onclick="selectOption(this,'color','Black')">Black</div>
+                <div onclick="selectOption(this,'color','Green')">Green</div>
+            </div>`;
+    } else {
+        order.color = 'Black';
+        colorWrap.innerHTML = '';
+    }
 }
 
-// SELECT
-function selectSize(el,size){
-document.querySelectorAll('#sizeWrap div').forEach(d=>d.classList.remove('active'));
-el.classList.add('active');
-selectedSize=size;
+// SELECT OPTION
+function selectOption(el, type, value) {
+    order[type] = value;
+    // Remove active from all
+    document.querySelectorAll('.option-box div').forEach(d => d.classList.remove('active'));
+    // Add active to clicked
+    el.classList.add('active');
 }
-function selectColor(el,color){
-document.querySelectorAll('#colorWrap div').forEach(d=>d.classList.remove('active'));
-el.classList.add('active');
-selectedColor=color;
+
+// NAVIGATION
+function goBackHome() { detail.classList.remove('active'); home.classList.add('active'); }
+function goBackDetail() { form.classList.remove('active'); detail.classList.add('active'); }
+function goBackForm() { summary.classList.remove('active'); form.classList.add('active'); }
+
+// DETAIL → FORM
+function goForm() {
+    if(!order.size) return showToast('Please select size', 'error');
+    if(order.type === 'pre' && !order.color) return showToast('Please select color', 'error');
+    
+    detail.classList.remove('active');
+    form.classList.add('active');
+}
+
+// FORM → SUMMARY
+function goSummary() {
+    order.name = customerName.value.trim();
+    order.phone = customerPhone.value.trim();
+    order.address = customerAddress.value.trim();
+    
+    if(!order.name || !order.phone || !order.address) {
+        showToast('Please fill all fields', 'error');
+        return;
+    }
+    
+    // Update summary
+    sumProduct.innerText = order.product;
+    sumSize.innerText = `Size: ${order.size}`;
+    sumColor.innerText = `Color: ${order.color}`;
+    sumStatus.innerText = order.type === 'pre' ? 'Pre Order' : 'In Stock';
+    sumPrice.innerText = `Total: Rp${order.price.toLocaleString('id-ID')}`;
+    sumCustomerName.innerText = `Name: ${order.name}`;
+    sumCustomerPhone.innerText = `Phone: ${order.phone}`;
+    sumCustomerAddress.innerText = `Address: ${order.address}`;
+    
+    form.classList.remove('active');
+    summary.classList.add('active');
 }
 
 // TOAST
-function showToast(msg){
-let t=document.createElement('div');
-t.className='toast error';
-t.innerText=msg;
-document.body.appendChild(t);
-setTimeout(()=>t.classList.add('show'),10);
-t.classList.add('shake');
-setTimeout(()=>t.remove(),2000);
-if(navigator.vibrate) navigator.vibrate([100,50,100]);
+function showToast(msg, type='error') {
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerText = msg;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.classList.add('show', 'shake'), 10);
+    setTimeout(() => toast.remove(), 2500);
+    if(navigator.vibrate) navigator.vibrate([100,50,100]);
 }
 
-// CHECKOUT
-function goCheckout(){
-if(!selectedSize){showToast('Select size first');return;}
-if(type==='pre' && !selectedColor){showToast('Select color first');return;}
-
-window.scrollTo({top:0,behavior:'smooth'});
-
-sumProduct.innerText=product;
-sumSize.innerText=selectedSize;
-sumColor.innerText=selectedColor;
-sumStatus.innerText= type==='pre'?'Pre Order':'Ready Stock';
-sumPrice.innerText= type==='pre'?'Rp110000 (DP 60000)':'Rp100000';
-
-detail.classList.remove('active');
-checkout.classList.add('active');
+// FINAL CHECKOUT
+function sendWA() {
+    const status = order.type === 'pre' ? 'PRE ORDER' : 'READY STOCK';
+    const msg = `ORDER PEMBELIAN%0A%0A📦 *PRODUK*%0A${order.product}%0ASize: ${order.size}%0AColor: ${order.color}%0AStatus: ${status}%0AHarga: Rp${order.price.toLocaleString('id-ID')}%0A%0A👤 *PELANGGAN*%0ANama: ${order.name}%0AHP: ${order.phone}%0AAlamat: ${order.address}%0A%0A💳 *PEMBAYARAN*%0AA.N Dias Adhitya Purnama Putra%0AMandiri: 1370023790229%0ADANA: 081910421976%0A%0A*Mohon transfer sesuai harga dan kirim bukti transfer*`;
+    
+    window.open(`https://wa.me/6283898588562?text=${encodeURIComponent(msg)}`, '_blank');
+    showToast('Redirected to WhatsApp Admin!', 'success');
 }
-
-// WA
-function sendWA(){
-let nama=name.value.trim();
-let hp=phone.value.trim();
-let alamat=address.value.trim();
-
-if(!nama||!hp||!alamat){
-showToast('Please fill all fields');
-return;
-}
-
-let status = type==='pre'?'Pre Order':'Ready Stock';
-
-let msg=`Halo, saya ingin order:%0A%0A${product}%0A%0A*Detail Pesanan*%0AProduk: ${product}%0ASize: ${selectedSize}%0AWarna: ${selectedColor}%0AStatus: ${status}%0A%0A*Data Pembeli*%0ANama: ${nama}%0AAlamat: ${alamat}%0ANo HP: ${hp}`;
-
-window.location.href=`https://wa.me/6283898588562?text=${msg}`;
-}
-
 </script>
 
 </body>
