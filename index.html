@@ -48,7 +48,6 @@ position:relative;
 }
 .card img{width:100%;display:block}
 
-/* BADGE */
 .badge{
 position:absolute;
 top:12px;
@@ -78,7 +77,7 @@ background:#333;
 color:#888;
 }
 
-/* PAGE */
+/* PAGE SYSTEM */
 .page{
 position:fixed;
 top:0;
@@ -91,11 +90,13 @@ opacity:0;
 transform:translateX(30px);
 transition:0.4s;
 pointer-events:none;
+z-index:0;
 }
 .page.active{
 opacity:1;
 transform:translateX(0);
 pointer-events:auto;
+z-index:10;
 }
 
 /* DETAIL */
@@ -148,6 +149,7 @@ margin:auto;
 padding:20px;
 padding-top:80px;
 }
+
 input{
 width:100%;
 padding:14px;
@@ -158,6 +160,19 @@ color:#fff;
 border-radius:10px;
 }
 
+/* SUMMARY */
+.summary-box{
+background:#111;
+padding:15px;
+border-radius:10px;
+border:1px solid #222;
+margin-bottom:15px;
+}
+.summary-box p{
+margin:5px 0;
+font-size:14px;
+}
+
 /* STICKY */
 .sticky-bar{
 position:fixed;
@@ -166,6 +181,7 @@ left:0;
 width:100%;
 padding:10px 15px;
 background:#000;
+z-index:20;
 }
 
 /* BACK */
@@ -177,7 +193,7 @@ background:#111;
 padding:8px 14px;
 border-radius:20px;
 border:1px solid #333;
-z-index:999;
+z-index:30;
 }
 
 /* LOADER */
@@ -306,15 +322,31 @@ transition:0.4s;
 <div class="back-btn" onclick="goBackDetail()">← Back</div>
 
 <div class="checkout-container">
+
+<h3>Order Summary</h3>
+
+<div class="summary-box">
+<p><b>Product:</b> <span id="sumProduct"></span></p>
+<p><b>Size:</b> <span id="sumSize"></span></p>
+<p><b>Color:</b> <span id="sumColor"></span></p>
+<p><b>Price:</b> <span id="sumPrice"></span></p>
+<p><b>Status:</b> <span id="sumStatus"></span></p>
+</div>
+
+<h3>Billing Details</h3>
+
 <input id="name" placeholder="Full Name">
 <input id="phone" placeholder="Phone Number">
 <input id="address" placeholder="Full Address">
+
 <button onclick="sendWA()">Checkout</button>
+
 </div>
 </div>
 
 <script>
 
+// LOADER
 window.onload=()=>{
 setTimeout(()=>{
 loader.classList.add("hide");
@@ -324,8 +356,9 @@ setTimeout(()=>loader.style.display="none",500);
 
 let product='',type='',selectedSize='',selectedColor='';
 
+// DETAIL
 function goDetail(n,p,t){
-window.scrollTo({top:0,behavior:'smooth'}); // FIX SCROLL
+window.scrollTo({top:0,behavior:'smooth'});
 
 product=n;type=t;
 home.classList.remove('active');
@@ -358,66 +391,33 @@ colorWrap.innerHTML='';
 }
 }
 
+// NAV
 function goBackHome(){
 detail.classList.remove('active');
 home.classList.add('active');
 }
-
 function goBackDetail(){
 checkout.classList.remove('active');
 detail.classList.add('active');
 }
 
+// SELECT
 function selectSize(el,size){
 document.querySelectorAll('#sizeWrap div').forEach(d=>d.classList.remove('active'));
 el.classList.add('active');
 selectedSize=size;
 }
-
 function selectColor(el,color){
 document.querySelectorAll('#colorWrap div').forEach(d=>d.classList.remove('active'));
 el.classList.add('active');
 selectedColor=color;
 }
 
+// TOAST + GETER
 function showToast(msg){
 let t=document.createElement('div');
 t.className='toast error';
 t.innerText=msg;
 document.body.appendChild(t);
 setTimeout(()=>t.classList.add('show'),10);
-t.classList.add('shake');
-setTimeout(()=>t.remove(),2000);
-
-if(navigator.vibrate) navigator.vibrate([100,50,100]); // GETER
-}
-
-function goCheckout(){
-if(!selectedSize){showToast('Select size first');return;}
-if(type==='pre' && !selectedColor){showToast('Select color first');return;}
-
-window.scrollTo({top:0,behavior:'smooth'});
-
-detail.classList.remove('active');
-checkout.classList.add('active');
-}
-
-function sendWA(){
-let nama=name.value.trim();
-let hp=phone.value.trim();
-let alamat=address.value.trim();
-
-if(!nama||!hp||!alamat){
-showToast('Please fill all fields');
-return;
-}
-
-let msg=`Halo, saya ingin order:%0A%0A${product}%0A%0A*Format Order*%0ANama: ${nama}%0AAlamat lengkap: ${alamat}%0ASize: ${selectedSize}%0ANo hp: ${hp}%0AWarna: ${selectedColor}`;
-
-window.location.href=`https://wa.me/6283898588562?text=${msg}`;
-}
-
-</script>
-
-</body>
-</html>
+t.classList.add('shake
