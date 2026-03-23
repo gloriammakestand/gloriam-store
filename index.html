@@ -1,409 +1,469 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gloriam Store</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gloriam Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* BASE STYLES */
+        * {
+            box-sizing: border-box;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+        html, body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
 
-<style>
+        /* HEADER */
+        header {
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
 
-/* ================= BASE ================= */
-*{box-sizing:border-box}
+        /* PRODUCTS SECTION */
+        .products {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 50px;
+            padding: 40px 15px;
+        }
 
-body{
-    margin:0;
-    font-family:'Montserrat',sans-serif;
-    background:#0a0a0a;
-    color:#fff;
-}
+        /* CARD STYLE */
+        .card {
+            width: 100%;
+            max-width: 500px;
+            background: #111;
+            border-radius: 14px;
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+        }
 
-/* ================= HEADER ================= */
-header{
-    height:70vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-}
+        .card img {
+            width: 100%;
+            display: block;
+        }
 
-.title{
-    letter-spacing:10px;
-    font-size:40px;
-}
+        .badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 6px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 6px;
+        }
 
-.subtitle{
-    opacity:.6;
-    font-size:12px;
-}
+        .pre { background: #00c853; }
+        .ready { background: #fff; color: #000; }
 
-/* ================= PRODUCT ================= */
-.products{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:50px;
-    padding:40px 15px;
-}
+        /* BUTTONS */
+        button {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
-.card{
-    width:100%;
-    max-width:500px;
-    background:#111;
-    border-radius:14px;
-    overflow:hidden;
-    position:relative;
-    text-align:center;
-}
+        button:hover:not(:disabled) {
+            background: #f0f0f0;
+        }
 
-.card img{
-    width:100%;
-}
+        /* PAGE TRANSITIONS */
+        .page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            opacity: 0;
+            transform: translateX(30px);
+            transition: 0.4s;
+            pointer-events: none;
+            z-index: 0;
+        }
 
-/* BADGE */
-.badge{
-    position:absolute;
-    top:12px;
-    left:12px;
-    padding:6px 12px;
-    font-size:11px;
-    font-weight:600;
-    border-radius:6px;
-}
+        .page.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+            z-index: 10;
+        }
 
-.pre{background:#00c853;}
-.ready{background:#fff;color:#000;}
-.out{background:#ff3b3b;}
+        /* DETAIL PAGE */
+        .detail-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            padding-top: 80px;
+            padding-bottom: 100px;
+        }
 
-/* ================= BUTTON ================= */
-button{
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:8px;
-    background:#fff;
-    color:#000;
-    font-weight:600;
-    cursor:pointer;
-    transition:.2s;
-}
+        .swipe img {
+            width: 100%;
+            border-radius: 12px;
+        }
 
-button:hover:not(:disabled){
-    background:#f0f0f0;
-}
+        /* SELECTION OPTIONS */
+        .option-box {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
 
-button:disabled{
-    background:#333;
-    color:#888;
-    cursor:not-allowed;
-}
+        .option-box div {
+            padding: 14px;
+            border: 1px solid #333;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #111;
+        }
 
-/* ================= PAGE ================= */
-.page{
-    position:fixed;
-    inset:0;
-    overflow-y:auto;
-    opacity:0;
-    transform:translateX(30px);
-    transition:.4s;
-    pointer-events:none;
-}
+        .option-box div.active {
+            background: #fff !important;
+            color: #000 !important;
+            border-color: #fff;
+        }
 
-.page.active{
-    opacity:1;
-    transform:none;
-    pointer-events:auto;
-    z-index:10;
-}
+        .section-label {
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.8;
+            font-weight: 600;
+        }
 
-/* ================= DETAIL ================= */
-.detail-container,
-.form-container,
-.summary-container{
-    max-width:600px;
-    margin:auto;
-    padding:80px 20px 100px;
-}
+        /* ELEGANT FORM */
+        .form-container {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            padding-top: 80px;
+            padding-bottom: 100px;
+        }
 
-.swipe{
-    display:grid;
-    gap:12px;
-}
+        .form-group {
+            margin-bottom: 25px;
+        }
 
-.swipe img{
-    width:100%;
-    border-radius:12px;
-}
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #aaa;
+            text-transform: uppercase;
+        }
 
-/* OPTIONS */
-.section-label{
-    margin-top:20px;
-    font-size:13px;
-    opacity:.7;
-    letter-spacing:1px;
-}
+        input, textarea {
+            width: 100%;
+            padding: 16px;
+            background: #111;
+            border: 1px solid #222;
+            color: #fff;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Montserrat', sans-serif;
+            transition: 0.3s;
+        }
 
-.option-box{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    margin-top:10px;
-}
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #fff;
+            background: #161616;
+        }
 
-.option-box div{
-    padding:14px;
-    border:1px solid #333;
-    border-radius:8px;
-    text-align:center;
-    cursor:pointer;
-    background:#111;
-}
+        /* SUMMARY & PAYMENT */
+        .summary-container {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            padding-top: 80px;
+            padding-bottom: 40px;
+        }
 
-.option-box div.active{
-    background:#fff;
-    color:#000;
-    border-color:#fff;
-}
+        .product-summary, .customer-info {
+            background: #111;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #222;
+            margin-bottom: 20px;
+        }
 
-/* ================= FORM ================= */
-.form-group{
-    margin-bottom:20px;
-}
+        .payment-info {
+            background: #1a1a1a;
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid #333;
+            margin-bottom: 30px;
+        }
 
-.form-group label{
-    font-size:12px;
-    color:#aaa;
-}
+        .payment-info h4 {
+            margin: 0 0 15px 0;
+            color: #00c853;
+        }
 
-input,textarea{
-    width:100%;
-    padding:16px;
-    background:#111;
-    border:1px solid #222;
-    color:#fff;
-    border-radius:12px;
-    margin-top:6px;
-}
+        /* STICKY BAR */
+        .sticky-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            z-index: 20;
+            text-align: center;
+        }
 
-input:focus,textarea:focus{
-    outline:none;
-    border-color:#fff;
-}
+        /* UTILS */
+        .back-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            background: #111;
+            padding: 10px 16px;
+            border-radius: 20px;
+            border: 1px solid #333;
+            z-index: 30;
+            cursor: pointer;
+        }
 
-/* ================= SUMMARY ================= */
-.product-summary,
-.customer-info,
-.payment-info{
-    background:#111;
-    padding:20px;
-    border-radius:12px;
-    border:1px solid #222;
-    margin-bottom:20px;
-}
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            font-size: 26px;
+            letter-spacing: 4px;
+            transition: 0.5s;
+        }
 
-.payment-info{
-    background:#1a1a1a;
-}
+        .loader.hide { opacity: 0; pointer-events: none; }
 
-.payment-info h4{
-    color:#00c853;
-}
+        .toast {
+            position: fixed;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 20px;
+            border-radius: 8px;
+            transition: 0.4s;
+            z-index: 1000;
+            color: #fff;
+        }
 
-/* ================= UTIL ================= */
-.back-btn{
-    position:fixed;
-    top:15px;
-    left:15px;
-    background:#111;
-    padding:10px 16px;
-    border-radius:20px;
-    border:1px solid #333;
-    cursor:pointer;
-    z-index:20;
-}
-
-.sticky-bar{
-    position:fixed;
-    bottom:0;
-    width:100%;
-    padding:15px;
-    background:rgba(0,0,0,.8);
-}
-
-/* LOADER */
-.loader{
-    position:fixed;
-    inset:0;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:#000;
-    font-size:26px;
-    letter-spacing:4px;
-    z-index:9999;
-    transition:.5s;
-}
-
-.loader.hide{
-    opacity:0;
-    pointer-events:none;
-}
-
-/* TOAST */
-.toast{
-    position:fixed;
-    top:-60px;
-    left:50%;
-    transform:translateX(-50%);
-    padding:12px 20px;
-    border-radius:8px;
-    transition:.4s;
-}
-
-.toast.show{top:20px;}
-.toast.error{background:#ff3b3b;}
-</style>
+        .toast.show { top: 20px; }
+        .toast.error { background: #ff3b3b; }
+    </style>
 </head>
-
 <body>
 
-<div class="loader" id="loader">GLORIAM</div>
+    <div class="loader" id="loader">GLORIAM</div>
 
-<!-- ================= HOME ================= -->
-<div class="page active" id="home">
-    <header>
-        <h1 class="title">GLORIAM</h1>
-        <p class="subtitle">GLORIAM - MAKE STAND WITH PRIDE</p>
-    </header>
+    <div class="page active" id="home">
+        <header>
+            <h1 style="letter-spacing:10px; font-size:40px;">GLORIAM</h1>
+            <p style="opacity:0.6; font-size:12px;">GLORIAM - MAKE STAND WITH PRIDE</p>
+        </header>
 
-    <div class="products">
-        <div class="card">
-            <div class="badge pre">PRE ORDER</div>
-            <img src="https://via.placeholder.com/500">
-            <div style="padding:20px">
-                <h3>Soccer Addict</h3>
-                <p style="opacity:.7">Rp110.000 (DP 60.000)</p>
-                <button onclick="goDetail('Soccer Addict',110000,'pre')">SELECT</button>
+        <div class="products">
+            <div class="card">
+                <div class="badge pre">PRE ORDER</div>
+                <img src="https://via.placeholder.com/500" alt="Soccer Addict">
+                <div style="padding:20px">
+                    <h3>Soccer Addict</h3>
+                    <p style="opacity:0.7">Rp110.000 (DP 60.000)</p>
+                    <button onclick="goDetail('Soccer Addict', 110000, 'pre')">SELECT</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="badge ready">IN STOCK</div>
+                <img src="https://via.placeholder.com/500" alt="Sleman Soccer">
+                <div style="padding:20px">
+                    <h3>Sleman Soccer</h3>
+                    <p style="opacity:0.7">Rp100.000</p>
+                    <button onclick="goDetail('Sleman Soccer', 100000, 'ready')">SELECT</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- ================= DETAIL ================= -->
-<div class="page" id="detail">
-    <div class="back-btn" onclick="showPage('home')">← Back</div>
-
-    <div class="detail-container">
-        <div class="swipe">
-            <img src="https://via.placeholder.com/500">
+    <div class="page" id="detail">
+        <div class="back-btn" onclick="goBackHome()">← Back</div>
+        <div class="detail-container">
+            <div class="swipe">
+                <img src="https://via.placeholder.com/500" alt="Product">
+            </div>
+            <h2 id="pname" style="margin-top:25px">Product Name</h2>
+            <h3 id="pprice" style="color:#00c853">Rp0</h3>
+            
+            <div id="sizeWrap"></div>
+            <div id="colorWrap"></div>
         </div>
-
-        <h2 id="pname"></h2>
-        <h3 id="pprice" style="color:#00c853"></h3>
-
-        <div id="sizeWrap"></div>
-        <div id="colorWrap"></div>
+        <div class="sticky-bar">
+            <button onclick="goForm()">NEXT</button>
+        </div>
     </div>
 
-    <div class="sticky-bar">
-        <button onclick="goForm()">NEXT</button>
+    <div class="page" id="form">
+        <div class="back-btn" onclick="goBackDetail()">← Back</div>
+        <div class="form-container">
+            <h2 style="margin-bottom:30px">Shipping Details</h2>
+            <div class="form-group">
+                <label>Full Name *</label>
+                <input type="text" id="customerName" placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label>Phone Number *</label>
+                <input type="number" id="customerPhone" placeholder="0812xxxx">
+            </div>
+            <div class="form-group">
+                <label>Shipping Address *</label>
+                <textarea id="customerAddress" placeholder="Full address details..."></textarea>
+            </div>
+            <button onclick="goSummary()">CONTINUE TO SUMMARY</button>
+        </div>
     </div>
-</div>
 
-<script>
+    <div class="page" id="summary">
+        <div class="back-btn" onclick="goBackForm()">← Back</div>
+        <div class="summary-container">
+            <h2>Summary</h2>
+            <div class="product-summary">
+                <h3 id="sumProduct">-</h3>
+                <p id="sumSize">Size: -</p>
+                <p id="sumColor">Color: -</p>
+                <p id="sumStatus">Status: -</p>
+                <p id="sumPrice" style="font-weight:600; color:#00c853">Total: -</p>
+            </div>
+            <div class="customer-info">
+                <h4>Shipping To:</h4>
+                <p id="sumCustomerName">-</p>
+                <p id="sumCustomerPhone">-</p>
+                <p id="sumCustomerAddress">-</p>
+            </div>
+            <div class="payment-info">
+                <h4>Payment Info</h4>
+                <p><strong>A.N Dias Adhitya Purnama Putra</strong></p>
+                <p>Mandiri: 1370023790229</p>
+                <p>DANA: 081910421976</p>
+                <hr style="border:0; border-top:1px solid #333; margin:15px 0;">
+                <button onclick="sendWA()" style="background:#00c853; color:#fff;">CHECKOUT (WA)</button>
+            </div>
+        </div>
+    </div>
 
-/* ================= STATE ================= */
-let order={
-    product:'',price:0,type:'',
-    size:'',color:'',
-    name:'',phone:'',address:''
-};
+    <script>
+        const loader = document.getElementById('loader');
+        const pages = { home: document.getElementById('home'), detail: document.getElementById('detail'), form: document.getElementById('form'), summary: document.getElementById('summary') };
+        let order = { product: '', price: 0, type: '', size: '', color: '', name: '', phone: '', address: '' };
 
-/* ================= PAGE ================= */
-function showPage(id){
-    document.querySelectorAll('.page')
-        .forEach(p=>p.classList.remove('active'));
+        window.addEventListener('load', () => setTimeout(() => loader.classList.add('hide'), 1000));
 
-    document.getElementById(id).classList.add('active');
-}
+        function showPage(pageId) {
+            Object.values(pages).forEach(p => p.classList.remove('active'));
+            pages[pageId].classList.add('active');
+        }
 
-/* ================= DETAIL ================= */
-function goDetail(name,price,type){
-    order={...order,product:name,price,type,size:'',color:''};
+        function goDetail(productName, price, type) {
+            order.product = productName; order.price = price; order.type = type;
+            order.size = ''; order.color = (type === 'pre') ? '' : 'Black';
+            showPage('detail');
+            document.getElementById('pname').innerText = productName;
+            document.getElementById('pprice').innerText = `Rp${price.toLocaleString('id-ID')}`;
+            renderOptions();
+        }
 
-    document.getElementById('pname').innerText=name;
-    document.getElementById('pprice').innerText=
-        `Rp${price.toLocaleString('id-ID')}`;
+        function renderOptions() {
+            const sizes = ['S','M','L','XL','XXL','XXXL'];
+            let sizeHTML = '<div class="section-label">SIZE</div><div class="option-box">';
+            sizes.forEach(s => sizeHTML += `<div class="${order.size === s ? 'active' : ''}" onclick="selectOption(this,'size','${s}')">${s}</div>`);
+            document.getElementById('sizeWrap').innerHTML = sizeHTML + '</div>';
 
-    renderOptions();
-    showPage('detail');
-}
+            if(order.type === 'pre') {
+                let colorHTML = '<div class="section-label">COLOR</div><div class="option-box">';
+                ['Black', 'Green'].forEach(c => colorHTML += `<div class="${order.color === c ? 'active' : ''}" onclick="selectOption(this,'color','${c}')">${c}</div>`);
+                document.getElementById('colorWrap').innerHTML = colorHTML + '</div>';
+            } else { document.getElementById('colorWrap').innerHTML = ''; }
+        }
 
-/* OPTIONS */
-function renderOptions(){
-    const sizes=['S','M','L','XL','XXL','XXXL'];
+        function selectOption(el, type, value) {
+            order[type] = value;
+            el.parentElement.querySelectorAll('div').forEach(d => d.classList.remove('active'));
+            el.classList.add('active');
+        }
 
-    document.getElementById('sizeWrap').innerHTML=
-        createOption('SIZE','size',sizes);
+        function goBackHome() { showPage('home'); }
+        function goBackDetail() { showPage('detail'); }
+        function goBackForm() { showPage('form'); }
 
-    if(order.type==='pre'){
-        document.getElementById('colorWrap').innerHTML=
-            createOption('COLOR','color',['Black','Green']);
-    }else{
-        document.getElementById('colorWrap').innerHTML='';
-    }
-}
+        function goForm() {
+            if(!order.size) return showToast('Pilih ukuran dahulu!');
+            if(order.type === 'pre' && !order.color) return showToast('Pilih warna!');
+            showPage('form');
+        }
 
-function createOption(label,type,list){
-    return `
-    <div class="section-label">${label}</div>
-    <div class="option-box">
-        ${list.map(v=>`
-            <div onclick="selectOption(this,'${type}','${v}')">
-                ${v}
-            </div>`).join('')}
-    </div>`;
-}
+        function goSummary() {
+            order.name = document.getElementById('customerName').value.trim();
+            order.phone = document.getElementById('customerPhone').value.trim();
+            order.address = document.getElementById('customerAddress').value.trim();
+            if(!order.name || !order.phone || !order.address) return showToast('Lengkapi semua data!');
+            
+            document.getElementById('sumProduct').innerText = order.product;
+            document.getElementById('sumSize').innerText = `Size: ${order.size}`;
+            document.getElementById('sumColor').innerText = `Color: ${order.color}`;
+            document.getElementById('sumStatus').innerText = order.type === 'pre' ? 'Pre Order' : 'Ready Stock';
+            document.getElementById('sumPrice').innerText = `Total: Rp${order.price.toLocaleString('id-ID')}`;
+            document.getElementById('sumCustomerName').innerText = order.name;
+            document.getElementById('sumCustomerPhone').innerText = order.phone;
+            document.getElementById('sumCustomerAddress').innerText = order.address;
+            showPage('summary');
+        }
 
-function selectOption(el,type,val){
-    order[type]=val;
+        function showToast(msg) {
+            const t = document.createElement('div'); t.className = `toast error show`; t.innerText = msg;
+            document.body.appendChild(t); setTimeout(() => t.remove(), 2500);
+        }
 
-    el.parentElement.querySelectorAll('div')
-        .forEach(d=>d.classList.remove('active'));
+        function sendWA() {
+            const pesan = `*GLORIAM ORDER*
 
-    el.classList.add('active');
-}
+${order.product}
+Warna: ${order.color}
+Size: ${order.size}
 
-/* ================= VALIDATION ================= */
-function goForm(){
-    if(!order.size) return toast('Pilih size dulu');
-    if(order.type==='pre' && !order.color) return toast('Pilih warna');
+${order.name}
+No WA: ${order.phone}
+Alamat: ${order.address}`;
 
-    showPage('form');
-}
-
-/* ================= TOAST ================= */
-function toast(msg){
-    const t=document.createElement('div');
-    t.className='toast error show';
-    t.innerText=msg;
-
-    document.body.appendChild(t);
-
-    setTimeout(()=>t.remove(),2000);
-}
-
-/* ================= LOADER ================= */
-window.onload=()=>{
-    setTimeout(()=>{
-        document.getElementById('loader')
-            .classList.add('hide');
-    },1000);
-}
-
-</script>
-
+            window.open(`https://wa.me/6283898588562?text=${encodeURIComponent(pesan)}`, '_blank');
+        }
+    </script>
 </body>
 </html>
