@@ -268,110 +268,124 @@ DANA: 081910421976
 </div>
 
 <script>
+// ✅ DEFINE SEMUA DOM ELEMENTS DULU
+const loader = document.getElementById('loader');
+const home = document.getElementById('home');
+const pname = document.getElementById('pname');
+const sizeBox = document.getElementById('sizeBox');
+const colorBox = document.getElementById('colorBox');
+const nameInput = document.getElementById('name');
+const phoneInput = document.getElementById('phone');
+const addressInput = document.getElementById('address');
+const sumProduct = document.getElementById('sumProduct');
+const sumPrice = document.getElementById('sumPrice');
+const sumName = document.getElementById('sumName');
+const sumPhone = document.getElementById('sumPhone');
+const sumAddress = document.getElementById('sumAddress');
 
-// LOADER
-setTimeout(()=>{
-loader.classList.add('hide');
-home.classList.add('active');
-},1000);
-
-let product='',price=0,type='',size='',color='';
+let product='', price=0, type='', size='', color='';
 
 function show(p){
-document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-document.getElementById(p).classList.add('active');
-window.scrollTo(0,0);
+    document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+    document.getElementById(p).classList.add('active');
+    window.scrollTo(0,0);
 }
 
 function goDetail(n,p,t){
-product=n;price=p;type=t;
-pname.innerText=n;
+    product=n; price=p; type=t;
+    pname.innerText=n;
 
-let sizes=['S','M','L','XL','XXL','XXXL'];
-let html='';
-sizes.forEach(s=>{
-if(t==='limited' && !['M','L'].includes(s)){
-html+=`<div class="disabled">${s}</div>`;
-}else{
-html+=`<div onclick="selectSize(this)">${s}</div>`;
-}
-});
-sizeBox.innerHTML=html;
+    let sizes=['S','M','L','XL','XXL','XXXL'];
+    let html='';
+    sizes.forEach(s=>{
+        if(t==='limited' && !['M','L'].includes(s)){
+            html+=`<div class="disabled">${s}</div>`;
+        }else{
+            html+=`<div onclick="selectSize(this)">${s}</div>`;
+        }
+    });
+    sizeBox.innerHTML=html;
 
-// color
-if(n==='Soccer Addict'){
-colorBox.innerHTML=`<div onclick="selectColor(this)">Black</div><div onclick="selectColor(this)">Green</div>`;
-}
-else if(n==='Sleman Soccer'){
-colorBox.innerHTML=`<div onclick="selectColor(this)">White</div>`;
-}
-else{
-colorBox.innerHTML=`<div onclick="selectColor(this)">Black</div>`;
-}
+    // color
+    if(n==='Soccer Addict'){
+        colorBox.innerHTML=`<div onclick="selectColor(this)">Black</div><div onclick="selectColor(this)">Green</div>`;
+    }
+    else if(n==='Sleman Soccer'){
+        colorBox.innerHTML=`<div onclick="selectColor(this)">White</div>`;
+    }
+    else{
+        colorBox.innerHTML=`<div onclick="selectColor(this)">Black</div>`;
+    }
 
-show('detail');
+    show('detail');
 }
 
 function selectSize(el){
-document.querySelectorAll('#sizeBox div').forEach(d=>d.classList.remove('activeOpt'));
-el.classList.add('activeOpt');
-size=el.innerText;
+    document.querySelectorAll('#sizeBox div').forEach(d=>d.classList.remove('activeOpt'));
+    el.classList.add('activeOpt');
+    size=el.innerText;
 }
 
 function selectColor(el){
-document.querySelectorAll('#colorBox div').forEach(d=>d.classList.remove('activeOpt'));
-el.classList.add('activeOpt');
-color=el.innerText;
+    document.querySelectorAll('#colorBox div').forEach(d=>d.classList.remove('activeOpt'));
+    el.classList.add('activeOpt');
+    color=el.innerText;
 }
 
 function toast(msg){
-let t=document.createElement('div');
-t.className='toast';
-t.innerText=msg;
-document.body.appendChild(t);
-setTimeout(()=>t.classList.add('show'),10);
-setTimeout(()=>t.remove(),2000);
+    let t=document.createElement('div');
+    t.className='toast';
+    t.innerText=msg;
+    document.body.appendChild(t);
+    setTimeout(()=>t.classList.add('show'),10);
+    setTimeout(()=>t.remove(),2000);
 
-// GETAR
-if(navigator.vibrate) navigator.vibrate([100,50,100]);
+    // GETAR
+    if(navigator.vibrate) navigator.vibrate([100,50,100]);
 }
 
 function goForm(){
-if(!size || !color){toast('Pilih size & warna');return;}
-show('form');
+    if(!size || !color){toast('Pilih size & warna');return;}
+    show('form');
 }
 
 function goSummary(){
-let n=name.value.trim();
-let p=phone.value.trim();
-let a=address.value.trim();
+    let n=nameInput.value.trim();
+    let p=phoneInput.value.trim();
+    let a=addressInput.value.trim();
 
-// reset
-[name,phone,address].forEach(i=>i.classList.remove('error'));
+    // reset
+    [nameInput,phoneInput,addressInput].forEach(i=>i.classList.remove('error'));
 
-if(!n||!p||!a){
-if(!n) name.classList.add('error');
-if(!p) phone.classList.add('error');
-if(!a) address.classList.add('error');
+    if(!n||!p||!a){
+        if(!n) nameInput.classList.add('error');
+        if(!p) phoneInput.classList.add('error');
+        if(!a) addressInput.classList.add('error');
 
-toast('Data belum lengkap');
-return;
-}
+        toast('Data belum lengkap');
+        return;
+    }
 
-sumProduct.innerText=`${product} - ${size} - ${color}`;
-sumPrice.innerText=`Rp${price}`;
-sumName.innerText=n;
-sumPhone.innerText=p;
-sumAddress.innerText=a;
+    sumProduct.innerText=`${product} - ${size} - ${color}`;
+    sumPrice.innerText=`Rp${price.toLocaleString('id-ID')}`;
+    sumName.innerText=n;
+    sumPhone.innerText=p;
+    sumAddress.innerText=a;
 
-show('summary');
+    show('summary');
 }
 
 function sendWA(){
-let msg=`Halo, saya ingin order:%0A%0A${product}%0ASize: ${size}%0AWarna: ${color}%0A%0ANama: ${name.value}%0ANo HP: ${phone.value}%0AAlamat: ${address.value}%0A%0ASudah melakukan pembayaran`;
+    let msg=`Halo, saya ingin order:%0A%0A${product}%0ASize: ${size}%0AWarna: ${color}%0A%0ANama: ${nameInput.value}%0ANo HP: ${phoneInput.value}%0AAlamat: ${addressInput.value}%0A%0ASudah melakukan pembayaran`;
 
-window.location.href=`https://wa.me/6283898588562?text=${msg}`;
+    window.open(`https://wa.me/6283898588562?text=${msg}`, '_blank');
 }
+
+// LOADER
+setTimeout(()=>{
+    loader.classList.add('hide');
+    home.classList.add('active');
+},1000);
 
 </script>
 
