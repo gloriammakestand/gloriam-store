@@ -46,7 +46,7 @@ overflow:hidden;
 text-align:center;
 position:relative;
 }
-.card img{width:100%;display:block}
+.card img{width:100%}
 
 .badge{
 position:absolute;
@@ -166,7 +166,9 @@ margin-bottom:8px;
 font-size:13px;
 opacity:0.8;
 }
-input{
+
+/* INPUT + TEXTAREA FIX */
+input, textarea{
 width:100%;
 padding:14px;
 background:#111;
@@ -174,11 +176,16 @@ border:1px solid #333;
 color:#fff;
 border-radius:10px;
 font-size:16px;
+font-family:'Montserrat',sans-serif;
+transition:0.2s;
 }
-input:focus{
+input:focus, textarea:focus{
 outline:none;
 border-color:#fff;
 box-shadow:0 0 0 2px rgba(255,255,255,0.1);
+}
+.error{
+border:1px solid red !important;
 }
 
 /* SUMMARY */
@@ -189,33 +196,15 @@ padding:20px;
 padding-top:80px;
 padding-bottom:120px;
 }
-.product-summary{
-background:#111;
-padding:20px;
-border-radius:12px;
-border:1px solid #222;
-margin-bottom:20px;
-}
-.product-summary h3{margin:0 0 15px 0;font-size:18px}
-.product-summary p{margin:8px 0;font-size:14px}
-.customer-info{
-background:#111;
-padding:20px;
-border-radius:12px;
-border:1px solid #222;
-margin-bottom:20px;
-}
-.customer-info h4{margin:0 0 15px 0;font-size:16px;opacity:0.9}
-.customer-info p{margin:8px 0;font-size:14px}
+.product-summary,
+.customer-info,
 .payment-info{
-background:#1a1a1a;
+background:#111;
 padding:20px;
 border-radius:12px;
-border:1px solid #333;
+border:1px solid #222;
 margin-bottom:20px;
 }
-.payment-info h4{margin:0 0 15px 0;font-size:16px}
-.payment-info p{font-size:13px;line-height:1.5}
 
 /* STICKY */
 .sticky-bar{
@@ -226,7 +215,6 @@ width:100%;
 padding:15px;
 background:#000;
 z-index:20;
-box-shadow:0 -2px 20px rgba(0,0,0,0.5);
 text-align:center;
 }
 
@@ -242,9 +230,7 @@ border:1px solid #333;
 font-size:14px;
 z-index:30;
 cursor:pointer;
-transition:0.2s;
 }
-.back-btn:hover{background:#222}
 
 /* LOADER */
 .loader{
@@ -280,7 +266,6 @@ z-index:1000;
 }
 .toast.show{top:20px}
 .toast.error{background:#ff3b3b}
-.toast.success{background:#00c853}
 
 /* SHAKE */
 @keyframes shake{
@@ -301,8 +286,7 @@ z-index:1000;
 <div id="home" class="page active">
 <header>
 <h1>GLORIAM</h1>
-<p>GLORIAM - MAKE STAND WITH PRIDE</p>
-<p>Scroll to explore</p>
+<p>MAKE STAND WITH PRIDE</p>
 </header>
 
 <div class="products">
@@ -311,12 +295,12 @@ z-index:1000;
 <div class="badge pre">PRE ORDER</div>
 <img src="images/soccer-addict.jpg">
 <h3>Soccer Addict</h3>
-<p>Rp110.000 (DP 60.000)</p>
+<p>Rp110.000</p>
 <button onclick="goDetail('Soccer Addict',110000,'pre')">SELECT</button>
 </div>
 
 <div class="card">
-<div class="badge ready">IN STOCK</div>
+<div class="badge ready">READY STOCK</div>
 <img src="images/sleman-soccer.jpg">
 <h3>Sleman Soccer</h3>
 <p>Rp100.000</p>
@@ -324,7 +308,7 @@ z-index:1000;
 </div>
 
 <div class="card">
-<div class="badge ready">IN STOCK</div>
+<div class="badge ready">READY STOCK</div>
 <img src="images/bless-home.jpg">
 <h3>Bless Home</h3>
 <p>Rp100.000</p>
@@ -342,23 +326,16 @@ z-index:1000;
 </div>
 </div>
 
-<!-- DETAIL (SIZE & COLOR) -->
+<!-- DETAIL -->
 <div id="detail" class="page">
-<div class="back-btn" onclick="goBackHome()">← Back</div>
+<div class="back-btn" onclick="show('home')">← Back</div>
 
 <div class="detail-container">
-
-<div class="swipe">
-<img src="images/detail1.jpg">
-<img src="images/detail2.jpg">
-</div>
-
 <h2 id="pname"></h2>
 <p id="pprice"></p>
 
 <div id="sizeWrap"></div>
 <div id="colorWrap"></div>
-
 </div>
 
 <div class="sticky-bar">
@@ -366,237 +343,138 @@ z-index:1000;
 </div>
 </div>
 
-<!-- FORM (ALAMAT) -->
+<!-- FORM -->
 <div id="form" class="page">
-<div class="back-btn" onclick="goBackDetail()">← Back</div>
+<div class="back-btn" onclick="show('detail')">← Back</div>
 
 <div class="form-container">
-
-<h3>Personal Information & Shipping Address</h3>
-
-<div class="form-group">
-<label>Full Name *</label>
-<input id="customerName" placeholder="Enter your full name">
-</div>
-
-<div class="form-group">
-<label>Phone Number *</label>
-<input id="customerPhone" placeholder="Enter your phone number" type="tel">
-</div>
-
-<div class="form-group">
-<label>Shipping Address *</label>
-<textarea id="customerAddress" placeholder="Enter complete shipping address" rows="3" style="resize:vertical"></textarea>
-</div>
-
+<input id="customerName" placeholder="Full Name">
+<input id="customerPhone" placeholder="Phone Number">
+<textarea id="customerAddress" placeholder="Full Address"></textarea>
 </div>
 
 <div class="sticky-bar">
-<button onclick="goSummary()">CONTINUE TO SUMMARY</button>
+<button onclick="goSummary()">CONTINUE</button>
 </div>
 </div>
 
 <!-- SUMMARY -->
 <div id="summary" class="page">
-<div class="back-btn" onclick="goBackForm()">← Back</div>
+<div class="back-btn" onclick="show('form')">← Back</div>
 
 <div class="summary-container">
-
-<!-- PRODUCT -->
-<div class="product-summary">
-<h3>Product Details</h3>
 <p id="sumProduct"></p>
 <p id="sumSize"></p>
 <p id="sumColor"></p>
-<p id="sumStatus"></p>
-<p id="sumPrice" style="font-weight:600;font-size:16px"></p>
-</div>
+<p id="sumPrice"></p>
 
-<!-- CUSTOMER -->
-<div class="customer-info">
-<h4>Customer Information</h4>
+<hr>
+
 <p id="sumCustomerName"></p>
 <p id="sumCustomerPhone"></p>
 <p id="sumCustomerAddress"></p>
 </div>
 
-<!-- PAYMENT -->
-<div class="payment-info">
-<h4>Payment Information</h4>
-<p><strong>A.N Dias Adhitya Purnama Putra</strong></p>
-<p><strong>Mandiri:</strong> 1370023790229</p>
-<p><strong>DANA:</strong> 081910421976</p>
-<p style="font-size:11px;opacity:0.7;margin-top:10px">
-Transfer sesuai harga yang tertera dan kirim bukti transfer ke WhatsApp
-</p>
-</div>
-
-</div>
-
 <div class="sticky-bar">
-<p style="font-size:12px;opacity:0.7;margin-bottom:10px">
-Will be redirected to WhatsApp admin
-</p>
 <button onclick="sendWA()">CHECKOUT</button>
 </div>
 </div>
 
 <script>
-// ✅ ALL ELEMENTS DEFINED
-const loader = document.getElementById('loader');
-const home = document.getElementById('home');
-const detail = document.getElementById('detail');
-const form = document.getElementById('form');
-const summary = document.getElementById('summary');
 
-// DOM Elements
-const pname = document.getElementById('pname');
-const pprice = document.getElementById('pprice');
-const sizeWrap = document.getElementById('sizeWrap');
-const colorWrap = document.getElementById('colorWrap');
-const customerName = document.getElementById('customerName');
-const customerPhone = document.getElementById('customerPhone');
-const customerAddress = document.getElementById('customerAddress');
-const sumProduct = document.getElementById('sumProduct');
-const sumSize = document.getElementById('sumSize');
-const sumColor = document.getElementById('sumColor');
-const sumStatus = document.getElementById('sumStatus');
-const sumPrice = document.getElementById('sumPrice');
-const sumCustomerName = document.getElementById('sumCustomerName');
-const sumCustomerPhone = document.getElementById('sumCustomerPhone');
-const sumCustomerAddress = document.getElementById('sumCustomerAddress');
+const loader=document.getElementById('loader');
+setTimeout(()=>loader.classList.add('hide'),1000);
 
-// STATE
-let order = {
-    product: '',
-    price: 0,
-    type: '',
-    size: '',
-    color: '',
-    name: '',
-    phone: '',
-    address: ''
-};
+let order={};
 
-// LOADER
-window.addEventListener('load', () => {
-    setTimeout(() => {
-        loader.classList.add('hide');
-        setTimeout(() => loader.style.display = 'none', 500);
-    }, 1200);
+function show(p){
+document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+document.getElementById(p).classList.add('active');
+window.scrollTo(0,0);
+}
+
+function goDetail(n,p,t){
+order={product:n,price:p,type:t};
+
+pname.innerText=n;
+pprice.innerText=`Rp${p.toLocaleString('id-ID')}`;
+
+// size
+let sizes=['S','M','L','XL','XXL','XXXL'];
+let html='<div class="section-label">SIZE</div><div class="option-box">';
+sizes.forEach(s=>{
+if(t==='limited'&&!['M','L'].includes(s)){
+html+=`<div class="size-disabled">${s}</div>`;
+}else{
+html+=`<div onclick="selectOption(this,'size','${s}')">${s}</div>`;
+}
 });
+html+='</div>';
+sizeWrap.innerHTML=html;
 
-// HOME TO DETAIL
-function goDetail(productName, price, type) {
-    order.product = productName;
-    order.price = price;
-    order.type = type;
-    
-    home.classList.remove('active');
-    detail.classList.add('active');
-    
-    pname.innerText = productName;
-    pprice.innerText = `Rp${price.toLocaleString('id-ID')}`;
-    
-    renderOptions();
+// color
+if(n==='Soccer Addict'){
+colorWrap.innerHTML=`<div class="section-label">COLOR</div><div class="option-box"><div onclick="selectOption(this,'color','Black')">Black</div><div onclick="selectOption(this,'color','Green')">Green</div></div>`;
+}else{
+colorWrap.innerHTML='';
+order.color='Black';
 }
 
-// RENDER OPTIONS
-function renderOptions() {
-    // Size
-    const sizes = ['S','M','L','XL','XXL','XXXL'];
-    let sizeHTML = '<div class="section-label">SIZE</div><div class="option-box">';
-    sizes.forEach(s => {
-        if(order.type === 'limited' && !['M','L'].includes(s)) {
-            sizeHTML += `<div class="size-disabled">${s}</div>`;
-        } else {
-            sizeHTML += `<div onclick="selectOption(this,'size','${s}')">${s}</div>`;
-        }
-    });
-    sizeHTML += '</div>';
-    sizeWrap.innerHTML = sizeHTML;
-    
-    // Color
-    if(order.type === 'pre') {
-        colorWrap.innerHTML = `
-            <div class="section-label">COLOR</div>
-            <div class="option-box">
-                <div onclick="selectOption(this,'color','Black')">Black</div>
-                <div onclick="selectOption(this,'color','Green')">Green</div>
-            </div>`;
-    } else {
-        order.color = 'Black';
-        colorWrap.innerHTML = '';
-    }
+show('detail');
 }
 
-// SELECT OPTION
-function selectOption(el, type, value) {
-    order[type] = value;
-    // Remove active from all
-    document.querySelectorAll('.option-box div').forEach(d => d.classList.remove('active'));
-    // Add active to clicked
-    el.classList.add('active');
+function selectOption(el,type,value){
+order[type]=value;
+
+if(type==='size'){
+document.querySelectorAll('#sizeWrap .option-box div').forEach(d=>d.classList.remove('active'));
+}else{
+document.querySelectorAll('#colorWrap .option-box div').forEach(d=>d.classList.remove('active'));
 }
 
-// NAVIGATION
-function goBackHome() { detail.classList.remove('active'); home.classList.add('active'); }
-function goBackDetail() { form.classList.remove('active'); detail.classList.add('active'); }
-function goBackForm() { summary.classList.remove('active'); form.classList.add('active'); }
-
-// DETAIL → FORM
-function goForm() {
-    if(!order.size) return showToast('Please select size', 'error');
-    if(order.type === 'pre' && !order.color) return showToast('Please select color', 'error');
-    
-    detail.classList.remove('active');
-    form.classList.add('active');
+el.classList.add('active');
 }
 
-// FORM → SUMMARY
-function goSummary() {
-    order.name = customerName.value.trim();
-    order.phone = customerPhone.value.trim();
-    order.address = customerAddress.value.trim();
-    
-    if(!order.name || !order.phone || !order.address) {
-        showToast('Please fill all fields', 'error');
-        return;
-    }
-    
-    // Update summary
-    sumProduct.innerText = order.product;
-    sumSize.innerText = `Size: ${order.size}`;
-    sumColor.innerText = `Color: ${order.color}`;
-    sumStatus.innerText = order.type === 'pre' ? 'Pre Order' : 'In Stock';
-    sumPrice.innerText = `Total: Rp${order.price.toLocaleString('id-ID')}`;
-    sumCustomerName.innerText = `Name: ${order.name}`;
-    sumCustomerPhone.innerText = `Phone: ${order.phone}`;
-    sumCustomerAddress.innerText = `Address: ${order.address}`;
-    
-    form.classList.remove('active');
-    summary.classList.add('active');
+function toast(msg){
+let t=document.createElement('div');
+t.className='toast error';
+t.innerText=msg;
+document.body.appendChild(t);
+setTimeout(()=>t.classList.add('show','shake'),10);
+setTimeout(()=>t.remove(),2000);
+if(navigator.vibrate) navigator.vibrate([100,50,100]);
 }
 
-// TOAST
-function showToast(msg, type='error') {
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.innerText = msg;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.classList.add('show', 'shake'), 10);
-    setTimeout(() => toast.remove(), 2500);
-    if(navigator.vibrate) navigator.vibrate([100,50,100]);
+function goForm(){
+if(!order.size)return toast('Pilih size dulu');
+if(order.type==='pre'&&!order.color)return toast('Pilih warna');
+show('form');
 }
 
-// FINAL CHECKOUT
-function sendWA() {
-    const status = order.type === 'pre' ? 'PRE ORDER' : 'READY STOCK';
-    const msg = `ORDER PEMBELIAN%0A%0A📦 *PRODUK*%0A${order.product}%0ASize: ${order.size}%0AColor: ${order.color}%0AStatus: ${status}%0AHarga: Rp${order.price.toLocaleString('id-ID')}%0A%0A👤 *PELANGGAN*%0ANama: ${order.name}%0AHP: ${order.phone}%0AAlamat: ${order.address}%0A%0A💳 *PEMBAYARAN*%0AA.N Dias Adhitya Purnama Putra%0AMandiri: 1370023790229%0ADANA: 081910421976%0A%0A*Mohon transfer sesuai harga dan kirim bukti transfer*`;
-    
-    window.open(`https://wa.me/6283898588562?text=${encodeURIComponent(msg)}`, '_blank');
-    showToast('Redirected to WhatsApp Admin!', 'success');
+function goSummary(){
+let n=customerName.value.trim();
+let p=customerPhone.value.trim();
+let a=customerAddress.value.trim();
+
+if(!n||!p||!a)return toast('Lengkapi data');
+
+sumProduct.innerText=order.product;
+sumSize.innerText=`Size: ${order.size}`;
+sumColor.innerText=`Color: ${order.color}`;
+sumPrice.innerText=`Rp${order.price.toLocaleString('id-ID')}`;
+
+sumCustomerName.innerText=n;
+sumCustomerPhone.innerText=p;
+sumCustomerAddress.innerText=a;
+
+show('summary');
 }
+
+function sendWA(){
+let msg=`Order:%0A${order.product}%0ASize:${order.size}%0AColor:${order.color}%0ANama:${customerName.value}%0AHP:${customerPhone.value}%0AAlamat:${customerAddress.value}`;
+window.open(`https://wa.me/6283898588562?text=${msg}`);
+}
+
 </script>
 
 </body>
