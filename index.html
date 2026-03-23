@@ -7,10 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
         /* BASE STYLES */
-        * {
-            box-sizing: border-box;
-        }
-
+        * { box-sizing: border-box; }
         html, body {
             margin: 0;
             font-family: 'Montserrat', sans-serif;
@@ -48,12 +45,7 @@
             text-align: center;
             position: relative;
         }
-
-        .card img {
-            width: 100%;
-            display: block;
-        }
-
+        .card img { width: 100%; display: block; }
         .badge {
             position: absolute;
             top: 12px;
@@ -63,7 +55,6 @@
             font-weight: 600;
             border-radius: 6px;
         }
-
         .pre { background: #00c853; }
         .ready { background: #fff; color: #000; }
 
@@ -79,10 +70,7 @@
             cursor: pointer;
             transition: 0.2s;
         }
-
-        button:hover:not(:disabled) {
-            background: #f0f0f0;
-        }
+        button:hover:not(:disabled) { background: #f0f0f0; }
 
         /* PAGE TRANSITIONS */
         .page {
@@ -99,7 +87,6 @@
             pointer-events: none;
             z-index: 0;
         }
-
         .page.active {
             opacity: 1;
             transform: translateX(0);
@@ -115,11 +102,7 @@
             padding-top: 80px;
             padding-bottom: 100px;
         }
-
-        .swipe img {
-            width: 100%;
-            border-radius: 12px;
-        }
+        .swipe img { width: 100%; border-radius: 12px; }
 
         /* SELECTION OPTIONS */
         .option-box {
@@ -128,7 +111,6 @@
             gap: 10px;
             margin-top: 10px;
         }
-
         .option-box div {
             padding: 14px;
             border: 1px solid #333;
@@ -138,13 +120,11 @@
             transition: 0.2s;
             background: #111;
         }
-
         .option-box div.active {
             background: #fff !important;
             color: #000 !important;
             border-color: #fff;
         }
-
         .section-label {
             margin-top: 20px;
             font-size: 14px;
@@ -160,11 +140,7 @@
             padding-top: 80px;
             padding-bottom: 100px;
         }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
+        .form-group { margin-bottom: 25px; }
         .form-group label {
             display: block;
             margin-bottom: 10px;
@@ -173,7 +149,6 @@
             color: #aaa;
             text-transform: uppercase;
         }
-
         input, textarea {
             width: 100%;
             padding: 16px;
@@ -185,7 +160,6 @@
             font-family: 'Montserrat', sans-serif;
             transition: 0.3s;
         }
-
         input:focus, textarea:focus {
             outline: none;
             border-color: #fff;
@@ -200,7 +174,6 @@
             padding-top: 80px;
             padding-bottom: 40px;
         }
-
         .product-summary, .customer-info {
             background: #111;
             padding: 20px;
@@ -208,7 +181,6 @@
             border: 1px solid #222;
             margin-bottom: 20px;
         }
-
         .payment-info {
             background: #1a1a1a;
             padding: 25px;
@@ -216,11 +188,7 @@
             border: 1px solid #333;
             margin-bottom: 30px;
         }
-
-        .payment-info h4 {
-            margin: 0 0 15px 0;
-            color: #00c853;
-        }
+        .payment-info h4 { margin: 0 0 15px 0; color: #00c853; }
 
         /* STICKY BAR */
         .sticky-bar {
@@ -263,7 +231,6 @@
             letter-spacing: 4px;
             transition: 0.5s;
         }
-
         .loader.hide { opacity: 0; pointer-events: none; }
 
         .toast {
@@ -277,7 +244,6 @@
             z-index: 1000;
             color: #fff;
         }
-
         .toast.show { top: 20px; }
         .toast.error { background: #ff3b3b; }
     </style>
@@ -317,18 +283,13 @@
     <div class="page" id="detail">
         <div class="back-btn" onclick="goBackHome()">← Back</div>
         <div class="detail-container">
-            <div class="swipe">
-                <img src="https://via.placeholder.com/500" alt="Product">
-            </div>
+            <div class="swipe"><img src="https://via.placeholder.com/500" alt="Product"></div>
             <h2 id="pname" style="margin-top:25px">Product Name</h2>
             <h3 id="pprice" style="color:#00c853">Rp0</h3>
-            
             <div id="sizeWrap"></div>
             <div id="colorWrap"></div>
         </div>
-        <div class="sticky-bar">
-            <button onclick="goForm()">NEXT</button>
-        </div>
+        <div class="sticky-bar"><button onclick="goForm()">NEXT</button></div>
     </div>
 
     <div class="page" id="form">
@@ -337,7 +298,7 @@
             <h2 style="margin-bottom:30px">Shipping Details</h2>
             <div class="form-group">
                 <label>Full Name *</label>
-                <input type="text" id="customerName" placeholder="Enter your full name">
+                <input type="text" id="customerName" placeholder="Nama Lengkap">
             </div>
             <div class="form-group">
                 <label>Phone Number *</label>
@@ -345,7 +306,7 @@
             </div>
             <div class="form-group">
                 <label>Shipping Address *</label>
-                <textarea id="customerAddress" placeholder="Full address details..."></textarea>
+                <textarea id="customerAddress" placeholder="Alamat lengkap..."></textarea>
             </div>
             <button onclick="goSummary()">CONTINUE TO SUMMARY</button>
         </div>
@@ -371,8 +332,7 @@
             <div class="payment-info">
                 <h4>Payment Info</h4>
                 <p><strong>A.N Dias Adhitya Purnama Putra</strong></p>
-                <p>Mandiri: 1370023790229</p>
-                <p>DANA: 081910421976</p>
+                <p>Mandiri: 1370023790229 | DANA: 081910421976</p>
                 <hr style="border:0; border-top:1px solid #333; margin:15px 0;">
                 <button onclick="sendWA()" style="background:#00c853; color:#fff;">CHECKOUT (WA)</button>
             </div>
@@ -384,7 +344,13 @@
         const pages = { home: document.getElementById('home'), detail: document.getElementById('detail'), form: document.getElementById('form'), summary: document.getElementById('summary') };
         let order = { product: '', price: 0, type: '', size: '', color: '', name: '', phone: '', address: '' };
 
-        window.addEventListener('load', () => setTimeout(() => loader.classList.add('hide'), 1000));
+        // LOAD SCREEN 1 DETIK
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                loader.classList.add('hide');
+                setTimeout(() => loader.style.display = 'none', 500);
+            }, 1000); 
+        });
 
         function showPage(pageId) {
             Object.values(pages).forEach(p => p.classList.remove('active'));
