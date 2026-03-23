@@ -77,7 +77,7 @@ background:#333;
 color:#888;
 }
 
-/* PAGE SYSTEM */
+/* PAGE */
 .page{
 position:fixed;
 top:0;
@@ -333,8 +333,6 @@ transition:0.4s;
 <p><b>Status:</b> <span id="sumStatus"></span></p>
 </div>
 
-<h3>Billing Details</h3>
-
 <input id="name" placeholder="Full Name">
 <input id="phone" placeholder="Phone Number">
 <input id="address" placeholder="Full Address">
@@ -346,13 +344,25 @@ transition:0.4s;
 
 <script>
 
-// LOADER
-window.onload=()=>{
+// ✅ LOADER FIX (ANTI STUCK)
+window.addEventListener('load', () => {
+  const loader = document.getElementById('loader');
+
+  setTimeout(() => {
+    loader.classList.add('hide');
+
+    setTimeout(() => {
+      loader.style.display = 'none';
+    }, 500);
+
+  }, 1000);
+});
+
+// fallback anti stuck
 setTimeout(()=>{
-loader.classList.add("hide");
-setTimeout(()=>loader.style.display="none",500);
-},1000);
-};
+  const loader=document.getElementById('loader');
+  if(loader) loader.style.display='none';
+},3000);
 
 let product='',type='',selectedSize='',selectedColor='';
 
@@ -413,11 +423,54 @@ el.classList.add('active');
 selectedColor=color;
 }
 
-// TOAST + GETER
+// TOAST
 function showToast(msg){
 let t=document.createElement('div');
 t.className='toast error';
 t.innerText=msg;
 document.body.appendChild(t);
 setTimeout(()=>t.classList.add('show'),10);
-t.classList.add('shake
+t.classList.add('shake');
+setTimeout(()=>t.remove(),2000);
+if(navigator.vibrate) navigator.vibrate([100,50,100]);
+}
+
+// CHECKOUT
+function goCheckout(){
+if(!selectedSize){showToast('Select size first');return;}
+if(type==='pre' && !selectedColor){showToast('Select color first');return;}
+
+window.scrollTo({top:0,behavior:'smooth'});
+
+sumProduct.innerText=product;
+sumSize.innerText=selectedSize;
+sumColor.innerText=selectedColor;
+sumStatus.innerText= type==='pre'?'Pre Order':'Ready Stock';
+sumPrice.innerText= type==='pre'?'Rp110000 (DP 60000)':'Rp100000';
+
+detail.classList.remove('active');
+checkout.classList.add('active');
+}
+
+// WA
+function sendWA(){
+let nama=name.value.trim();
+let hp=phone.value.trim();
+let alamat=address.value.trim();
+
+if(!nama||!hp||!alamat){
+showToast('Please fill all fields');
+return;
+}
+
+let status = type==='pre'?'Pre Order':'Ready Stock';
+
+let msg=`Halo, saya ingin order:%0A%0A${product}%0A%0A*Detail Pesanan*%0AProduk: ${product}%0ASize: ${selectedSize}%0AWarna: ${selectedColor}%0AStatus: ${status}%0A%0A*Data Pembeli*%0ANama: ${nama}%0AAlamat: ${alamat}%0ANo HP: ${hp}`;
+
+window.location.href=`https://wa.me/6283898588562?text=${msg}`;
+}
+
+</script>
+
+</body>
+</html>
