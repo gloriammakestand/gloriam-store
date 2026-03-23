@@ -18,7 +18,7 @@
 
         /* HEADER */
         header {
-            height: 70vh;
+            height: 60vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -31,32 +31,35 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 50px;
-            padding: 40px 15px;
+            gap: 40px;
+            padding: 20px 15px 100px;
         }
 
         /* CARD STYLE */
         .card {
             width: 100%;
-            max-width: 500px;
+            max-width: 450px;
             background: #111;
             border-radius: 14px;
             overflow: hidden;
             text-align: center;
             position: relative;
+            border: 1px solid #222;
         }
-        .card img { width: 100%; display: block; }
+        .card img { width: 100%; display: block; filter: grayscale(0.2); }
         .badge {
             position: absolute;
             top: 12px;
             left: 12px;
             padding: 6px 12px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             border-radius: 6px;
+            text-transform: uppercase;
         }
-        .pre { background: #00c853; }
+        .pre { background: #00c853; color: #fff; }
         .ready { background: #fff; color: #000; }
+        .sold { background: #ff3b3b; color: #fff; }
 
         /* BUTTONS */
         button {
@@ -70,7 +73,7 @@
             cursor: pointer;
             transition: 0.2s;
         }
-        button:hover:not(:disabled) { background: #f0f0f0; }
+        button:disabled { background: #222; color: #555; cursor: not-allowed; }
 
         /* PAGE TRANSITIONS */
         .page {
@@ -80,355 +83,247 @@
             width: 100%;
             height: 100%;
             overflow-y: auto;
-            overflow-x: hidden;
+            background: #0a0a0a;
             opacity: 0;
-            transform: translateX(30px);
+            transform: translateX(20px);
             transition: 0.4s;
             pointer-events: none;
-            z-index: 0;
+            z-index: 1;
         }
-        .page.active {
-            opacity: 1;
-            transform: translateX(0);
-            pointer-events: auto;
-            z-index: 10;
-        }
+        .page.active { opacity: 1; transform: translateX(0); pointer-events: auto; z-index: 10; }
 
-        /* DETAIL PAGE */
-        .detail-container {
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            padding-top: 80px;
-            padding-bottom: 100px;
-        }
-        .swipe img { width: 100%; border-radius: 12px; }
-
-        /* SELECTION OPTIONS */
-        .option-box {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 10px;
-        }
+        /* OPTIONS STYLING */
+        .detail-container { max-width: 500px; margin: auto; padding: 80px 20px 120px; }
+        .option-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
         .option-box div {
             padding: 14px;
             border: 1px solid #333;
             text-align: center;
             border-radius: 8px;
             cursor: pointer;
-            transition: 0.2s;
             background: #111;
-        }
-        .option-box div.active {
-            background: #fff !important;
-            color: #000 !important;
-            border-color: #fff;
-        }
-        .section-label {
-            margin-top: 20px;
             font-size: 14px;
-            opacity: 0.8;
-            font-weight: 600;
         }
+        .option-box div.active { background: #fff; color: #000; border-color: #fff; }
+        .option-box div.disabled { opacity: 0.2; cursor: not-allowed; border: 1px dashed #444; }
+        .section-label { margin-top: 25px; font-size: 12px; font-weight: 600; color: #888; letter-spacing: 1px; }
 
-        /* ELEGANT FORM */
-        .form-container {
-            max-width: 500px;
-            margin: auto;
-            padding: 20px;
-            padding-top: 80px;
-            padding-bottom: 100px;
-        }
-        .form-group { margin-bottom: 25px; }
-        .form-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #aaa;
-            text-transform: uppercase;
-        }
+        /* FORM */
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 11px; color: #666; font-weight: 600; }
         input, textarea {
-            width: 100%;
-            padding: 16px;
-            background: #111;
-            border: 1px solid #222;
-            color: #fff;
-            border-radius: 12px;
-            font-size: 15px;
-            font-family: 'Montserrat', sans-serif;
-            transition: 0.3s;
+            width: 100%; padding: 16px; background: #111; border: 1px solid #222;
+            color: #fff; border-radius: 10px; font-family: inherit;
         }
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #fff;
-            background: #161616;
-        }
+        input:focus { border-color: #fff; outline: none; }
 
-        /* SUMMARY & PAYMENT */
-        .summary-container {
-            max-width: 500px;
-            margin: auto;
-            padding: 20px;
-            padding-top: 80px;
-            padding-bottom: 40px;
-        }
-        .product-summary, .customer-info {
-            background: #111;
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #222;
-            margin-bottom: 20px;
-        }
-        .payment-info {
-            background: #1a1a1a;
-            padding: 25px;
-            border-radius: 16px;
-            border: 1px solid #333;
-            margin-bottom: 30px;
-        }
-        .payment-info h4 { margin: 0 0 15px 0; color: #00c853; }
+        /* SUMMARY */
+        .summary-box { background: #111; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #222; }
+        .line { border-top: 1px solid #333; margin: 15px 0; }
 
-        /* STICKY BAR */
-        .sticky-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 15px;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px);
-            z-index: 20;
-            text-align: center;
+        /* ANIMATION & NOTIF */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
-
-        /* UTILS */
-        .back-btn {
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            background: #111;
-            padding: 10px 16px;
-            border-radius: 20px;
-            border: 1px solid #333;
-            z-index: 30;
-            cursor: pointer;
+        .shake { animation: shake 0.2s ease-in-out 0s 2; }
+        .toast {
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+            background: #ff3b3b; color: #fff; padding: 12px 25px; border-radius: 30px;
+            transition: 0.5s; z-index: 9999; font-weight: 600; font-size: 13px;
         }
+        .toast.show { top: 20px; }
 
         .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            font-size: 26px;
-            letter-spacing: 4px;
-            transition: 0.5s;
+            position: fixed; inset: 0; background: #000; display: flex;
+            justify-content: center; align-items: center; z-index: 10000;
+            font-size: 20px; letter-spacing: 5px; transition: 0.5s;
         }
         .loader.hide { opacity: 0; pointer-events: none; }
 
-        .toast {
-            position: fixed;
-            top: -60px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 12px 20px;
-            border-radius: 8px;
-            transition: 0.4s;
-            z-index: 1000;
-            color: #fff;
-        }
-        .toast.show { top: 20px; }
-        .toast.error { background: #ff3b3b; }
+        .back-btn { position: fixed; top: 20px; left: 20px; z-index: 50; cursor: pointer; opacity: 0.7; }
+        .sticky-btn { position: fixed; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(transparent, #000); z-index: 40; }
     </style>
 </head>
 <body>
 
     <div class="loader" id="loader">GLORIAM</div>
+    <div id="toast" class="toast">Mohon lengkapi pilihan!</div>
 
     <div class="page active" id="home">
         <header>
-            <h1 style="letter-spacing:10px; font-size:40px;">GLORIAM</h1>
-            <p style="opacity:0.6; font-size:12px;">GLORIAM - MAKE STAND WITH PRIDE</p>
+            <h1 style="letter-spacing:8px;">GLORIAM</h1>
+            <p style="font-size:10px; opacity:0.5;">MAKE STAND WITH PRIDE</p>
         </header>
-
-        <div class="products">
-            <div class="card">
-                <div class="badge pre">PRE ORDER</div>
-                <img src="https://via.placeholder.com/500" alt="Soccer Addict">
-                <div style="padding:20px">
-                    <h3>Soccer Addict</h3>
-                    <p style="opacity:0.7">Rp110.000 (DP 60.000)</p>
-                    <button onclick="goDetail('Soccer Addict', 110000, 'pre')">SELECT</button>
-                </div>
-            </div>
-            <div class="card">
-                <div class="badge ready">IN STOCK</div>
-                <img src="https://via.placeholder.com/500" alt="Sleman Soccer">
-                <div style="padding:20px">
-                    <h3>Sleman Soccer</h3>
-                    <p style="opacity:0.7">Rp100.000</p>
-                    <button onclick="goDetail('Sleman Soccer', 100000, 'ready')">SELECT</button>
-                </div>
-            </div>
-        </div>
+        <div class="products" id="product-list"></div>
     </div>
 
     <div class="page" id="detail">
-        <div class="back-btn" onclick="goBackHome()">← Back</div>
+        <div class="back-btn" onclick="showPage('home')">← BACK</div>
         <div class="detail-container">
-            <div class="swipe"><img src="https://via.placeholder.com/500" alt="Product"></div>
-            <h2 id="pname" style="margin-top:25px">Product Name</h2>
-            <h3 id="pprice" style="color:#00c853">Rp0</h3>
-            <div id="sizeWrap"></div>
-            <div id="colorWrap"></div>
+            <h2 id="detName">Product</h2>
+            <p id="detPrice" style="color:#00c853; font-weight:600;"></p>
+            <div id="colorArea"></div>
+            <div id="sizeArea"></div>
         </div>
-        <div class="sticky-bar"><button onclick="goForm()">NEXT</button></div>
+        <div class="sticky-btn"><button onclick="validateDetail()">NEXT</button></div>
     </div>
 
     <div class="page" id="form">
-        <div class="back-btn" onclick="goBackDetail()">← Back</div>
-        <div class="form-container">
-            <h2 style="margin-bottom:30px">Shipping Details</h2>
+        <div class="back-btn" onclick="showPage('detail')">← BACK</div>
+        <div class="form-container detail-container">
+            <h3>SHIPPING INFO</h3>
             <div class="form-group">
-                <label>Full Name *</label>
-                <input type="text" id="customerName" placeholder="Nama Lengkap">
+                <label>NAMA LENGKAP</label>
+                <input type="text" id="inName" placeholder="Masukkan nama...">
             </div>
             <div class="form-group">
-                <label>Phone Number *</label>
-                <input type="number" id="customerPhone" placeholder="0812xxxx">
+                <label>NO HANDPHONE (WA)</label>
+                <input type="number" id="inPhone" placeholder="0812...">
             </div>
             <div class="form-group">
-                <label>Shipping Address *</label>
-                <textarea id="customerAddress" placeholder="Alamat lengkap..."></textarea>
+                <label>ALAMAT LENGKAP</label>
+                <textarea id="inAddress" rows="3" placeholder="Nama jalan, RT/RW, Kec, Kota..."></textarea>
             </div>
-            <button onclick="goSummary()">CONTINUE TO SUMMARY</button>
+            <p style="font-size:11px; color:#666; line-height:1.5;">* Isi sesuai dan lengkap untuk memudahkan proses pengiriman.</p>
         </div>
+        <div class="sticky-btn"><button onclick="validateForm()">CONTINUE</button></div>
     </div>
 
     <div class="page" id="summary">
-        <div class="back-btn" onclick="goBackForm()">← Back</div>
-        <div class="summary-container">
-            <h2>Summary</h2>
-            <div class="product-summary">
-                <h3 id="sumProduct">-</h3>
-                <p id="sumSize">Size: -</p>
-                <p id="sumColor">Color: -</p>
-                <p id="sumStatus">Status: -</p>
-                <p id="sumPrice" style="font-weight:600; color:#00c853">Total: -</p>
+        <div class="back-btn" onclick="showPage('form')">← BACK</div>
+        <div class="summary-container detail-container">
+            <h3>ORDER SUMMARY</h3>
+            <div class="summary-box">
+                <h4 id="sumProd" style="margin:0;">-</h4>
+                <p id="sumVar" style="font-size:13px; opacity:0.7;">-</p>
+                <h4 id="sumPrice" style="color:#00c853; margin:10px 0 0;">-</h4>
+                <div class="line"></div>
+                <p id="sumCust" style="font-size:13px; margin:0; line-height:1.6;"></p>
             </div>
-            <div class="customer-info">
-                <h4>Shipping To:</h4>
-                <p id="sumCustomerName">-</p>
-                <p id="sumCustomerPhone">-</p>
-                <p id="sumCustomerAddress">-</p>
-            </div>
-            <div class="payment-info">
-                <h4>Payment Info</h4>
-                <p><strong>A.N Dias Adhitya Purnama Putra</strong></p>
-                <p>Mandiri: 1370023790229 | DANA: 081910421976</p>
-                <hr style="border:0; border-top:1px solid #333; margin:15px 0;">
-                <button onclick="sendWA()" style="background:#00c853; color:#fff;">CHECKOUT (WA)</button>
+            <div style="background:#1a1a1a; padding:15px; border-radius:10px; font-size:12px;">
+                <p style="margin:0 0 5px;"><strong>PEMBAYARAN:</strong></p>
+                <p style="margin:0; opacity:0.8;">Mandiri: 1370023790229 (Dias A.)</p>
+                <p style="margin:0; opacity:0.8;">DANA: 081910421976</p>
             </div>
         </div>
+        <div class="sticky-btn"><button onclick="sendWA()" style="background:#00c853; color:#fff;">CHECKOUT (WA)</button></div>
     </div>
 
     <script>
-        const loader = document.getElementById('loader');
-        const pages = { home: document.getElementById('home'), detail: document.getElementById('detail'), form: document.getElementById('form'), summary: document.getElementById('summary') };
-        let order = { product: '', price: 0, type: '', size: '', color: '', name: '', phone: '', address: '' };
+        const products = [
+            { id: 1, name: "Soccer Addict", price: 110000, badge: "pre", status: "PRE ORDER", colors: ["Black", "Green"], sizes: ["S", "M", "L", "XL", "XXL", "XXXL"], stock: ["S", "M", "L", "XL", "XXL", "XXXL"] },
+            { id: 2, name: "Sleman Soccer", price: 100000, badge: "ready", status: "READY STOCK", colors: ["White"], sizes: ["S", "M", "L", "XL", "XXL", "XXXL"], stock: ["S", "M", "L", "XL", "XXL", "XXXL"] },
+            { id: 3, name: "Bless Home", price: 100000, badge: "ready", status: "READY STOCK", colors: ["Black"], sizes: ["S", "M", "L", "XL", "XXL", "XXXL"], stock: ["M", "L"] },
+            { id: 4, name: "Take Me Home", price: 0, badge: "sold", status: "SOLD OUT", colors: [], sizes: [], stock: [] }
+        ];
 
-        // LOAD SCREEN 1 DETIK
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                loader.classList.add('hide');
-                setTimeout(() => loader.style.display = 'none', 500);
-            }, 1000); 
-        });
+        let cart = { prod: null, size: '', color: '' };
 
-        function showPage(pageId) {
-            Object.values(pages).forEach(p => p.classList.remove('active'));
-            pages[pageId].classList.add('active');
+        // 1 DETIK LOAD SCREEN
+        window.onload = () => {
+            renderHome();
+            setTimeout(() => document.getElementById('loader').classList.add('hide'), 1000);
+        };
+
+        function renderHome() {
+            const container = document.getElementById('product-list');
+            products.forEach(p => {
+                const isSold = p.badge === 'sold';
+                container.innerHTML += `
+                    <div class="card">
+                        <div class="badge ${p.badge}">${p.status}</div>
+                        <img src="https://via.placeholder.com/500x600/111/fff?text=${p.name}">
+                        <div style="padding:20px">
+                            <h3>${p.name}</h3>
+                            <p style="opacity:0.6">${isSold ? 'Stok Habis' : 'Rp' + p.price.toLocaleString()}</p>
+                            <button ${isSold ? 'disabled' : ''} onclick="goDetail(${p.id})">
+                                ${isSold ? 'OUT OF STOCK' : 'SELECT'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
         }
 
-        function goDetail(productName, price, type) {
-            order.product = productName; order.price = price; order.type = type;
-            order.size = ''; order.color = (type === 'pre') ? '' : 'Black';
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function goDetail(id) {
+            const p = products.find(x => x.id === id);
+            cart = { prod: p, size: '', color: p.colors.length === 1 ? p.colors[0] : '' };
+            
+            document.getElementById('detName').innerText = p.name;
+            document.getElementById('detPrice').innerText = `Rp${p.price.toLocaleString()}`;
+            
+            // Render Color
+            let cHTML = '';
+            if(p.colors.length > 0) {
+                cHTML = `<div class="section-label">PILIH WARNA</div><div class="option-box">`;
+                p.colors.forEach(c => {
+                    cHTML += `<div class="${cart.color === c ? 'active' : ''}" onclick="selOpt('color','${c}',this)">${c}</div>`;
+                });
+                cHTML += `</div>`;
+            }
+            document.getElementById('colorArea').innerHTML = cHTML;
+
+            // Render Size
+            let sHTML = `<div class="section-label">PILIH SIZE</div><div class="option-box">`;
+            const allSizes = ["S", "M", "L", "XL", "XXL", "XXXL"];
+            allSizes.forEach(s => {
+                const isAvailable = p.stock.includes(s);
+                sHTML += `<div class="${isAvailable ? '' : 'disabled'}" onclick="${isAvailable ? `selOpt('size','${s}',this)` : ''}">${s}</div>`;
+            });
+            document.getElementById('sizeArea').innerHTML = sHTML + `</div>`;
+            
             showPage('detail');
-            document.getElementById('pname').innerText = productName;
-            document.getElementById('pprice').innerText = `Rp${price.toLocaleString('id-ID')}`;
-            renderOptions();
         }
 
-        function renderOptions() {
-            const sizes = ['S','M','L','XL','XXL','XXXL'];
-            let sizeHTML = '<div class="section-label">SIZE</div><div class="option-box">';
-            sizes.forEach(s => sizeHTML += `<div class="${order.size === s ? 'active' : ''}" onclick="selectOption(this,'size','${s}')">${s}</div>`);
-            document.getElementById('sizeWrap').innerHTML = sizeHTML + '</div>';
-
-            if(order.type === 'pre') {
-                let colorHTML = '<div class="section-label">COLOR</div><div class="option-box">';
-                ['Black', 'Green'].forEach(c => colorHTML += `<div class="${order.color === c ? 'active' : ''}" onclick="selectOption(this,'color','${c}')">${c}</div>`);
-                document.getElementById('colorWrap').innerHTML = colorHTML + '</div>';
-            } else { document.getElementById('colorWrap').innerHTML = ''; }
-        }
-
-        function selectOption(el, type, value) {
-            order[type] = value;
+        function selOpt(type, val, el) {
+            cart[type] = val;
             el.parentElement.querySelectorAll('div').forEach(d => d.classList.remove('active'));
             el.classList.add('active');
         }
 
-        function goBackHome() { showPage('home'); }
-        function goBackDetail() { showPage('detail'); }
-        function goBackForm() { showPage('form'); }
+        function notify(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.classList.add('show');
+            document.querySelector('.page.active').classList.add('shake');
+            setTimeout(() => {
+                t.classList.remove('show');
+                document.querySelector('.page.active').classList.remove('shake');
+            }, 2500);
+        }
 
-        function goForm() {
-            if(!order.size) return showToast('Pilih ukuran dahulu!');
-            if(order.type === 'pre' && !order.color) return showToast('Pilih warna!');
+        function validateDetail() {
+            if(!cart.color || !cart.size) return notify("Pilih Warna & Size!");
             showPage('form');
         }
 
-        function goSummary() {
-            order.name = document.getElementById('customerName').value.trim();
-            order.phone = document.getElementById('customerPhone').value.trim();
-            order.address = document.getElementById('customerAddress').value.trim();
-            if(!order.name || !order.phone || !order.address) return showToast('Lengkapi semua data!');
+        function validateForm() {
+            const n = document.getElementById('inName').value;
+            const p = document.getElementById('inPhone').value;
+            const a = document.getElementById('inAddress').value;
+            if(!n || !p || !a) return notify("Lengkapi Data Pengiriman!");
             
-            document.getElementById('sumProduct').innerText = order.product;
-            document.getElementById('sumSize').innerText = `Size: ${order.size}`;
-            document.getElementById('sumColor').innerText = `Color: ${order.color}`;
-            document.getElementById('sumStatus').innerText = order.type === 'pre' ? 'Pre Order' : 'Ready Stock';
-            document.getElementById('sumPrice').innerText = `Total: Rp${order.price.toLocaleString('id-ID')}`;
-            document.getElementById('sumCustomerName').innerText = order.name;
-            document.getElementById('sumCustomerPhone').innerText = order.phone;
-            document.getElementById('sumCustomerAddress').innerText = order.address;
+            document.getElementById('sumProd').innerText = cart.prod.name;
+            document.getElementById('sumVar').innerText = `Warna: ${cart.color} | Size: ${cart.size}`;
+            document.getElementById('sumPrice').innerText = `Rp${cart.prod.price.toLocaleString()}`;
+            document.getElementById('sumCust').innerHTML = `<strong>${n}</strong><br>${p}<br>${a}`;
+            
             showPage('summary');
         }
 
-        function showToast(msg) {
-            const t = document.createElement('div'); t.className = `toast error show`; t.innerText = msg;
-            document.body.appendChild(t); setTimeout(() => t.remove(), 2500);
-        }
-
         function sendWA() {
-            const pesan = `*GLORIAM ORDER*
-
-${order.product}
-Warna: ${order.color}
-Size: ${order.size}
-
-${order.name}
-No WA: ${order.phone}
-Alamat: ${order.address}`;
-
-            window.open(`https://wa.me/6283898588562?text=${encodeURIComponent(pesan)}`, '_blank');
+            const n = document.getElementById('inName').value;
+            const p = document.getElementById('inPhone').value;
+            const a = document.getElementById('inAddress').value;
+            const text = `*GLORIAM ORDER*\n\n${cart.prod.name}\nWarna: ${cart.color}\nSize: ${cart.size}\n\n${n}\nNo WA: ${p}\nAlamat: ${a}`;
+            window.open(`https://wa.me/6283898588562?text=${encodeURIComponent(text)}`);
         }
     </script>
 </body>
