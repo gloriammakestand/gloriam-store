@@ -64,7 +64,7 @@
 
         /* OPTIONS */
         .detail-container { max-width: 500px; margin: auto; padding: 20px 24px 160px; }
-        .summary-container { padding-top: 80px; } /* MENGGESER SUMMARY KE BAWAH */
+        .summary-container { padding-top: 80px; }
         
         .section-label { margin-top: 30px; font-size: 11px; font-weight: 700; color: #555; letter-spacing: 1.5px; text-transform: uppercase; }
         .option-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
@@ -88,7 +88,7 @@
         /* REKENING BOX BIG */
         .payment-card {
             background: #0a0a0a; border: 2px solid #1a1a1a; padding: 25px; 
-            border-radius: 20px; margin-top: 30px;
+            border-radius: 20px; margin-top: 15px; /* JARAK DIPERKESIL DARI 30px KE 15px */
         }
         .bank-info { font-size: 16px; line-height: 1.8; font-weight: 600; margin: 15px 0; }
         .checkout-note { font-size: 11px; color: #666; text-align: center; margin-top: 15px; }
@@ -153,7 +153,8 @@
 
     <div class="page" id="summary">
         <div class="back-btn" onclick="showPage('form')">← BACK</div>
-        <div class="detail-container summary-container"> <h2 style="margin-bottom:20px;">ORDER SUMMARY</h2>
+        <div class="detail-container summary-container"> 
+            <h2 style="margin-bottom:20px;">ORDER SUMMARY</h2>
             
             <div style="background:#0a0a0a; padding:20px; border-radius:15px; border:1px solid #1a1a1a;">
                 <h3 id="sumProd" style="margin:0; font-size:18px;">-</h3>
@@ -180,7 +181,6 @@
     </div>
 
     <script>
-        // Data Produk tetap sama seperti permintaan sebelumnya
         const products = [
             { id: 1, name: "Soccer Addict", price: 110000, badge: "pre", status: "PRE ORDER", colors: ["Black", "Green"], sizes: ["S", "M", "L", "XL", "XXL", "XXXL"], stock: ["S", "M", "L", "XL", "XXL", "XXXL"], imgs: ["https://via.placeholder.com/500x600/111/fff?text=Addict+1", "https://via.placeholder.com/500x600/222/fff?text=Addict+2"] },
             { id: 2, name: "Sleman Soccer", price: 100000, badge: "ready", status: "READY STOCK", colors: ["White"], sizes: ["S", "M", "L", "XL", "XXL", "XXXL"], stock: ["S", "M", "L", "XL", "XXL", "XXXL"], imgs: ["https://via.placeholder.com/500x600/111/fff?text=Sleman+1", "https://via.placeholder.com/500x600/222/fff?text=Sleman+2"] },
@@ -281,6 +281,17 @@
             const text = `*GLORIAM ORDER*\n\n${cart.prod.name}\nWarna: ${cart.color}\nSize: ${cart.size}\n\n*Data Pengiriman*\nNama: ${n}\nWhatsApp: ${p}\nAlamat: ${a}`;
             window.open(`https://wa.me/6283898588562?text=${encodeURIComponent(text)}`);
         }
-    </script>
+    
+<link rel="manifest" href="manifest.json">
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js')
+        .then(reg => console.log('Service Worker Registered'))
+        .catch(err => console.log('Service Worker Failed', err));
+    });
+  }
+</script>
+
 </body>
 </html>
