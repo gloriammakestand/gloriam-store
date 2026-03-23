@@ -57,11 +57,13 @@
         /* FOOTER */
         footer { background: #0a0a0a; border-top: 1px solid #1a1a1a; padding: 60px 20px; text-align: center; margin-top: 40px; }
         .footer-logo { letter-spacing: 10px; font-size: 22px; font-weight: 700; margin-bottom: 5px; }
+        .footer-slogan { font-size: 9px; opacity: 0.3; letter-spacing: 2px; margin-bottom: 35px; text-transform: uppercase; }
         .footer-socials { display: flex; justify-content: center; gap: 25px; margin-bottom: 35px; }
         .footer-socials a { color: #fff; font-size: 20px; opacity: 0.6; text-decoration: none; }
         .footer-contact-title { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 10px; }
         .footer-contact-info { font-size: 11px; opacity: 0.5; line-height: 1.8; margin-bottom: 40px; }
         .footer-contact-info a { color: inherit; text-decoration: none; }
+        .copyright { font-size: 9px; opacity: 0.2; letter-spacing: 1px; margin-top: 20px; }
 
         /* PAGE SYSTEM */
         .page { position: fixed; inset: 0; overflow-y: auto; background: #000; opacity: 0; transform: translateY(20px); transition: 0.4s ease-out; pointer-events: none; z-index: 1; }
@@ -103,6 +105,7 @@
         <div class="products" id="product-list"></div>
         <footer>
             <div class="footer-logo">GLORIAM</div>
+            <div class="footer-slogan">MAKE STAND WITH PRIDE</div>
             <div class="footer-socials">
                 <a href="https://www.instagram.com/gloriam____?igsh=d2Z5dTFiMHdxMHgy" target="_blank" onclick="vibrate(30)"><i class="fab fa-instagram"></i></a>
                 <a href="https://wa.me/6283898588562" target="_blank" onclick="vibrate(30)"><i class="fab fa-whatsapp"></i></a>
@@ -113,6 +116,7 @@
                 WhatsApp : <a href="https://wa.me/6283898588562">083898588562</a><br>
                 Email : <a href="mailto:gloriammakestand@gmail.com">gloriammakestand@gmail.com</a>
             </div>
+            <p class="copyright">© 2026 Gloriam Store. All rights reserved.</p>
         </footer>
     </div>
 
@@ -291,12 +295,4 @@
 
         function sendWA() {
             const n = document.getElementById('inName').value, p = document.getElementById('inPhone').value, a = document.getElementById('inAddress').value;
-            const text = `*GLORIAM ORDER*\n\n${cart.prod.name}\nWarna: ${cart.color}\nSize: ${cart.size}\nTotal: Rp${cart.prod.price}\n\n*Data Pengiriman*\nNama: ${n}\nWhatsApp: ${p}\nAlamat: ${a}`;
-            window.open(`https://wa.me/6283898588562?text=${encodeURIComponent(text)}`);
-        }
-
-        function openSize() { vibrate(30); document.getElementById('sizeModal').style.display='flex'; }
-        function closeSize() { document.getElementById('sizeModal').style.display='none'; }
-    </script>
-</body>
-</html>
+            const text = `*GLORIAM ORDER*\n\n${cart.prod.name}\nWarna: ${cart.color}\nSize: ${cart.size}\nTotal: Rp${cart.prod.
