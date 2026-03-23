@@ -11,11 +11,10 @@
 *{box-sizing:border-box}
 body{margin:0;font-family:'Montserrat',sans-serif;background:#0a0a0a;color:#fff}
 
-/* CONTAINER (CENTER FIX) */
+/* CONTAINER */
 .container{
 max-width:1200px;
-margin:0 auto;
-width:100%;
+margin:auto;
 }
 
 /* HEADER */
@@ -29,30 +28,27 @@ text-align:center;
 padding:20px;
 }
 
-/* PRODUCTS */
+/* PRODUCTS (1 COLUMN PREMIUM) */
 .products{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:15px;
-padding:20px 10px;
-}
-
-/* RESPONSIVE GRID */
-@media(min-width:768px){
-.products{grid-template-columns:repeat(3,1fr);}
-}
-@media(min-width:1024px){
-.products{grid-template-columns:repeat(4,1fr);}
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:50px;
+padding:40px 15px;
 }
 
 /* CARD */
 .card{
-position:relative;
+width:100%;
+max-width:500px;
 background:#111;
-border-radius:12px;
+border-radius:14px;
 overflow:hidden;
+text-align:center;
 }
-.card img{width:100%}
+.card img{
+width:100%;
+}
 
 /* BADGE */
 .badge{
@@ -68,11 +64,12 @@ border-radius:6px;
 .badge.ready{background:#fff;color:#000}
 .badge.out{background:#ff3b3b;color:#fff}
 
+.card{position:relative}
 .disabled{opacity:0.3}
 
 /* TEXT */
-h3{padding:10px;margin:0}
-p{padding:0 10px;margin:0 0 10px}
+h3{margin:15px 0 5px;font-size:18px}
+p{margin:0 0 15px;opacity:0.7}
 
 /* BUTTON */
 button{
@@ -88,7 +85,7 @@ background:#333;
 color:#888;
 }
 
-/* PAGE TRANSITION */
+/* PAGE */
 .page{
 position:absolute;
 width:100%;
@@ -110,6 +107,8 @@ pointer-events:auto;
 max-width:600px;
 margin:auto;
 padding:20px;
+padding-top:70px;
+padding-bottom:100px;
 }
 
 /* SWIPE */
@@ -153,6 +152,7 @@ pointer-events:none;
 max-width:500px;
 margin:auto;
 padding:20px;
+padding-top:70px;
 }
 input{
 width:100%;
@@ -170,7 +170,7 @@ position:fixed;
 bottom:0;
 width:100%;
 background:#000;
-padding:10px;
+padding:10px 15px;
 }
 
 /* BACK */
@@ -245,7 +245,7 @@ transition:0.4s;
 <img src="images/soccer-addict.jpg">
 <h3>Soccer Addict</h3>
 <p>Rp110000 (DP 60000)</p>
-<button onclick="goDetail('Soccer Addict',110000,'pre')">SELECT</button>
+<button onclick="goDetail('Soccer Addict',110000,'pre')">SELECT OPTIONS</button>
 </div>
 
 <div class="card">
@@ -253,7 +253,7 @@ transition:0.4s;
 <img src="images/sleman-soccer.jpg">
 <h3>Sleman Soccer</h3>
 <p>Rp100000</p>
-<button onclick="goDetail('Sleman Soccer',100000,'ready')">SELECT</button>
+<button onclick="goDetail('Sleman Soccer',100000,'ready')">SELECT OPTIONS</button>
 </div>
 
 <div class="card">
@@ -261,7 +261,7 @@ transition:0.4s;
 <img src="images/bless-home.jpg">
 <h3>Bless Home</h3>
 <p>Rp100000</p>
-<button onclick="goDetail('Bless Home',100000,'limited')">SELECT</button>
+<button onclick="goDetail('Bless Home',100000,'limited')">SELECT OPTIONS</button>
 </div>
 
 <div class="card disabled">
