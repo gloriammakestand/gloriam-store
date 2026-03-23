@@ -18,7 +18,7 @@ overflow-x:hidden;
 }
 
 /* PAGE */
-.page{display:none;padding-bottom:120px}
+.page{display:none;padding-bottom:140px}
 .page.active{display:block}
 
 /* HEADER */
@@ -42,7 +42,7 @@ align-items:center;
 
 .card{
 width:100%;
-max-width:400px;
+max-width:420px;
 background:#111;
 border-radius:12px;
 overflow:hidden;
@@ -114,6 +114,16 @@ justify-content:center;
 .price{font-size:20px;font-weight:600}
 .divider{height:1px;background:#333;margin:10px 0}
 
+/* PAYMENT */
+.payment{
+margin-top:20px;
+padding:15px;
+background:#111;
+border-radius:10px;
+font-size:14px;
+line-height:1.6;
+}
+
 /* TOAST */
 .toast{
 position:fixed;
@@ -142,21 +152,21 @@ border-radius:6px;
 <img src="images/soccer-addict.jpg">
 <h3>Soccer Addict</h3>
 <p>Rp110000</p>
-<button onclick="goDetail('Soccer Addict')">SELECT</button>
+<button onclick="goDetail('Soccer Addict',110000)">SELECT</button>
 </div>
 
 <div class="card">
 <img src="images/sleman-soccer.jpg">
 <h3>Sleman Soccer</h3>
 <p>Rp100000</p>
-<button onclick="goDetail('Sleman Soccer')">SELECT</button>
+<button onclick="goDetail('Sleman Soccer',100000)">SELECT</button>
 </div>
 
 <div class="card">
 <img src="images/bless-home.jpg">
 <h3>Bless Home</h3>
 <p>Rp100000</p>
-<button onclick="goDetail('Bless Home')">SELECT</button>
+<button onclick="goDetail('Bless Home',100000)">SELECT</button>
 </div>
 
 </div>
@@ -174,12 +184,16 @@ border-radius:6px;
 <div onclick="selectSize(this)">S</div>
 <div onclick="selectSize(this)">M</div>
 <div onclick="selectSize(this)">L</div>
+<div onclick="selectSize(this)">XL</div>
+<div onclick="selectSize(this)">XXL</div>
+<div onclick="selectSize(this)">XXXL</div>
 </div>
 
 <p>COLOR</p>
 <div class="option-box" id="colorBox">
 <div onclick="selectColor(this)">Black</div>
 <div onclick="selectColor(this)">Green</div>
+<div onclick="selectColor(this)">White</div>
 </div>
 </div>
 
@@ -208,11 +222,13 @@ border-radius:6px;
 <div class="back" onclick="showPage('checkout')">← Back</div>
 
 <div class="container">
+
 <p class="label">PRODUCT</p>
 <p id="sumProduct"></p>
 
 <p class="label">PRICE</p>
-<p class="price">Rp110000</p>
+<p id="sumPrice" class="price"></p>
+
 <div class="divider"></div>
 
 <p class="label">NAME</p>
@@ -223,6 +239,16 @@ border-radius:6px;
 
 <p class="label">ADDRESS</p>
 <p id="sumAddress"></p>
+
+<div class="payment">
+<p><b>Pastikan data sudah benar dan lengkap untuk memudahkan proses pengiriman</b></p>
+<br>
+<p><b>Payment :</b></p>
+<p>A. N. Dias Adhitya Purnama Putra</p>
+<p>Bank Mandiri : 1370023790229</p>
+<p>DANA : 081910421976</p>
+</div>
+
 </div>
 
 <div class="sticky">
@@ -231,7 +257,7 @@ border-radius:6px;
 </div>
 
 <script>
-let product='',size='',color='';
+let product='',price=0,size='',color='';
 
 function showPage(id){
 document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -239,8 +265,9 @@ document.getElementById(id).classList.add('active');
 window.scrollTo(0,0);
 }
 
-function goDetail(name){
+function goDetail(name,p){
 product=name;
+price=p;
 productName.innerText=name;
 showPage('detail');
 }
@@ -282,6 +309,7 @@ return;
 }
 
 sumProduct.innerText=`${product} - ${size} - ${color}`;
+sumPrice.innerText=`Rp${price}`;
 sumName.innerText=n;
 sumPhone.innerText=p;
 sumAddress.innerText=a;
@@ -290,7 +318,9 @@ showPage('summary');
 }
 
 function sendWA(){
-window.location.href="https://wa.me/6283898588562";
+let msg=`Halo, saya ingin order:%0A%0A${product}%0A%0A*Format Order*%0ANama: ${name.value}%0AAlamat lengkap: ${address.value}%0ASize: ${size}%0ANo hp: ${phone.value}%0AWarna: ${color}%0A%0ASudah melakukan pembayaran`;
+
+window.location.href=`https://wa.me/6283898588562?text=${msg}`;
 }
 </script>
 
