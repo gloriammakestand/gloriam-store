@@ -27,14 +27,13 @@ display:flex;
 justify-content:center;
 align-items:center;
 z-index:9999;
-font-size:24px;
-letter-spacing:3px;
+font-size:22px;
 }
-.loader.hide{display:none}
+.hide{display:none}
 
 /* PAGE */
 .page{display:none;padding-bottom:120px}
-.page.active{display:block}
+.active{display:block}
 
 /* HEADER */
 header{
@@ -45,7 +44,7 @@ align-items:center;
 flex-direction:column;
 }
 
-/* PRODUCT */
+/* PRODUCTS */
 .products{
 padding:20px;
 display:flex;
@@ -70,8 +69,8 @@ position:absolute;
 top:10px;
 left:10px;
 padding:5px 10px;
-font-size:12px;
 border-radius:6px;
+font-size:12px;
 }
 .pre{background:#00c853}
 .ready{background:#fff;color:#000}
@@ -85,10 +84,9 @@ background:#fff;
 color:#000;
 border:none;
 font-weight:600;
-cursor:pointer;
 }
 
-/* OPTION */
+/* OPTIONS */
 .option-box{
 display:grid;
 grid-template-columns:repeat(3,1fr);
@@ -102,16 +100,10 @@ text-align:center;
 border-radius:8px;
 cursor:pointer;
 }
-.option-box div.active{
-background:#fff;
-color:#000;
-}
-.disabled{
-opacity:0.3;
-pointer-events:none;
-}
+.activeOpt{background:#fff;color:#000}
+.disabled{opacity:0.3;pointer-events:none}
 
-/* INPUT */
+/* FORM */
 .container{padding:20px}
 input{
 width:100%;
@@ -122,6 +114,7 @@ border:1px solid #333;
 color:#fff;
 border-radius:10px;
 }
+.error{border:1px solid red}
 
 /* STICKY */
 .sticky{
@@ -133,23 +126,24 @@ padding:10px;
 display:flex;
 justify-content:center;
 }
-.sticky button{max-width:500px}
 
 /* TEXT */
 .label{opacity:0.6;font-size:12px}
 .price{font-size:20px;font-weight:600}
-.divider{height:1px;background:#333;margin:10px 0}
+.line{height:1px;background:#333;margin:10px 0}
 
 /* TOAST */
 .toast{
 position:fixed;
-top:20px;
+top:-60px;
 left:50%;
 transform:translateX(-50%);
 background:#ff3b3b;
 padding:10px 20px;
 border-radius:6px;
+transition:0.3s;
 }
+.toast.show{top:20px}
 </style>
 </head>
 
@@ -166,34 +160,30 @@ border-radius:6px;
 
 <div class="products">
 
-<!-- 1 -->
 <div class="card">
 <div class="badge pre">PRE ORDER</div>
 <img src="images/soccer-addict.jpg">
-<h3>Soccer Addict</h3>
+<h3>SOCCER ADDICT</h3>
 <p>Black / Green</p>
 <button onclick="goDetail('Soccer Addict',110000,'pre')">SELECT</button>
 </div>
 
-<!-- 2 -->
 <div class="card">
-<div class="badge ready">IN STOCK</div>
+<div class="badge ready">READY STOCK</div>
 <img src="images/sleman-soccer.jpg">
 <h3>Sleman Soccer</h3>
 <p>White (S - XXXL)</p>
 <button onclick="goDetail('Sleman Soccer',100000,'full')">SELECT</button>
 </div>
 
-<!-- 3 -->
 <div class="card">
-<div class="badge ready">IN STOCK</div>
+<div class="badge ready">READY STOCK</div>
 <img src="images/bless-home.jpg">
 <h3>Bless Home</h3>
 <p>Black (M / L only)</p>
 <button onclick="goDetail('Bless Home',100000,'limited')">SELECT</button>
 </div>
 
-<!-- 4 -->
 <div class="card">
 <div class="badge out">SOLD OUT</div>
 <img src="images/take-me-home.jpg">
@@ -228,9 +218,9 @@ border-radius:6px;
 <div id="form" class="page">
 <div class="container">
 
-<input id="name" placeholder="Full Name">
-<input id="phone" placeholder="Phone Number">
-<input id="address" placeholder="Full Address">
+<input id="name" placeholder="Nama">
+<input id="phone" placeholder="No HP">
+<input id="address" placeholder="Alamat">
 
 <p style="font-size:12px;opacity:0.6">
 Isi sesuai dan lengkap untuk memudahkan proses pengiriman
@@ -253,19 +243,17 @@ Isi sesuai dan lengkap untuk memudahkan proses pengiriman
 <p class="label">PRICE</p>
 <p id="sumPrice" class="price"></p>
 
-<div class="divider"></div>
+<div class="line"></div>
 
 <p id="sumName"></p>
 <p id="sumPhone"></p>
 <p id="sumAddress"></p>
 
-<p style="margin-top:15px;font-size:12px">
-Pastikan semua sesuai
-</p>
+<p style="font-size:12px">Pastikan semua sesuai</p>
 
-<div class="divider"></div>
+<div class="line"></div>
 
-<p style="font-size:14px">
+<p>
 Payment:<br>
 A.N Dias Adhitya Purnama Putra<br>
 Mandiri: 1370023790229<br>
@@ -289,9 +277,9 @@ home.classList.add('active');
 
 let product='',price=0,type='',size='',color='';
 
-function show(id){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-document.getElementById(id).classList.add('active');
+function show(p){
+document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+document.getElementById(p).classList.add('active');
 window.scrollTo(0,0);
 }
 
@@ -301,7 +289,6 @@ pname.innerText=n;
 
 let sizes=['S','M','L','XL','XXL','XXXL'];
 let html='';
-
 sizes.forEach(s=>{
 if(t==='limited' && !['M','L'].includes(s)){
 html+=`<div class="disabled">${s}</div>`;
@@ -326,14 +313,14 @@ show('detail');
 }
 
 function selectSize(el){
-document.querySelectorAll('#sizeBox div').forEach(d=>d.classList.remove('active'));
-el.classList.add('active');
+document.querySelectorAll('#sizeBox div').forEach(d=>d.classList.remove('activeOpt'));
+el.classList.add('activeOpt');
 size=el.innerText;
 }
 
 function selectColor(el){
-document.querySelectorAll('#colorBox div').forEach(d=>d.classList.remove('active'));
-el.classList.add('active');
+document.querySelectorAll('#colorBox div').forEach(d=>d.classList.remove('activeOpt'));
+el.classList.add('activeOpt');
 color=el.innerText;
 }
 
@@ -342,12 +329,15 @@ let t=document.createElement('div');
 t.className='toast';
 t.innerText=msg;
 document.body.appendChild(t);
+setTimeout(()=>t.classList.add('show'),10);
 setTimeout(()=>t.remove(),2000);
-if(navigator.vibrate) navigator.vibrate(100);
+
+// GETAR
+if(navigator.vibrate) navigator.vibrate([100,50,100]);
 }
 
 function goForm(){
-if(!size||!color){toast('Select size & color');return;}
+if(!size || !color){toast('Pilih size & warna');return;}
 show('form');
 }
 
@@ -356,7 +346,17 @@ let n=name.value.trim();
 let p=phone.value.trim();
 let a=address.value.trim();
 
-if(!n||!p||!a){toast('Lengkapi data');return;}
+// reset
+[name,phone,address].forEach(i=>i.classList.remove('error'));
+
+if(!n||!p||!a){
+if(!n) name.classList.add('error');
+if(!p) phone.classList.add('error');
+if(!a) address.classList.add('error');
+
+toast('Data belum lengkap');
+return;
+}
 
 sumProduct.innerText=`${product} - ${size} - ${color}`;
 sumPrice.innerText=`Rp${price}`;
