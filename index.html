@@ -1,521 +1,409 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gloriam Store</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        /* BASE STYLES */
-        * {
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gloriam Store</title>
 
-        html, body {
-            margin: 0;
-            font-family: 'Montserrat', sans-serif;
-            background: #0a0a0a;
-            color: #fff;
-            overflow-x: hidden;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 
-        /* HEADER */
-        header {
-            height: 70vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
+<style>
 
-        /* PRODUCTS SECTION */
-        .products {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 50px;
-            padding: 40px 15px;
-        }
+/* ================= BASE ================= */
+*{box-sizing:border-box}
 
-        /* CARD STYLE */
-        .card {
-            width: 100%;
-            max-width: 500px;
-            background: #111;
-            border-radius: 14px;
-            overflow: hidden;
-            text-align: center;
-            position: relative;
-        }
+body{
+    margin:0;
+    font-family:'Montserrat',sans-serif;
+    background:#0a0a0a;
+    color:#fff;
+}
 
-        .card img {
-            width: 100%;
-            display: block;
-        }
+/* ================= HEADER ================= */
+header{
+    height:70vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
 
-        .badge {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            padding: 6px 12px;
-            font-size: 11px;
-            font-weight: 600;
-            border-radius: 6px;
-        }
+.title{
+    letter-spacing:10px;
+    font-size:40px;
+}
 
-        .pre { background: #00c853; }
-        .ready { background: #fff; color: #000; }
-        .out { background: #ff3b3b; }
+.subtitle{
+    opacity:.6;
+    font-size:12px;
+}
 
-        /* BUTTONS */
-        button {
-            background: #fff;
-            color: #000;
-            border: none;
-            padding: 14px;
-            width: 100%;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+/* ================= PRODUCT ================= */
+.products{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:50px;
+    padding:40px 15px;
+}
 
-        button:hover:not(:disabled) {
-            background: #f0f0f0;
-        }
+.card{
+    width:100%;
+    max-width:500px;
+    background:#111;
+    border-radius:14px;
+    overflow:hidden;
+    position:relative;
+    text-align:center;
+}
 
-        button:disabled {
-            background: #333;
-            color: #888;
-            cursor: not-allowed;
-        }
+.card img{
+    width:100%;
+}
 
-        /* PAGE TRANSITIONS */
-        .page {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-            overflow-x: hidden;
-            opacity: 0;
-            transform: translateX(30px);
-            transition: 0.4s;
-            pointer-events: none;
-            z-index: 0;
-        }
+/* BADGE */
+.badge{
+    position:absolute;
+    top:12px;
+    left:12px;
+    padding:6px 12px;
+    font-size:11px;
+    font-weight:600;
+    border-radius:6px;
+}
 
-        .page.active {
-            opacity: 1;
-            transform: translateX(0);
-            pointer-events: auto;
-            z-index: 10;
-        }
+.pre{background:#00c853;}
+.ready{background:#fff;color:#000;}
+.out{background:#ff3b3b;}
 
-        /* DETAIL PAGE */
-        .detail-container {
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            padding-top: 80px;
-            padding-bottom: 100px;
-        }
+/* ================= BUTTON ================= */
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:8px;
+    background:#fff;
+    color:#000;
+    font-weight:600;
+    cursor:pointer;
+    transition:.2s;
+}
 
-        .swipe {
-            display: grid;
-            gap: 12px;
-        }
+button:hover:not(:disabled){
+    background:#f0f0f0;
+}
 
-        .swipe img {
-            width: 100%;
-            border-radius: 12px;
-        }
+button:disabled{
+    background:#333;
+    color:#888;
+    cursor:not-allowed;
+}
 
-        /* SELECTION OPTIONS */
-        .option-box {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 10px;
-        }
+/* ================= PAGE ================= */
+.page{
+    position:fixed;
+    inset:0;
+    overflow-y:auto;
+    opacity:0;
+    transform:translateX(30px);
+    transition:.4s;
+    pointer-events:none;
+}
 
-        .option-box div {
-            padding: 14px;
-            border: 1px solid #333;
-            text-align: center;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.2s;
-            background: #111;
-        }
+.page.active{
+    opacity:1;
+    transform:none;
+    pointer-events:auto;
+    z-index:10;
+}
 
-        .option-box div.active {
-            background: #fff !important;
-            color: #000 !important;
-            border-color: #fff;
-        }
+/* ================= DETAIL ================= */
+.detail-container,
+.form-container,
+.summary-container{
+    max-width:600px;
+    margin:auto;
+    padding:80px 20px 100px;
+}
 
-        .section-label {
-            margin-top: 20px;
-            font-size: 14px;
-            opacity: 0.8;
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
+.swipe{
+    display:grid;
+    gap:12px;
+}
 
-        /* ELEGANT FORM */
-        .form-container {
-            max-width: 500px;
-            margin: auto;
-            padding: 20px;
-            padding-top: 80px;
-            padding-bottom: 100px;
-        }
+.swipe img{
+    width:100%;
+    border-radius:12px;
+}
 
-        .form-group {
-            margin-bottom: 25px;
-        }
+/* OPTIONS */
+.section-label{
+    margin-top:20px;
+    font-size:13px;
+    opacity:.7;
+    letter-spacing:1px;
+}
 
-        .form-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #aaa;
-            text-transform: uppercase;
-        }
+.option-box{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:10px;
+}
 
-        input, textarea {
-            width: 100%;
-            padding: 16px;
-            background: #111;
-            border: 1px solid #222;
-            color: #fff;
-            border-radius: 12px;
-            font-size: 15px;
-            font-family: 'Montserrat', sans-serif;
-            transition: all 0.3s ease;
-        }
+.option-box div{
+    padding:14px;
+    border:1px solid #333;
+    border-radius:8px;
+    text-align:center;
+    cursor:pointer;
+    background:#111;
+}
 
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #fff;
-            background: #161616;
-        }
+.option-box div.active{
+    background:#fff;
+    color:#000;
+    border-color:#fff;
+}
 
-        /* SUMMARY & PAYMENT */
-        .summary-container {
-            max-width: 500px;
-            margin: auto;
-            padding: 20px;
-            padding-top: 80px;
-            padding-bottom: 40px;
-        }
+/* ================= FORM ================= */
+.form-group{
+    margin-bottom:20px;
+}
 
-        .product-summary, .customer-info {
-            background: #111;
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #222;
-            margin-bottom: 20px;
-        }
+.form-group label{
+    font-size:12px;
+    color:#aaa;
+}
 
-        .payment-info {
-            background: #1a1a1a;
-            padding: 25px;
-            border-radius: 16px;
-            border: 1px solid #333;
-            margin-bottom: 30px;
-        }
+input,textarea{
+    width:100%;
+    padding:16px;
+    background:#111;
+    border:1px solid #222;
+    color:#fff;
+    border-radius:12px;
+    margin-top:6px;
+}
 
-        .payment-info h4 {
-            margin: 0 0 15px 0;
-            color: #00c853;
-        }
+input:focus,textarea:focus{
+    outline:none;
+    border-color:#fff;
+}
 
-        /* STICKY BAR */
-        .sticky-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 15px;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px);
-            z-index: 20;
-            text-align: center;
-        }
+/* ================= SUMMARY ================= */
+.product-summary,
+.customer-info,
+.payment-info{
+    background:#111;
+    padding:20px;
+    border-radius:12px;
+    border:1px solid #222;
+    margin-bottom:20px;
+}
 
-        /* UTILS */
-        .back-btn {
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            background: #111;
-            padding: 10px 16px;
-            border-radius: 20px;
-            border: 1px solid #333;
-            z-index: 30;
-            cursor: pointer;
-        }
+.payment-info{
+    background:#1a1a1a;
+}
 
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            font-size: 26px;
-            letter-spacing: 4px;
-            transition: 0.5s;
-        }
+.payment-info h4{
+    color:#00c853;
+}
 
-        .loader.hide { opacity: 0; pointer-events: none; }
+/* ================= UTIL ================= */
+.back-btn{
+    position:fixed;
+    top:15px;
+    left:15px;
+    background:#111;
+    padding:10px 16px;
+    border-radius:20px;
+    border:1px solid #333;
+    cursor:pointer;
+    z-index:20;
+}
 
-        .toast {
-            position: fixed;
-            top: -60px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 12px 20px;
-            border-radius: 8px;
-            transition: 0.4s;
-            z-index: 1000;
-        }
+.sticky-bar{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    padding:15px;
+    background:rgba(0,0,0,.8);
+}
 
-        .toast.show { top: 20px; }
-        .toast.error { background: #ff3b3b; }
-        .toast.success { background: #00c853; }
-    </style>
+/* LOADER */
+.loader{
+    position:fixed;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#000;
+    font-size:26px;
+    letter-spacing:4px;
+    z-index:9999;
+    transition:.5s;
+}
+
+.loader.hide{
+    opacity:0;
+    pointer-events:none;
+}
+
+/* TOAST */
+.toast{
+    position:fixed;
+    top:-60px;
+    left:50%;
+    transform:translateX(-50%);
+    padding:12px 20px;
+    border-radius:8px;
+    transition:.4s;
+}
+
+.toast.show{top:20px;}
+.toast.error{background:#ff3b3b;}
+</style>
 </head>
+
 <body>
 
-    <div class="loader" id="loader">GLORIAM</div>
+<div class="loader" id="loader">GLORIAM</div>
 
-    <div class="page active" id="home">
-        <header>
-            <h1 style="letter-spacing:10px; font-size:40px;">GLORIAM</h1>
-            <p style="opacity:0.6; font-size:12px;">GLORIAM - MAKE STAND WITH PRIDE</p>
-        </header>
+<!-- ================= HOME ================= -->
+<div class="page active" id="home">
+    <header>
+        <h1 class="title">GLORIAM</h1>
+        <p class="subtitle">GLORIAM - MAKE STAND WITH PRIDE</p>
+    </header>
 
-        <div class="products">
-            <div class="card">
-                <div class="badge pre">PRE ORDER</div>
-                <img src="https://via.placeholder.com/500" alt="Soccer Addict">
-                <div style="padding:20px">
-                    <h3>Soccer Addict</h3>
-                    <p style="opacity:0.7">Rp110.000 (DP 60.000)</p>
-                    <button onclick="goDetail('Soccer Addict', 110000, 'pre')">SELECT</button>
-                </div>
-            </div>
-            <div class="card">
-                <div class="badge ready">IN STOCK</div>
-                <img src="https://via.placeholder.com/500" alt="Sleman Soccer">
-                <div style="padding:20px">
-                    <h3>Sleman Soccer</h3>
-                    <p style="opacity:0.7">Rp100.000</p>
-                    <button onclick="goDetail('Sleman Soccer', 100000, 'ready')">SELECT</button>
-                </div>
+    <div class="products">
+        <div class="card">
+            <div class="badge pre">PRE ORDER</div>
+            <img src="https://via.placeholder.com/500">
+            <div style="padding:20px">
+                <h3>Soccer Addict</h3>
+                <p style="opacity:.7">Rp110.000 (DP 60.000)</p>
+                <button onclick="goDetail('Soccer Addict',110000,'pre')">SELECT</button>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="page" id="detail">
-        <div class="back-btn" onclick="goBackHome()">← Back</div>
-        <div class="detail-container">
-            <div class="swipe">
-                <img src="https://via.placeholder.com/500" alt="Product">
-            </div>
-            <h2 id="pname" style="margin-top:25px">Product Name</h2>
-            <h3 id="pprice" style="color:#00c853">Rp0</h3>
-            
-            <div id="sizeWrap"></div>
-            <div id="colorWrap"></div>
+<!-- ================= DETAIL ================= -->
+<div class="page" id="detail">
+    <div class="back-btn" onclick="showPage('home')">← Back</div>
+
+    <div class="detail-container">
+        <div class="swipe">
+            <img src="https://via.placeholder.com/500">
         </div>
-        <div class="sticky-bar">
-            <button onclick="goForm()">NEXT</button>
-        </div>
+
+        <h2 id="pname"></h2>
+        <h3 id="pprice" style="color:#00c853"></h3>
+
+        <div id="sizeWrap"></div>
+        <div id="colorWrap"></div>
     </div>
 
-    <div class="page" id="form">
-        <div class="back-btn" onclick="goBackDetail()">← Back</div>
-        <div class="form-container">
-            <h2 style="margin-bottom:30px">Shipping Details</h2>
-            
-            <div class="form-group">
-                <label>Full Name *</label>
-                <input type="text" id="customerName" placeholder="Enter your full name">
-            </div>
-
-            <div class="form-group">
-                <label>Phone Number *</label>
-                <input type="number" id="customerPhone" placeholder="0812xxxx">
-            </div>
-
-            <div class="form-group">
-                <label>Shipping Address *</label>
-                <textarea id="customerAddress" placeholder="Full address details..."></textarea>
-            </div>
-
-            <button onclick="goSummary()">CONTINUE TO SUMMARY</button>
-        </div>
+    <div class="sticky-bar">
+        <button onclick="goForm()">NEXT</button>
     </div>
+</div>
 
-    <div class="page" id="summary">
-        <div class="back-btn" onclick="goBackForm()">← Back</div>
-        <div class="summary-container">
-            <h2>Summary</h2>
-            
-            <div class="product-summary">
-                <h3 id="sumProduct">-</h3>
-                <p id="sumSize">Size: -</p>
-                <p id="sumColor">Color: -</p>
-                <p id="sumStatus">Status: -</p>
-                <p id="sumPrice" style="font-weight:600; color:#00c853">Total: -</p>
-            </div>
+<script>
 
-            <div class="customer-info">
-                <h4>Shipping To:</h4>
-                <p id="sumCustomerName">-</p>
-                <p id="sumCustomerPhone">-</p>
-                <p id="sumCustomerAddress">-</p>
-            </div>
+/* ================= STATE ================= */
+let order={
+    product:'',price:0,type:'',
+    size:'',color:'',
+    name:'',phone:'',address:''
+};
 
-            <div class="payment-info">
-                <h4>Payment Info</h4>
-                <p><strong>A.N Dias Adhitya Purnama Putra</strong></p>
-                <p>Mandiri: 1370023790229</p>
-                <p>DANA: 081910421976</p>
-                <hr style="border:0; border-top:1px solid #333; margin:15px 0;">
-                
-                <button onclick="sendWA()" style="background:#00c853; color:#fff;">CHECKOUT (WA)</button>
-            </div>
-        </div>
-    </div>
+/* ================= PAGE ================= */
+function showPage(id){
+    document.querySelectorAll('.page')
+        .forEach(p=>p.classList.remove('active'));
 
-    <script>
-        // DOM ELEMENTS
-        const loader = document.getElementById('loader');
-        const pages = {
-            home: document.getElementById('home'),
-            detail: document.getElementById('detail'),
-            form: document.getElementById('form'),
-            summary: document.getElementById('summary')
-        };
+    document.getElementById(id).classList.add('active');
+}
 
-        let order = { 
-            product: '', price: 0, type: '', 
-            size: '', color: '', name: '', 
-            phone: '', address: '' 
-        };
+/* ================= DETAIL ================= */
+function goDetail(name,price,type){
+    order={...order,product:name,price,type,size:'',color:''};
 
-        // LOADER LOGIC
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                loader.classList.add('hide');
-            }, 1000);
-        });
+    document.getElementById('pname').innerText=name;
+    document.getElementById('pprice').innerText=
+        `Rp${price.toLocaleString('id-ID')}`;
 
-        // NAVIGATION LOGIC
-        function goDetail(productName, price, type) {
-            order.product = productName;
-            order.price = price;
-            order.type = type;
-            order.size = ''; 
-            order.color = (type === 'pre') ? '' : 'Black';
-            
-            showPage('detail');
-            document.getElementById('pname').innerText = productName;
-            document.getElementById('pprice').innerText = `Rp${price.toLocaleString('id-ID')}`;
-            renderOptions();
-        }
+    renderOptions();
+    showPage('detail');
+}
 
-        function showPage(pageId) {
-            Object.values(pages).forEach(p => p.classList.remove('active'));
-            pages[pageId].classList.add('active');
-        }
+/* OPTIONS */
+function renderOptions(){
+    const sizes=['S','M','L','XL','XXL','XXXL'];
 
-        function renderOptions() {
-            const sizes = ['S','M','L','XL','XXL','XXXL'];
-            let sizeHTML = '<div class="section-label">SIZE</div><div class="option-box">';
-            sizes.forEach(s => {
-                const active = order.size === s ? 'active' : '';
-                sizeHTML += `<div class="${active}" onclick="selectOption(this,'size','${s}')">${s}</div>`;
-            });
-            sizeHTML += '</div>';
-            document.getElementById('sizeWrap').innerHTML = sizeHTML;
+    document.getElementById('sizeWrap').innerHTML=
+        createOption('SIZE','size',sizes);
 
-            if(order.type === 'pre') {
-                let colorHTML = '<div class="section-label">COLOR</div><div class="option-box">';
-                ['Black', 'Green'].forEach(c => {
-                    const active = order.color === c ? 'active' : '';
-                    colorHTML += `<div class="${active}" onclick="selectOption(this,'color','${c}')">${c}</div>`;
-                });
-                colorHTML += '</div>';
-                document.getElementById('colorWrap').innerHTML = colorHTML;
-            } else {
-                document.getElementById('colorWrap').innerHTML = '';
-            }
-        }
+    if(order.type==='pre'){
+        document.getElementById('colorWrap').innerHTML=
+            createOption('COLOR','color',['Black','Green']);
+    }else{
+        document.getElementById('colorWrap').innerHTML='';
+    }
+}
 
-        function selectOption(el, type, value) {
-            order[type] = value;
-            el.parentElement.querySelectorAll('div').forEach(d => d.classList.remove('active'));
-            el.classList.add('active');
-        }
+function createOption(label,type,list){
+    return `
+    <div class="section-label">${label}</div>
+    <div class="option-box">
+        ${list.map(v=>`
+            <div onclick="selectOption(this,'${type}','${v}')">
+                ${v}
+            </div>`).join('')}
+    </div>`;
+}
 
-        // BACK BUTTONS
-        function goBackHome() { showPage('home'); }
-        function goBackDetail() { showPage('detail'); }
-        function goBackForm() { showPage('form'); }
+function selectOption(el,type,val){
+    order[type]=val;
 
-        function goForm() {
-            if(!order.size) return showToast('Pilih ukuran dahulu!');
-            if(order.type === 'pre' && !order.color) return showToast('Pilih warna!');
-            showPage('form');
-        }
+    el.parentElement.querySelectorAll('div')
+        .forEach(d=>d.classList.remove('active'));
 
-        function goSummary() {
-            order.name = document.getElementById('customerName').value.trim();
-            order.phone = document.getElementById('customerPhone').value.trim();
-            order.address = document.getElementById('customerAddress').value.trim();
-            
-            if(!order.name || !order.phone || !order.address) {
-                return showToast('Lengkapi semua data!');
-            }
+    el.classList.add('active');
+}
 
-            document.getElementById('sumProduct').innerText = order.product;
-            document.getElementById('sumSize').innerText = `Size: ${order.size}`;
-            document.getElementById('sumColor').innerText = `Color: ${order.color}`;
-            document.getElementById('sumStatus').innerText = order.type === 'pre' ? 'Pre Order' : 'Ready Stock';
-            document.getElementById('sumPrice').innerText = `Total: Rp${order.price.toLocaleString('id-ID')}`;
-            document.getElementById('sumCustomerName').innerText = order.name;
-            document.getElementById('sumCustomerPhone').innerText = order.phone;
-            document.getElementById('sumCustomerAddress').innerText = order.address;
-            
-            showPage('summary');
-        }
+/* ================= VALIDATION ================= */
+function goForm(){
+    if(!order.size) return toast('Pilih size dulu');
+    if(order.type==='pre' && !order.color) return toast('Pilih warna');
 
-        function showToast(msg) {
-            const t = document.createElement('div');
-            t.className = `toast error show`;
-            t.innerText = msg;
-            document.body.appendChild(t);
-            setTimeout(() => t.remove(), 2500);
-        }
+    showPage('form');
+}
 
-        function sendWA() {
-            const status = order.type === 'pre' ? 'PRE ORDER' : 'READY STOCK';
-            const msg = `ORDER PEMBELIAN%0A%0A📦 *PRODUK*%0A${order.product}%0ASize: ${order.size}%0AColor: ${order.color}%0AStatus: ${status}%0AHarga: Rp${order.price.toLocaleString('id-ID')}%0A%0A👤 *PELANGGAN*%0ANama: ${order.name}%0AHP: ${order.phone}%0AAlamat: ${order.address}`;
-            window.open(`https://wa.me/6283898588562?text=${encodeURIComponent(msg)}`, '_blank');
-        }
-    </script>
+/* ================= TOAST ================= */
+function toast(msg){
+    const t=document.createElement('div');
+    t.className='toast error show';
+    t.innerText=msg;
+
+    document.body.appendChild(t);
+
+    setTimeout(()=>t.remove(),2000);
+}
+
+/* ================= LOADER ================= */
+window.onload=()=>{
+    setTimeout(()=>{
+        document.getElementById('loader')
+            .classList.add('hide');
+    },1000);
+}
+
+</script>
+
 </body>
 </html>
