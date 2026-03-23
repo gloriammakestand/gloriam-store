@@ -8,43 +8,35 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
 
 <style>
-body{
+*{box-sizing:border-box}
+html,body{
 margin:0;
 font-family:'Montserrat',sans-serif;
 background:#0a0a0a;
 color:#fff;
+overflow-x:hidden;
 }
 
-/* PAGE SAFE */
-.page{
-display:none;
-padding-bottom:120px;
-}
-.page.active{
-display:block;
-animation:fade 0.3s ease;
-}
-@keyframes fade{
-from{opacity:0;transform:translateY(10px)}
-to{opacity:1;transform:translateY(0)}
-}
+/* PAGE */
+.page{display:none;padding-bottom:120px}
+.page.active{display:block}
 
 /* HEADER */
 header{
 height:70vh;
 display:flex;
-flex-direction:column;
 justify-content:center;
 align-items:center;
+flex-direction:column;
 text-align:center;
 }
 
-/* PRODUCT */
+/* PRODUCTS */
 .products{
+padding:20px;
 display:flex;
 flex-direction:column;
 gap:30px;
-padding:20px;
 align-items:center;
 }
 
@@ -52,35 +44,25 @@ align-items:center;
 width:100%;
 max-width:400px;
 background:#111;
-border-radius:14px;
+border-radius:12px;
 overflow:hidden;
 text-align:center;
 }
 .card img{width:100%}
 
-.badge{
-position:absolute;
-background:#00c853;
-padding:6px 10px;
-margin:10px;
-border-radius:6px;
-font-size:12px;
-}
-
 /* BUTTON */
 button{
+width:100%;
+padding:14px;
 background:#fff;
 color:#000;
 border:none;
-padding:14px;
-width:100%;
 font-weight:600;
+cursor:pointer;
 }
 
 /* DETAIL */
-.container{
-padding:20px;
-}
+.container{padding:20px}
 
 .option-box{
 display:grid;
@@ -119,13 +101,13 @@ left:0;
 width:100%;
 background:#000;
 padding:10px;
+display:flex;
+justify-content:center;
 }
+.sticky button{max-width:500px}
 
 /* BACK */
-.back{
-margin:15px;
-display:inline-block;
-}
+.back{padding:15px}
 
 /* SUMMARY */
 .label{opacity:0.5;font-size:12px}
@@ -155,12 +137,28 @@ border-radius:6px;
 </header>
 
 <div class="products">
+
 <div class="card">
 <img src="images/soccer-addict.jpg">
 <h3>Soccer Addict</h3>
 <p>Rp110000</p>
-<button onclick="goDetail()">SELECT</button>
+<button onclick="goDetail('Soccer Addict')">SELECT</button>
 </div>
+
+<div class="card">
+<img src="images/sleman-soccer.jpg">
+<h3>Sleman Soccer</h3>
+<p>Rp100000</p>
+<button onclick="goDetail('Sleman Soccer')">SELECT</button>
+</div>
+
+<div class="card">
+<img src="images/bless-home.jpg">
+<h3>Bless Home</h3>
+<p>Rp100000</p>
+<button onclick="goDetail('Bless Home')">SELECT</button>
+</div>
+
 </div>
 </div>
 
@@ -169,17 +167,17 @@ border-radius:6px;
 <div class="back" onclick="showPage('home')">← Back</div>
 
 <div class="container">
-<h2>Soccer Addict</h2>
+<h2 id="productName"></h2>
 
 <p>SIZE</p>
-<div class="option-box">
+<div class="option-box" id="sizeBox">
 <div onclick="selectSize(this)">S</div>
 <div onclick="selectSize(this)">M</div>
 <div onclick="selectSize(this)">L</div>
 </div>
 
 <p>COLOR</p>
-<div class="option-box">
+<div class="option-box" id="colorBox">
 <div onclick="selectColor(this)">Black</div>
 <div onclick="selectColor(this)">Green</div>
 </div>
@@ -233,7 +231,7 @@ border-radius:6px;
 </div>
 
 <script>
-let size='',color='';
+let product='',size='',color='';
 
 function showPage(id){
 document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -241,17 +239,20 @@ document.getElementById(id).classList.add('active');
 window.scrollTo(0,0);
 }
 
-function goDetail(){
+function goDetail(name){
+product=name;
+productName.innerText=name;
 showPage('detail');
 }
 
 function selectSize(el){
-document.querySelectorAll('.option-box div').forEach(d=>d.classList.remove('active'));
+document.querySelectorAll('#sizeBox div').forEach(d=>d.classList.remove('active'));
 el.classList.add('active');
 size=el.innerText;
 }
 
 function selectColor(el){
+document.querySelectorAll('#colorBox div').forEach(d=>d.classList.remove('active'));
 el.classList.add('active');
 color=el.innerText;
 }
@@ -280,7 +281,7 @@ toast('Isi semua dulu');
 return;
 }
 
-sumProduct.innerText=`Soccer Addict - ${size} - ${color}`;
+sumProduct.innerText=`${product} - ${size} - ${color}`;
 sumName.innerText=n;
 sumPhone.innerText=p;
 sumAddress.innerText=a;
