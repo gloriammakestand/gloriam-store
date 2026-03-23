@@ -46,7 +46,7 @@ overflow:hidden;
 text-align:center;
 position:relative;
 }
-.card img{width:100%;display:block}
+.card img{width:100%}
 
 .badge{
 position:absolute;
@@ -60,7 +60,6 @@ border-radius:6px;
 .pre{background:#00c853}
 .ready{background:#fff;color:#000}
 .out{background:#ff3b3b}
-
 .disabled{opacity:0.3}
 
 /* BUTTON */
@@ -73,7 +72,7 @@ width:100%;
 font-weight:600;
 }
 
-/* PAGE SYSTEM */
+/* PAGE */
 .page{
 position:fixed;
 top:0;
@@ -103,6 +102,7 @@ padding-top:80px;
 padding-bottom:100px;
 }
 
+/* OPTION */
 .option-box{
 display:grid;
 grid-template-columns:repeat(3,1fr);
@@ -121,7 +121,7 @@ background:#fff;
 color:#000;
 }
 
-.section-label{margin-top:20px;font-size:14px}
+.section-label{margin-top:20px}
 
 /* CHECKOUT */
 .checkout-container{
@@ -129,6 +129,7 @@ max-width:500px;
 margin:auto;
 padding:20px;
 padding-top:80px;
+padding-bottom:120px; /* penting */
 }
 
 input{
@@ -141,7 +142,7 @@ color:#fff;
 border-radius:10px;
 }
 
-/* SUMMARY ELEGANT */
+/* SUMMARY */
 .summary-container{
 max-width:500px;
 margin:auto;
@@ -149,43 +150,11 @@ padding:20px;
 padding-top:90px;
 }
 
-.sum-block{
-margin-bottom:18px;
-}
-
-.label{
-font-size:12px;
-opacity:0.5;
-letter-spacing:1px;
-margin-bottom:5px;
-}
-
-.value{
-font-size:16px;
-font-weight:500;
-}
-
-.price{
-font-size:20px;
-font-weight:600;
-margin-bottom:10px;
-}
-
-.divider{
-height:1px;
-background:#333;
-margin-top:10px;
-}
-
-.checkout-btn{
-margin-top:30px;
-padding:15px;
-background:#fff;
-color:#000;
-font-weight:600;
-border:none;
-width:100%;
-}
+.sum-block{margin-bottom:18px}
+.label{font-size:12px;opacity:0.5}
+.value{font-size:16px}
+.price{font-size:20px;font-weight:600}
+.divider{height:1px;background:#333;margin-top:10px}
 
 /* STICKY */
 .sticky-bar{
@@ -213,8 +182,6 @@ z-index:30;
 /* LOADER */
 .loader{
 position:fixed;
-top:0;
-left:0;
 width:100%;
 height:100%;
 background:#000;
@@ -222,10 +189,6 @@ display:flex;
 justify-content:center;
 align-items:center;
 z-index:9999;
-font-size:26px;
-letter-spacing:4px;
-font-weight:600;
-transition:0.5s;
 }
 .loader.hide{opacity:0}
 
@@ -235,11 +198,10 @@ position:fixed;
 top:-60px;
 left:50%;
 transform:translateX(-50%);
-padding:12px 20px;
-border-radius:8px;
 background:#ff3b3b;
-color:#fff;
-transition:0.4s;
+padding:10px 20px;
+border-radius:6px;
+transition:0.3s;
 }
 .toast.show{top:20px}
 </style>
@@ -253,8 +215,7 @@ transition:0.4s;
 <div id="home" class="page active">
 <header>
 <h1>GLORIAM</h1>
-<p>GLORIAM - MAKE STAND WITH PRIDE</p>
-<p>Scroll to explore</p>
+<p>MAKE STAND WITH PRIDE</p>
 </header>
 
 <div class="products">
@@ -263,32 +224,16 @@ transition:0.4s;
 <div class="badge pre">PRE ORDER</div>
 <img src="images/soccer-addict.jpg">
 <h3>Soccer Addict</h3>
-<p>Rp110000 (DP 60000)</p>
+<p>Rp110000</p>
 <button onclick="goDetail('Soccer Addict',110000,'pre')">SELECT</button>
 </div>
 
 <div class="card">
 <div class="badge ready">IN STOCK</div>
-<img src="images/sleman-soccer.jpg">
+<img src="images/sleman.jpg">
 <h3>Sleman Soccer</h3>
 <p>Rp100000</p>
 <button onclick="goDetail('Sleman Soccer',100000,'ready')">SELECT</button>
-</div>
-
-<div class="card">
-<div class="badge ready">IN STOCK</div>
-<img src="images/bless-home.jpg">
-<h3>Bless Home</h3>
-<p>Rp100000</p>
-<button onclick="goDetail('Bless Home',100000,'limited')">SELECT</button>
-</div>
-
-<div class="card disabled">
-<div class="badge out">SOLD OUT</div>
-<img src="images/take-me-home.jpg">
-<h3>Take Me Home</h3>
-<p>Sold Out</p>
-<button disabled>SOLD</button>
 </div>
 
 </div>
@@ -319,8 +264,10 @@ transition:0.4s;
 <input id="name" placeholder="Full Name">
 <input id="phone" placeholder="Phone Number">
 <input id="address" placeholder="Full Address">
+</div>
 
-<button onclick="goSummary()">Continue</button>
+<div class="sticky-bar">
+<button onclick="goSummary()">CONTINUE</button>
 </div>
 </div>
 
@@ -356,23 +303,23 @@ transition:0.4s;
 <p id="sAddress" class="value"></p>
 </div>
 
-<button class="checkout-btn" onclick="sendWA()">CHECKOUT</button>
+<div class="sticky-bar">
+<button onclick="sendWA()">CHECKOUT</button>
+</div>
 
 </div>
 </div>
 
 <script>
 
-// LOADER FIX
-window.addEventListener('load',()=>{
-const loader=document.getElementById('loader');
+// loader
+window.onload=()=>{
 setTimeout(()=>{
-loader.classList.add('hide');
-setTimeout(()=>loader.style.display='none',500);
+document.getElementById('loader').classList.add('hide');
 },1000);
-});
+}
 
-// TOAST
+// toast
 function showToast(msg){
 let t=document.createElement('div');
 t.className='toast';
@@ -382,27 +329,22 @@ setTimeout(()=>t.classList.add('show'),10);
 setTimeout(()=>t.remove(),2000);
 }
 
-// STATE
 let product='',type='',selectedSize='',selectedColor='';
 
-// DETAIL
 function goDetail(n,p,t){
-window.scrollTo({top:0,behavior:'smooth'});
 product=n;type=t;
-
 home.classList.remove('active');
 detail.classList.add('active');
 
 pname.innerText=n;
 pprice.innerText='Rp'+p;
 
-let sizes=['S','M','L','XL','XXL','XXXL'];
-let html='<div class="section-label">SIZE</div><div class="option-box">';
-sizes.forEach(s=>{
-html+=`<div onclick="selectSize(this,'${s}')">${s}</div>`;
-});
-html+='</div>';
-sizeWrap.innerHTML=html;
+sizeWrap.innerHTML=`<div class="section-label">SIZE</div>
+<div class="option-box">
+<div onclick="selectSize(this,'S')">S</div>
+<div onclick="selectSize(this,'M')">M</div>
+<div onclick="selectSize(this,'L')">L</div>
+</div>`;
 
 if(t==='pre'){
 colorWrap.innerHTML=`<div class="section-label">COLOR</div>
@@ -413,45 +355,26 @@ colorWrap.innerHTML=`<div class="section-label">COLOR</div>
 }
 }
 
-// NAV
-function goBackHome(){detail.classList.remove('active');home.classList.add('active')}
-function goBackDetail(){checkout.classList.remove('active');detail.classList.add('active')}
-function goBackCheckout(){summary.classList.remove('active');checkout.classList.add('active')}
-
-// SELECT
-function selectSize(el,size){
-document.querySelectorAll('#sizeWrap div').forEach(d=>d.classList.remove('active'));
-el.classList.add('active');
-selectedSize=size;
-}
-function selectColor(el,color){
-document.querySelectorAll('#colorWrap div').forEach(d=>d.classList.remove('active'));
-el.classList.add('active');
-selectedColor=color;
-}
-
-// CHECKOUT
 function goCheckout(){
-if(!selectedSize){showToast('Select size first');return;}
-if(type==='pre'&&!selectedColor){showToast('Select color first');return;}
+if(!selectedSize){showToast('Select size');return;}
+if(type==='pre'&&!selectedColor){showToast('Select color');return;}
 
 detail.classList.remove('active');
 checkout.classList.add('active');
 }
 
-// SUMMARY
 function goSummary(){
 let nama=name.value.trim();
 let hp=phone.value.trim();
 let alamat=address.value.trim();
 
 if(!nama||!hp||!alamat){
-showToast('Please fill all fields');
+showToast('Isi semua dulu');
 return;
 }
 
 sProductFull.innerText=`${product} - ${selectedSize} - ${selectedColor}`;
-sPrice.innerText= type==='pre'?'Rp110000 (DP 60000)':'Rp100000';
+sPrice.innerText='Rp100000';
 sName.innerText=nama;
 sPhone.innerText=hp;
 sAddress.innerText=alamat;
@@ -460,16 +383,25 @@ checkout.classList.remove('active');
 summary.classList.add('active');
 }
 
-// WA
 function sendWA(){
-let nama=name.value.trim();
-let hp=phone.value.trim();
-let alamat=address.value.trim();
-
-let msg=`Halo, saya ingin order:%0A%0A${product}%0A%0A*Format Order*%0ANama: ${nama}%0AAlamat lengkap: ${alamat}%0ASize: ${selectedSize}%0ANo hp: ${hp}%0AWarna: ${selectedColor}`;
-
-window.location.href=`https://wa.me/6283898588562?text=${msg}`;
+window.location.href="https://wa.me/6283898588562";
 }
+
+function selectSize(el,s){
+document.querySelectorAll('#sizeWrap div').forEach(d=>d.classList.remove('active'));
+el.classList.add('active');
+selectedSize=s;
+}
+
+function selectColor(el,c){
+document.querySelectorAll('#colorWrap div').forEach(d=>d.classList.remove('active'));
+el.classList.add('active');
+selectedColor=c;
+}
+
+function goBackHome(){detail.classList.remove('active');home.classList.add('active')}
+function goBackDetail(){checkout.classList.remove('active');detail.classList.add('active')}
+function goBackCheckout(){summary.classList.remove('active');checkout.classList.add('active')}
 
 </script>
 
