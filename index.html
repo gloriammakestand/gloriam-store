@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gloriam Store</title>
+    <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; }
@@ -71,9 +72,17 @@
         .option-box div {
             padding: 16px; border: 1.5px solid #1a1a1a; text-align: center;
             border-radius: 12px; cursor: pointer; background: #050505; font-size: 14px; font-weight: 600;
+            transition: 0.3s;
         }
         .option-box div.active { background: #fff; color: #000; border-color: #fff; }
-        .option-box div.disabled { opacity: 0.15; cursor: not-allowed; }
+        
+        /* KOLOM PUDAR JIKA HABIS */
+        .option-box div.disabled { 
+            opacity: 0.1; /* SANGAT PUDAR */
+            cursor: not-allowed; 
+            border: 1px dashed #333; /* GARIS PUTUS-PUTUS */
+            text-decoration: line-through; /* CORET TULISAN */
+        }
 
         /* FORM MODERN */
         .form-section { padding-top: 60px; }
@@ -88,7 +97,7 @@
         /* REKENING BOX BIG */
         .payment-card {
             background: #0a0a0a; border: 2px solid #1a1a1a; padding: 25px; 
-            border-radius: 20px; margin-top: 15px; /* JARAK DIPERKESIL DARI 30px KE 15px */
+            border-radius: 20px; margin-top: 15px;
         }
         .bank-info { font-size: 16px; line-height: 1.8; font-weight: 600; margin: 15px 0; }
         .checkout-note { font-size: 11px; color: #666; text-align: center; margin-top: 15px; }
@@ -119,13 +128,9 @@
             <div class="img-grid" id="detImgs"></div>
             <h2 id="detName" style="margin-top:25px; font-size:24px;">Product</h2>
             <p id="detPrice" style="color:#00c853; font-weight:700; font-size:18px;"></p>
-            
             <div id="colorArea"></div>
             <div id="sizeArea"></div>
-            
-            <p onclick="document.getElementById('sizeModal').style.display='flex'" style="color:#00c853; font-size:12px; font-weight:700; margin-top:15px; text-decoration:underline; cursor:pointer;">
-                Size Guide (Sizing Information)
-            </p>
+            <p onclick="document.getElementById('sizeModal').style.display='flex'" style="color:#00c853; font-size:12px; font-weight:700; margin-top:15px; text-decoration:underline; cursor:pointer;">Size Guide (Sizing Information)</p>
         </div>
         <div class="sticky-btn"><button onclick="validateDetail()">NEXT</button></div>
     </div>
@@ -146,7 +151,6 @@
                 <label>FULL ADDRESS</label>
                 <textarea id="inAddress" rows="4" placeholder="Alamat lengkap pengiriman..."></textarea>
             </div>
-            <p style="font-size:11px; color:#555; line-height:1.6;">* Isi sesuai dan lengkap untuk memudahkan proses pengiriman.</p>
         </div>
         <div class="sticky-btn"><button onclick="validateForm()">CONTINUE</button></div>
     </div>
@@ -155,7 +159,6 @@
         <div class="back-btn" onclick="showPage('form')">← BACK</div>
         <div class="detail-container summary-container"> 
             <h2 style="margin-bottom:20px;">ORDER SUMMARY</h2>
-            
             <div style="background:#0a0a0a; padding:20px; border-radius:15px; border:1px solid #1a1a1a;">
                 <h3 id="sumProd" style="margin:0; font-size:18px;">-</h3>
                 <p id="sumVar" style="font-size:13px; color:#888; margin:8px 0;">-</p>
@@ -163,21 +166,13 @@
                 <hr style="border:0; border-top:1px solid #1a1a1a; margin:20px 0;">
                 <p id="sumCust" style="font-size:13px; line-height:1.8; margin:0;"></p>
             </div>
-
             <div class="payment-card">
                 <span style="font-size:11px; font-weight:700; color:#555;">REKENING PEMBAYARAN</span>
-                <div class="bank-info">
-                    MANDIRI: <span style="color:#fff;">1370023790229</span><br>
-                    DANA: <span style="color:#fff;">081910421976</span><br>
-                    <span style="font-size:14px; opacity:0.6;">A.N Dias Adhitya Purnama Putra</span>
-                </div>
+                <div class="bank-info">MANDIRI: 1370023790229<br>DANA: 081910421976<br><span style="font-size:14px; opacity:0.6;">A.N Dias Adhitya Purnama Putra</span></div>
             </div>
-            
             <p class="checkout-note">Tekan checkout dan anda akan diarahkan otomatis ke WhatsApp admin.</p>
         </div>
-        <div class="sticky-btn">
-            <button onclick="sendWA()" style="background:#00c853; color:#fff;">CHECKOUT (WA)</button>
-        </div>
+        <div class="sticky-btn"><button onclick="sendWA()" style="background:#00c853; color:#fff;">CHECKOUT (WA)</button></div>
     </div>
 
     <script>
@@ -193,6 +188,9 @@
         window.onload = () => {
             renderHome();
             setTimeout(() => document.getElementById('loader').classList.add('hide'), 1000);
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js').then(reg => console.log('SW Reg')).catch(err => console.log('SW Err'));
+            }
         };
 
         function renderHome() {
@@ -200,15 +198,7 @@
             products.forEach(p => {
                 const isSold = p.badge === 'sold';
                 container.innerHTML += `
-                    <div class="card">
-                        <div class="badge ${p.badge}">${p.status}</div>
-                        <img src="${p.imgs[0]}">
-                        <div style="padding:25px">
-                            <h3 style="margin:0; font-size:20px;">${p.name}</h3>
-                            <p style="opacity:0.5; margin:10px 0 20px;">${isSold ? 'OUT OF STOCK' : 'Rp' + p.price.toLocaleString('id-ID')}</p>
-                            <button ${isSold ? 'disabled' : ''} onclick="goDetail(${p.id})">${isSold ? 'HABIS' : 'SELECT'}</button>
-                        </div>
-                    </div>
+                    <div class="card"><div class="badge ${p.badge}">${p.status}</div><img src="${p.imgs[0]}"><div style="padding:25px"><h3 style="margin:0; font-size:20px;">${p.name}</h3><p style="opacity:0.5; margin:10px 0 20px;">${isSold ? 'OUT OF STOCK' : 'Rp' + p.price.toLocaleString('id-ID')}</p><button ${isSold ? 'disabled' : ''} onclick="goDetail(${p.id})">${isSold ? 'HABIS' : 'SELECT'}</button></div></div>
                 `;
             });
         }
@@ -266,7 +256,6 @@
             const p = document.getElementById('inPhone').value;
             const a = document.getElementById('inAddress').value;
             if(!n || !p || !a) return triggerError("LENGKAPI DATA PENGIRIMAN!");
-            
             document.getElementById('sumProd').innerText = cart.prod.name;
             document.getElementById('sumVar').innerText = `WARNA: ${cart.color} | SIZE: ${cart.size}`;
             document.getElementById('sumPrice').innerText = `Rp${cart.prod.price.toLocaleString('id-ID')}`;
@@ -281,17 +270,6 @@
             const text = `*GLORIAM ORDER*\n\n${cart.prod.name}\nWarna: ${cart.color}\nSize: ${cart.size}\n\n*Data Pengiriman*\nNama: ${n}\nWhatsApp: ${p}\nAlamat: ${a}`;
             window.open(`https://wa.me/6283898588562?text=${encodeURIComponent(text)}`);
         }
-    
-<link rel="manifest" href="manifest.json">
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js')
-        .then(reg => console.log('Service Worker Registered'))
-        .catch(err => console.log('Service Worker Failed', err));
-    });
-  }
-</script>
-
+    </script>
 </body>
 </html>
