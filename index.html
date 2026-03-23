@@ -6,6 +6,7 @@
     <title>Gloriam Store</title>
     <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { box-sizing: border-box; }
         html, body {
@@ -36,10 +37,9 @@
         header p { font-size: 10px; opacity: 0.4; margin-top: 10px; letter-spacing: 2px; }
 
         /* PRODUCTS */
-        .products { display: flex; flex-direction: column; align-items: center; gap: 40px; padding: 0 20px 120px; }
+        .products { display: flex; flex-direction: column; align-items: center; gap: 40px; padding: 0 20px 80px; }
         .card { width: 100%; max-width: 450px; background: #0a0a0a; border-radius: 20px; border: 1px solid #1a1a1a; overflow: hidden; position: relative; transition: 0.3s; }
         
-        /* STYLE PRODUK HABIS */
         .card.sold-out { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
         
         .card img { width: 100%; display: block; }
@@ -47,6 +47,20 @@
         .pre { background: #00c853; }
         .ready { background: #fff; color: #000; }
         .sold { background: #ff3b3b; }
+
+        /* FOOTER STYLE */
+        footer {
+            background: #0a0a0a; border-top: 1px solid #1a1a1a;
+            padding: 60px 20px; text-align: center; margin-top: 40px;
+        }
+        .footer-logo { letter-spacing: 10px; font-size: 22px; font-weight: 700; margin-bottom: 5px; }
+        .footer-slogan { font-size: 9px; opacity: 0.3; letter-spacing: 2px; margin-bottom: 30px; }
+        .footer-socials { display: flex; justify-content: center; gap: 25px; margin-bottom: 30px; }
+        .footer-socials a { color: #fff; font-size: 20px; opacity: 0.6; transition: 0.3s; text-decoration: none; }
+        .footer-socials a:hover { opacity: 1; transform: translateY(-3px); }
+        .footer-contact { font-size: 11px; opacity: 0.5; line-height: 2; margin-bottom: 40px; }
+        .footer-contact a { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s; }
+        .footer-contact a:hover { border-bottom: 1px solid #555; }
 
         /* PAGE SYSTEM */
         .page {
@@ -97,7 +111,26 @@
             <h1>GLORIAM</h1>
             <p>MAKE STAND WITH PRIDE</p>
         </header>
+        
         <div class="products" id="product-list"></div>
+
+        <footer>
+            <div class="footer-logo">GLORIAM</div>
+            <div class="footer-slogan">MAKE STAND WITH PRIDE</div>
+            
+            <div class="footer-socials">
+                <a href="https://www.instagram.com/gloriam____?igsh=d2Z5dTFiMHdxMHgy" target="_blank" onclick="vibrate(30)"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/6283898588562" target="_blank" onclick="vibrate(30)"><i class="fab fa-whatsapp"></i></a>
+                <a href="http://shopee.co.id/gloriam__" target="_blank" onclick="vibrate(30)"><i class="fas fa-shopping-bag"></i></a>
+            </div>
+
+            <div class="footer-contact">
+                Kontak Kami: <a href="https://wa.me/6283898588562">WhatsApp Admin</a><br>
+                Email: <a href="mailto:gloriammakestand@gmail.com">gloriammakestand@gmail.com</a>
+            </div>
+
+            <p style="font-size: 9px; opacity: 0.2; letter-spacing: 1px;">© 2026 Gloriam Store.</p>
+        </footer>
     </div>
 
     <div class="page" id="detail">
@@ -117,26 +150,20 @@
         <div class="back-btn" onclick="vibrate(30); showPage('detail')">← BACK</div>
         <div class="detail-container" style="padding-top:80px;">
             <h2 style="margin-bottom:30px;">SHIPPING INFO</h2>
-            
             <div class="input-group">
                 <label>FULL NAME</label>
                 <input type="text" id="inName" placeholder="Nama Lengkap...">
             </div>
-            
             <div class="input-group">
                 <label>WHATSAPP</label>
                 <input type="number" id="inPhone" placeholder="08xxx">
             </div>
-            
             <div class="input-group">
                 <label>ADDRESS</label>
                 <textarea id="inAddress" rows="4" placeholder="Alamat Lengkap..."></textarea>
                 <p style="font-size: 10px; color: #555; margin-top: 8px; margin-left: 5px;">*Mohon diisi lengkap untuk memudahkan pengiriman.</p>
             </div>
-            
-            <div class="btn-container">
-                <button onclick="validateForm()">CONTINUE</button>
-            </div>
+            <div class="btn-container"><button onclick="validateForm()">CONTINUE</button></div>
         </div>
     </div>
 
@@ -144,7 +171,6 @@
         <div class="back-btn" onclick="vibrate(30); showPage('form')">← BACK</div>
         <div class="detail-container" style="padding-top:80px;">
             <h2 style="margin-bottom:20px;">ORDER SUMMARY</h2>
-            
             <div style="background:#0a0a0a; padding:20px; border-radius:15px; border:1px solid #1a1a1a;">
                 <h3 id="sumProd" style="margin:0; font-size:18px;">-</h3>
                 <p id="sumVar" style="font-size:13px; color:#888; margin:8px 0;">-</p>
@@ -152,7 +178,6 @@
                 <hr style="border:0; border-top:1px solid #1a1a1a; margin:20px 0;">
                 <p id="sumCust" style="font-size:13px; line-height:1.8; margin:0;"></p>
             </div>
-
             <div style="background:#0a0a0a; border:1px solid #1a1a1a; padding:20px; border-radius:15px; margin-top:15px;">
                 <span style="font-size:11px; font-weight:700; color:#555; letter-spacing:1px;">REKENING PEMBAYARAN</span>
                 <div style="margin-top:15px; font-size:15px; line-height:1.8; font-weight:600;">
@@ -161,11 +186,9 @@
                     <span style="opacity:0.6; font-size:13px;">A.N Dias Adhitya Purnama Putra</span>
                 </div>
             </div>
-
             <p style="font-size: 10px; color: #444; text-align: center; margin-top: 25px; line-height: 1.5;">
                 Tekan checkout dan anda akan diarahkan otomatis ke<br>WhatsApp admin.
             </p>
-
             <div class="btn-container" style="margin-top: 15px;">
                 <button onclick="sendWA()" style="background:#00c853; color:#fff;">CHECKOUT (WA)</button>
             </div>
