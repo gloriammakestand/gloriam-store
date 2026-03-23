@@ -11,25 +11,29 @@
 <style>
 body{margin:0;font-family:'Montserrat',sans-serif;background:#0a0a0a;color:#fff}
 
-header{height:70vh;background:#000;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+/* HEADER */
+header{height:70vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
 
+/* PRODUCT */
 .products{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;padding:20px}
-
-.card{position:relative;background:#111;border-radius:12px;overflow:hidden}
+.card{background:#111;border-radius:12px;overflow:hidden}
 .card img{width:100%}
-
 .badge{position:absolute;top:10px;left:10px;background:#fff;color:#000;padding:5px 10px;font-size:11px}
 .out{background:red;color:#fff}
 .disabled{opacity:0.3}
 
+/* BUTTON */
 button{background:#fff;color:#000;border:none;padding:14px;width:100%;margin-top:15px;font-weight:600}
 
+/* PAGE */
 .page{display:none}
 .active{display:block}
 
+/* SWIPE */
 .swipe{display:flex;overflow-x:auto;gap:12px;margin-bottom:20px}
 .swipe img{width:85%;border-radius:12px}
 
+/* OPTION */
 .option-box{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
 .option-box div{padding:14px;border:1px solid #555;text-align:center;cursor:pointer;border-radius:8px}
 .option-box div.active{background:#fff;color:#000}
@@ -37,26 +41,42 @@ button{background:#fff;color:#000;border:none;padding:14px;width:100%;margin-top
 
 .section-label{margin-top:20px;font-size:14px}
 
-input{width:100%;padding:14px;margin:10px 0;background:#111;border:1px solid #333;color:#fff;border-radius:8px}
+/* CHECKOUT */
+.checkout-container{max-width:500px;margin:auto;padding:20px}
+input{width:100%;padding:14px;margin:10px 0;background:#111;border:1px solid #333;color:#fff;border-radius:10px;box-sizing:border-box}
 
-.checkout-container{max-width:500px;margin:auto}
-
+/* STICKY */
 .sticky-bar{position:fixed;bottom:0;width:100%;background:#000;padding:10px}
 
-.loader{
-position:fixed;
-width:100%;
-height:100%;
-background:#000;
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:9999;
-font-size:24px;
-letter-spacing:3px;
-transition:0.5s;
-}
+/* LOADER */
+.loader{position:fixed;width:100%;height:100%;background:#000;display:flex;justify-content:center;align-items:center;z-index:9999;font-size:24px;letter-spacing:3px;transition:0.5s}
 .loader.hide{opacity:0;pointer-events:none}
+
+/* TOAST */
+.toast{
+position:fixed;
+top:-60px;
+left:50%;
+transform:translateX(-50%);
+padding:12px 20px;
+border-radius:8px;
+color:#fff;
+font-size:14px;
+z-index:9999;
+transition:0.4s;
+}
+.toast.show{top:20px}
+.toast.error{background:#ff3b3b}
+
+/* SHAKE */
+@keyframes shake{
+0%{transform:translateX(-50%) translateX(0)}
+25%{transform:translateX(-50%) translateX(-5px)}
+50%{transform:translateX(-50%) translateX(5px)}
+75%{transform:translateX(-50%) translateX(-5px)}
+100%{transform:translateX(-50%) translateX(0)}
+}
+.toast.shake{animation:shake 0.3s}
 </style>
 </head>
 
@@ -133,7 +153,7 @@ transition:0.5s;
 
 <!-- CHECKOUT -->
 <div id="checkout" class="page">
-<div class="checkout-container" style="padding:20px">
+<div class="checkout-container">
 <input id="name" placeholder="Full Name">
 <input id="phone" placeholder="Phone Number">
 <input id="address" placeholder="Full Address">
@@ -143,16 +163,13 @@ transition:0.5s;
 
 <script>
 
-// LOADER DELAY 1 DETIK
+// LOADER 1 DETIK
 window.onload = function(){
-  const loader = document.getElementById("loader");
-
-  setTimeout(() => {
-    if(loader){
-      loader.classList.add("hide");
-      setTimeout(()=>loader.style.display="none",500);
-    }
-  }, 1000);
+const loader=document.getElementById("loader");
+setTimeout(()=>{
+loader.classList.add("hide");
+setTimeout(()=>loader.style.display="none",500);
+},1000);
 };
 
 let product='',type='',selectedSize='',selectedColor='';
@@ -160,16 +177,13 @@ let product='',type='',selectedSize='',selectedColor='';
 // DETAIL
 function goDetail(n,p,t){
 product=n;type=t;
-
-document.getElementById('home').classList.remove('active');
-document.getElementById('detail').classList.add('active');
-
-document.getElementById('pname').innerText=n;
-document.getElementById('pprice').innerText='Rp'+p;
+home.classList.remove('active');
+detail.classList.add('active');
+pname.innerText=n;
+pprice.innerText='Rp'+p;
 
 let sizes=['S','M','L','XL','XXL','XXXL'];
 let html='<div class="section-label">SIZE</div><div class="option-box">';
-
 sizes.forEach(s=>{
 if(t==='limited' && !['M','L'].includes(s)){
 html+=`<div class="size-disabled">${s}</div>`;
@@ -177,13 +191,11 @@ html+=`<div class="size-disabled">${s}</div>`;
 html+=`<div onclick="selectSize(this,'${s}')">${s}</div>`;
 }
 });
-
 html+='</div>';
-document.getElementById('sizeWrap').innerHTML=html;
+sizeWrap.innerHTML=html;
 
-// COLOR
 if(t==='pre'){
-document.getElementById('colorWrap').innerHTML=`
+colorWrap.innerHTML=`
 <div class="section-label">COLOR</div>
 <div class="option-box">
 <div onclick="selectColor(this,'Black')">Black</div>
@@ -191,47 +203,44 @@ document.getElementById('colorWrap').innerHTML=`
 </div>`;
 }else{
 selectedColor='Default';
-document.getElementById('colorWrap').innerHTML='';
+colorWrap.innerHTML='';
+}
 }
 
-}
-
-// SELECT SIZE
+// SELECT
 function selectSize(el,size){
 document.querySelectorAll('#sizeWrap div').forEach(d=>d.classList.remove('active'));
 el.classList.add('active');
 selectedSize=size;
 }
-
-// SELECT COLOR
 function selectColor(el,color){
 document.querySelectorAll('#colorWrap div').forEach(d=>d.classList.remove('active'));
 el.classList.add('active');
 selectedColor=color;
 }
 
-// TOAST
-function showToast(msg){
+// TOAST PREMIUM
+function showToast(msg,type='default'){
 let t=document.createElement('div');
+t.className='toast '+(type==='error'?'error':'');
 t.innerText=msg;
-t.style.position='fixed';
-t.style.top='20px';
-t.style.left='50%';
-t.style.transform='translateX(-50%)';
-t.style.background='#111';
-t.style.padding='10px 20px';
-t.style.border='1px solid #333';
 document.body.appendChild(t);
+
+setTimeout(()=>t.classList.add('show'),10);
+
+if(type==='error'){
+t.classList.add('shake');
+}
+
 setTimeout(()=>t.remove(),2000);
 }
 
 // CHECKOUT
 function goCheckout(){
-if(!selectedSize){showToast('Select size first');return;}
-if(type==='pre' && !selectedColor){showToast('Select color first');return;}
-
-document.getElementById('detail').classList.remove('active');
-document.getElementById('checkout').classList.add('active');
+if(!selectedSize){showToast('Select size first','error');return;}
+if(type==='pre' && !selectedColor){showToast('Select color first','error');return;}
+detail.classList.remove('active');
+checkout.classList.add('active');
 }
 
 // SEND WA
@@ -240,7 +249,7 @@ let n=name.value;
 let p=phone.value;
 let a=address.value;
 
-if(!n||!p||!a){showToast('Please fill all fields');return;}
+if(!n||!p||!a){showToast('Please fill all fields','error');return;}
 
 let msg=`Halo, saya ingin order:%0A%0A${product}%0A%0A*Format Order*%0ANama: ${n}%0AAlamat lengkap: ${a}%0ASize: ${selectedSize}%0ANo hp: ${p}%0AWarna: ${selectedColor}`;
 
