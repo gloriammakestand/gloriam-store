@@ -143,17 +143,21 @@ transition:0.5s;
 
 <script>
 
-// LOADER FIX
+// LOADER DELAY 2.5 DETIK
 window.onload = function(){
   const loader = document.getElementById("loader");
-  if(loader){
-    loader.classList.add("hide");
-    setTimeout(()=>loader.style.display="none",3000);
-  }
+
+  setTimeout(() => {
+    if(loader){
+      loader.classList.add("hide");
+      setTimeout(()=>loader.style.display="none",500);
+    }
+  }, 2500);
 };
 
 let product='',type='',selectedSize='',selectedColor='';
 
+// DETAIL
 function goDetail(n,p,t){
 product=n;type=t;
 
