@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gloriam Store</title>
+<title>GLORIAM</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
 
 <style>
 *{box-sizing:border-box}
-html,body{
+body{
 margin:0;
 font-family:'Montserrat',sans-serif;
 background:#0a0a0a;
@@ -17,29 +17,42 @@ color:#fff;
 overflow-x:hidden;
 }
 
+/* LOADER */
+.loader{
+position:fixed;
+width:100%;
+height:100%;
+background:#000;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999;
+font-size:24px;
+letter-spacing:3px;
+}
+.loader.hide{display:none}
+
 /* PAGE */
-.page{display:none;padding-bottom:140px}
+.page{display:none;padding-bottom:120px}
 .page.active{display:block}
 
 /* HEADER */
 header{
-height:70vh;
+height:60vh;
 display:flex;
 justify-content:center;
 align-items:center;
 flex-direction:column;
-text-align:center;
 }
 
-/* PRODUCTS */
+/* PRODUCT */
 .products{
 padding:20px;
 display:flex;
 flex-direction:column;
-gap:30px;
+gap:25px;
 align-items:center;
 }
-
 .card{
 width:100%;
 max-width:420px;
@@ -47,8 +60,22 @@ background:#111;
 border-radius:12px;
 overflow:hidden;
 text-align:center;
+position:relative;
 }
 .card img{width:100%}
+
+/* BADGE */
+.badge{
+position:absolute;
+top:10px;
+left:10px;
+padding:5px 10px;
+font-size:12px;
+border-radius:6px;
+}
+.pre{background:#00c853}
+.ready{background:#fff;color:#000}
+.out{background:#ff3b3b}
 
 /* BUTTON */
 button{
@@ -61,9 +88,7 @@ font-weight:600;
 cursor:pointer;
 }
 
-/* DETAIL */
-.container{padding:20px}
-
+/* OPTION */
 .option-box{
 display:grid;
 grid-template-columns:repeat(3,1fr);
@@ -81,8 +106,13 @@ cursor:pointer;
 background:#fff;
 color:#000;
 }
+.disabled{
+opacity:0.3;
+pointer-events:none;
+}
 
 /* INPUT */
+.container{padding:20px}
 input{
 width:100%;
 padding:14px;
@@ -93,64 +123,42 @@ color:#fff;
 border-radius:10px;
 }
 
-/* ERROR INPUT */
-.input-error{
-border:1px solid red !important;
-}
-
 /* STICKY */
 .sticky{
 position:fixed;
 bottom:0;
-left:0;
 width:100%;
 background:#000;
 padding:10px;
 display:flex;
 justify-content:center;
-z-index:10;
 }
 .sticky button{max-width:500px}
 
-/* BACK */
-.back{padding:15px}
-
-/* SUMMARY */
-.label{opacity:0.5;font-size:12px}
+/* TEXT */
+.label{opacity:0.6;font-size:12px}
 .price{font-size:20px;font-weight:600}
 .divider{height:1px;background:#333;margin:10px 0}
-
-/* PAYMENT */
-.payment{
-margin-top:20px;
-padding:15px;
-background:#111;
-border-radius:10px;
-font-size:14px;
-line-height:1.6;
-}
 
 /* TOAST */
 .toast{
 position:fixed;
-top:-60px;
+top:20px;
 left:50%;
 transform:translateX(-50%);
 background:#ff3b3b;
-padding:12px 20px;
-border-radius:8px;
-font-weight:600;
-transition:0.3s;
-z-index:999;
+padding:10px 20px;
+border-radius:6px;
 }
-.toast.show{top:20px}
 </style>
 </head>
 
 <body>
 
+<div id="loader" class="loader">GLORIAM</div>
+
 <!-- HOME -->
-<div id="home" class="page active">
+<div id="home" class="page">
 <header>
 <h1>GLORIAM</h1>
 <p>MAKE STAND WITH PRIDE</p>
@@ -158,25 +166,40 @@ z-index:999;
 
 <div class="products">
 
+<!-- 1 -->
 <div class="card">
+<div class="badge pre">PRE ORDER</div>
 <img src="images/soccer-addict.jpg">
 <h3>Soccer Addict</h3>
-<p>Rp110000</p>
-<button onclick="goDetail('Soccer Addict',110000)">SELECT</button>
+<p>Black / Green</p>
+<button onclick="goDetail('Soccer Addict',110000,'pre')">SELECT</button>
 </div>
 
+<!-- 2 -->
 <div class="card">
+<div class="badge ready">IN STOCK</div>
 <img src="images/sleman-soccer.jpg">
 <h3>Sleman Soccer</h3>
-<p>Rp100000</p>
-<button onclick="goDetail('Sleman Soccer',100000)">SELECT</button>
+<p>White (S - XXXL)</p>
+<button onclick="goDetail('Sleman Soccer',100000,'full')">SELECT</button>
 </div>
 
+<!-- 3 -->
 <div class="card">
+<div class="badge ready">IN STOCK</div>
 <img src="images/bless-home.jpg">
 <h3>Bless Home</h3>
-<p>Rp100000</p>
-<button onclick="goDetail('Bless Home',100000)">SELECT</button>
+<p>Black (M / L only)</p>
+<button onclick="goDetail('Bless Home',100000,'limited')">SELECT</button>
+</div>
+
+<!-- 4 -->
+<div class="card">
+<div class="badge out">SOLD OUT</div>
+<img src="images/take-me-home.jpg">
+<h3>Take Me Home</h3>
+<p>Sold Out</p>
+<button disabled>SOLD</button>
 </div>
 
 </div>
@@ -184,42 +207,35 @@ z-index:999;
 
 <!-- DETAIL -->
 <div id="detail" class="page">
-<div class="back" onclick="showPage('home')">← Back</div>
-
 <div class="container">
-<h2 id="productName"></h2>
+
+<h2 id="pname"></h2>
 
 <p>SIZE</p>
-<div class="option-box" id="sizeBox">
-<div onclick="selectSize(this)">S</div>
-<div onclick="selectSize(this)">M</div>
-<div onclick="selectSize(this)">L</div>
-<div onclick="selectSize(this)">XL</div>
-<div onclick="selectSize(this)">XXL</div>
-<div onclick="selectSize(this)">XXXL</div>
-</div>
+<div id="sizeBox" class="option-box"></div>
 
 <p>COLOR</p>
-<div class="option-box" id="colorBox">
-<div onclick="selectColor(this)">Black</div>
-<div onclick="selectColor(this)">Green</div>
-<div onclick="selectColor(this)">White</div>
-</div>
+<div id="colorBox" class="option-box"></div>
+
 </div>
 
 <div class="sticky">
-<button onclick="goCheckout()">ADD TO CART</button>
+<button onclick="goForm()">NEXT</button>
 </div>
 </div>
 
-<!-- CHECKOUT -->
-<div id="checkout" class="page">
-<div class="back" onclick="showPage('detail')">← Back</div>
-
+<!-- FORM -->
+<div id="form" class="page">
 <div class="container">
+
 <input id="name" placeholder="Full Name">
 <input id="phone" placeholder="Phone Number">
 <input id="address" placeholder="Full Address">
+
+<p style="font-size:12px;opacity:0.6">
+Isi sesuai dan lengkap untuk memudahkan proses pengiriman
+</p>
+
 </div>
 
 <div class="sticky">
@@ -229,8 +245,6 @@ z-index:999;
 
 <!-- SUMMARY -->
 <div id="summary" class="page">
-<div class="back" onclick="showPage('checkout')">← Back</div>
-
 <div class="container">
 
 <p class="label">PRODUCT</p>
@@ -241,23 +255,22 @@ z-index:999;
 
 <div class="divider"></div>
 
-<p class="label">NAME</p>
 <p id="sumName"></p>
-
-<p class="label">PHONE</p>
 <p id="sumPhone"></p>
-
-<p class="label">ADDRESS</p>
 <p id="sumAddress"></p>
 
-<div class="payment">
-<p><b>Pastikan data sudah benar dan lengkap untuk memudahkan proses pengiriman</b></p>
-<br>
-<p><b>Payment :</b></p>
-<p>A. N. Dias Adhitya Purnama Putra</p>
-<p>Bank Mandiri : 1370023790229</p>
-<p>DANA : 081910421976</p>
-</div>
+<p style="margin-top:15px;font-size:12px">
+Pastikan semua sesuai
+</p>
+
+<div class="divider"></div>
+
+<p style="font-size:14px">
+Payment:<br>
+A.N Dias Adhitya Purnama Putra<br>
+Mandiri: 1370023790229<br>
+DANA: 081910421976
+</p>
 
 </div>
 
@@ -267,19 +280,49 @@ z-index:999;
 </div>
 
 <script>
-let product='',price=0,size='',color='';
 
-function showPage(id){
+// LOADER
+setTimeout(()=>{
+loader.classList.add('hide');
+home.classList.add('active');
+},1000);
+
+let product='',price=0,type='',size='',color='';
+
+function show(id){
 document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
 document.getElementById(id).classList.add('active');
 window.scrollTo(0,0);
 }
 
-function goDetail(name,p){
-product=name;
-price=p;
-productName.innerText=name;
-showPage('detail');
+function goDetail(n,p,t){
+product=n;price=p;type=t;
+pname.innerText=n;
+
+let sizes=['S','M','L','XL','XXL','XXXL'];
+let html='';
+
+sizes.forEach(s=>{
+if(t==='limited' && !['M','L'].includes(s)){
+html+=`<div class="disabled">${s}</div>`;
+}else{
+html+=`<div onclick="selectSize(this)">${s}</div>`;
+}
+});
+sizeBox.innerHTML=html;
+
+// color
+if(n==='Soccer Addict'){
+colorBox.innerHTML=`<div onclick="selectColor(this)">Black</div><div onclick="selectColor(this)">Green</div>`;
+}
+else if(n==='Sleman Soccer'){
+colorBox.innerHTML=`<div onclick="selectColor(this)">White</div>`;
+}
+else{
+colorBox.innerHTML=`<div onclick="selectColor(this)">Black</div>`;
+}
+
+show('detail');
 }
 
 function selectSize(el){
@@ -299,20 +342,13 @@ let t=document.createElement('div');
 t.className='toast';
 t.innerText=msg;
 document.body.appendChild(t);
-
-setTimeout(()=>t.classList.add('show'),10);
 setTimeout(()=>t.remove(),2000);
-
-// GETAR HP
-if(navigator.vibrate){
-navigator.vibrate([100,50,100]);
-}
+if(navigator.vibrate) navigator.vibrate(100);
 }
 
-function goCheckout(){
-if(!size){toast('Select size');return;}
-if(!color){toast('Select color');return;}
-showPage('checkout');
+function goForm(){
+if(!size||!color){toast('Select size & color');return;}
+show('form');
 }
 
 function goSummary(){
@@ -320,17 +356,7 @@ let n=name.value.trim();
 let p=phone.value.trim();
 let a=address.value.trim();
 
-// reset error
-[name,phone,address].forEach(i=>i.classList.remove('input-error'));
-
-if(!n || !p || !a){
-if(!n) name.classList.add('input-error');
-if(!p) phone.classList.add('input-error');
-if(!a) address.classList.add('input-error');
-
-toast('Data belum lengkap!');
-return;
-}
+if(!n||!p||!a){toast('Lengkapi data');return;}
 
 sumProduct.innerText=`${product} - ${size} - ${color}`;
 sumPrice.innerText=`Rp${price}`;
@@ -338,14 +364,15 @@ sumName.innerText=n;
 sumPhone.innerText=p;
 sumAddress.innerText=a;
 
-showPage('summary');
+show('summary');
 }
 
 function sendWA(){
-let msg=`Halo, saya ingin order:%0A%0A${product}%0A%0A*Format Order*%0ANama: ${name.value}%0AAlamat lengkap: ${address.value}%0ASize: ${size}%0ANo hp: ${phone.value}%0AWarna: ${color}%0A%0ASudah melakukan pembayaran`;
+let msg=`Halo, saya ingin order:%0A%0A${product}%0ASize: ${size}%0AWarna: ${color}%0A%0ANama: ${name.value}%0ANo HP: ${phone.value}%0AAlamat: ${address.value}%0A%0ASudah melakukan pembayaran`;
 
 window.location.href=`https://wa.me/6283898588562?text=${msg}`;
 }
+
 </script>
 
 </body>
