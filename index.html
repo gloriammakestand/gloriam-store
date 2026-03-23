@@ -8,47 +8,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
 
 <style>
-*{box-sizing:border-box}
 body{
 margin:0;
 font-family:'Montserrat',sans-serif;
 background:#0a0a0a;
 color:#fff;
-overflow-x:hidden;
 }
 
-/* PAGE TRANSITION */
+/* PAGE SAFE */
 .page{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-overflow-y:auto;
-
-opacity:0;
-transform:translateX(40px);
-transition:all 0.4s ease;
-
-pointer-events:none;
-z-index:0;
+display:none;
+padding-bottom:120px;
 }
-
 .page.active{
-opacity:1;
-transform:translateX(0);
-pointer-events:auto;
-z-index:10;
+display:block;
+animation:fade 0.3s ease;
 }
-
-.page.exit-left{
-transform:translateX(-40px);
-opacity:0;
-}
-
-.page.exit-right{
-transform:translateX(40px);
-opacity:0;
+@keyframes fade{
+from{opacity:0;transform:translateY(10px)}
+to{opacity:1;transform:translateY(0)}
 }
 
 /* HEADER */
@@ -61,37 +39,33 @@ align-items:center;
 text-align:center;
 }
 
-/* PRODUCTS */
+/* PRODUCT */
 .products{
 display:flex;
 flex-direction:column;
+gap:30px;
+padding:20px;
 align-items:center;
-gap:40px;
-padding:30px 15px;
 }
 
 .card{
 width:100%;
-max-width:500px;
+max-width:400px;
 background:#111;
 border-radius:14px;
 overflow:hidden;
 text-align:center;
-position:relative;
 }
 .card img{width:100%}
 
 .badge{
 position:absolute;
-top:12px;
-left:12px;
-padding:6px 12px;
-font-size:11px;
+background:#00c853;
+padding:6px 10px;
+margin:10px;
 border-radius:6px;
+font-size:12px;
 }
-.pre{background:#00c853}
-.ready{background:#fff;color:#000}
-.out{background:#ff3b3b}
 
 /* BUTTON */
 button{
@@ -104,12 +78,8 @@ font-weight:600;
 }
 
 /* DETAIL */
-.detail-container{
-max-width:600px;
-margin:auto;
+.container{
 padding:20px;
-padding-top:80px;
-padding-bottom:120px;
 }
 
 .option-box{
@@ -119,7 +89,7 @@ gap:10px;
 margin-top:10px;
 }
 .option-box div{
-padding:14px;
+padding:12px;
 border:1px solid #555;
 text-align:center;
 border-radius:8px;
@@ -130,15 +100,7 @@ background:#fff;
 color:#000;
 }
 
-/* CHECKOUT */
-.checkout-container{
-max-width:500px;
-margin:auto;
-padding:20px;
-padding-top:80px;
-padding-bottom:120px;
-}
-
+/* INPUT */
 input{
 width:100%;
 padding:14px;
@@ -149,76 +111,41 @@ color:#fff;
 border-radius:10px;
 }
 
-/* SUMMARY */
-.summary-container{
-max-width:500px;
-margin:auto;
-padding:20px;
-padding-top:90px;
-padding-bottom:120px;
-}
-
-.label{font-size:12px;opacity:0.5}
-.value{font-size:16px}
-.price{font-size:20px;font-weight:600}
-.divider{height:1px;background:#333;margin:10px 0}
-
 /* STICKY */
-.sticky-bar{
+.sticky{
 position:fixed;
 bottom:0;
 left:0;
 width:100%;
-padding:10px;
 background:#000;
-z-index:20;
+padding:10px;
 }
 
 /* BACK */
-.back-btn{
-position:fixed;
-top:15px;
-left:15px;
-background:#111;
-padding:8px 14px;
-border-radius:20px;
-border:1px solid #333;
-z-index:30;
+.back{
+margin:15px;
+display:inline-block;
 }
 
-/* LOADER */
-.loader{
-position:fixed;
-width:100%;
-height:100%;
-background:#000;
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:9999;
-font-size:26px;
-letter-spacing:3px;
-}
-.loader.hide{opacity:0;transition:0.5s}
+/* SUMMARY */
+.label{opacity:0.5;font-size:12px}
+.price{font-size:20px;font-weight:600}
+.divider{height:1px;background:#333;margin:10px 0}
 
 /* TOAST */
 .toast{
 position:fixed;
-top:-60px;
+top:20px;
 left:50%;
 transform:translateX(-50%);
 background:#ff3b3b;
 padding:10px 20px;
 border-radius:6px;
-transition:0.3s;
 }
-.toast.show{top:20px}
 </style>
 </head>
 
 <body>
-
-<div id="loader" class="loader">GLORIAM</div>
 
 <!-- HOME -->
 <div id="home" class="page active">
@@ -229,179 +156,141 @@ transition:0.3s;
 
 <div class="products">
 <div class="card">
-<div class="badge pre">PRE ORDER</div>
 <img src="images/soccer-addict.jpg">
 <h3>Soccer Addict</h3>
 <p>Rp110000</p>
-<button onclick="goDetail('Soccer Addict',110000,'pre')">SELECT</button>
+<button onclick="goDetail()">SELECT</button>
 </div>
 </div>
 </div>
 
 <!-- DETAIL -->
 <div id="detail" class="page">
-<div class="back-btn" onclick="goBackHome()">← Back</div>
+<div class="back" onclick="showPage('home')">← Back</div>
 
-<div class="detail-container">
-<h2 id="pname"></h2>
-<p id="pprice"></p>
+<div class="container">
+<h2>Soccer Addict</h2>
 
-<div id="sizeWrap"></div>
-<div id="colorWrap"></div>
+<p>SIZE</p>
+<div class="option-box">
+<div onclick="selectSize(this)">S</div>
+<div onclick="selectSize(this)">M</div>
+<div onclick="selectSize(this)">L</div>
 </div>
 
-<div class="sticky-bar">
+<p>COLOR</p>
+<div class="option-box">
+<div onclick="selectColor(this)">Black</div>
+<div onclick="selectColor(this)">Green</div>
+</div>
+</div>
+
+<div class="sticky">
 <button onclick="goCheckout()">ADD TO CART</button>
 </div>
 </div>
 
 <!-- CHECKOUT -->
 <div id="checkout" class="page">
-<div class="back-btn" onclick="goBackDetail()">← Back</div>
+<div class="back" onclick="showPage('detail')">← Back</div>
 
-<div class="checkout-container">
+<div class="container">
 <input id="name" placeholder="Full Name">
 <input id="phone" placeholder="Phone Number">
 <input id="address" placeholder="Full Address">
 </div>
 
-<div class="sticky-bar">
+<div class="sticky">
 <button onclick="goSummary()">CONTINUE</button>
 </div>
 </div>
 
 <!-- SUMMARY -->
 <div id="summary" class="page">
-<div class="back-btn" onclick="goBackCheckout()">← Back</div>
+<div class="back" onclick="showPage('checkout')">← Back</div>
 
-<div class="summary-container">
+<div class="container">
 <p class="label">PRODUCT</p>
-<p id="sProductFull" class="value"></p>
+<p id="sumProduct"></p>
 
 <p class="label">PRICE</p>
-<p id="sPrice" class="price"></p>
+<p class="price">Rp110000</p>
 <div class="divider"></div>
 
 <p class="label">NAME</p>
-<p id="sName" class="value"></p>
+<p id="sumName"></p>
 
 <p class="label">PHONE</p>
-<p id="sPhone" class="value"></p>
+<p id="sumPhone"></p>
 
 <p class="label">ADDRESS</p>
-<p id="sAddress" class="value"></p>
+<p id="sumAddress"></p>
 </div>
 
-<div class="sticky-bar">
+<div class="sticky">
 <button onclick="sendWA()">CHECKOUT</button>
 </div>
 </div>
 
 <script>
+let size='',color='';
 
-// LOADER
-window.onload=()=>{
-setTimeout(()=>{
-document.getElementById('loader').classList.add('hide');
-},1000);
+function showPage(id){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+window.scrollTo(0,0);
 }
 
-// TRANSITION ENGINE
-function switchPage(from,to,dir="right"){
-from.classList.remove('active');
-from.classList.add(dir==="right"?'exit-left':'exit-right');
-
-setTimeout(()=>{
-from.classList.remove('exit-left','exit-right');
-to.classList.add('active');
-window.scrollTo({top:0});
-},200);
+function goDetail(){
+showPage('detail');
 }
 
-// TOAST
-function showToast(msg){
+function selectSize(el){
+document.querySelectorAll('.option-box div').forEach(d=>d.classList.remove('active'));
+el.classList.add('active');
+size=el.innerText;
+}
+
+function selectColor(el){
+el.classList.add('active');
+color=el.innerText;
+}
+
+function toast(msg){
 let t=document.createElement('div');
 t.className='toast';
 t.innerText=msg;
 document.body.appendChild(t);
-setTimeout(()=>t.classList.add('show'),10);
 setTimeout(()=>t.remove(),2000);
 }
 
-let product='',type='',selectedSize='',selectedColor='';
-
-// DETAIL
-function goDetail(n,p,t){
-product=n;type=t;
-
-switchPage(home,detail,"right");
-
-pname.innerText=n;
-pprice.innerText='Rp'+p;
-
-sizeWrap.innerHTML=`<div class="option-box">
-<div onclick="selectSize(this,'S')">S</div>
-<div onclick="selectSize(this,'M')">M</div>
-<div onclick="selectSize(this,'L')">L</div>
-</div>`;
-
-if(t==='pre'){
-colorWrap.innerHTML=`<div class="option-box">
-<div onclick="selectColor(this,'Black')">Black</div>
-<div onclick="selectColor(this,'Green')">Green</div>
-</div>`;
-}
-}
-
-// SELECT
-function selectSize(el,s){
-document.querySelectorAll('#sizeWrap div').forEach(d=>d.classList.remove('active'));
-el.classList.add('active');
-selectedSize=s;
-}
-function selectColor(el,c){
-document.querySelectorAll('#colorWrap div').forEach(d=>d.classList.remove('active'));
-el.classList.add('active');
-selectedColor=c;
-}
-
-// FLOW
 function goCheckout(){
-if(!selectedSize){showToast('Select size');return;}
-if(type==='pre'&&!selectedColor){showToast('Select color');return;}
-switchPage(detail,checkout,"right");
+if(!size){toast('Select size');return;}
+if(!color){toast('Select color');return;}
+showPage('checkout');
 }
 
 function goSummary(){
-let nama=name.value.trim();
-let hp=phone.value.trim();
-let alamat=address.value.trim();
+let n=name.value.trim();
+let p=phone.value.trim();
+let a=address.value.trim();
 
-if(!nama||!hp||!alamat){
-showToast('Isi semua dulu');
+if(!n||!p||!a){
+toast('Isi semua dulu');
 return;
 }
 
-sProductFull.innerText=`${product} - ${selectedSize} - ${selectedColor}`;
-sPrice.innerText='Rp110000';
+sumProduct.innerText=`Soccer Addict - ${size} - ${color}`;
+sumName.innerText=n;
+sumPhone.innerText=p;
+sumAddress.innerText=a;
 
-sName.innerText=nama;
-sPhone.innerText=hp;
-sAddress.innerText=alamat;
-
-switchPage(checkout,summary,"right");
+showPage('summary');
 }
 
-// BACK
-function goBackHome(){switchPage(detail,home,"left")}
-function goBackDetail(){switchPage(checkout,detail,"left")}
-function goBackCheckout(){switchPage(summary,checkout,"left")}
-
-// WA
 function sendWA(){
 window.location.href="https://wa.me/6283898588562";
 }
-
 </script>
 
 </body>
