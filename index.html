@@ -16,9 +16,25 @@
             overflow-x: hidden;
         }
 
+        /* LOADER */
+        .loader {
+            position: fixed; inset: 0; background: #000; display: flex;
+            justify-content: center; align-items: center; z-index: 10000;
+            font-size: 20px; letter-spacing: 5px; transition: 0.5s;
+        }
+        .loader.hide { opacity: 0; pointer-events: none; }
+
+        /* TOAST NOTIF */
+        .toast {
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+            background: #ff3b3b; color: #fff; padding: 12px 25px; border-radius: 30px;
+            transition: 0.5s; z-index: 9999; font-weight: 600; font-size: 13px;
+        }
+        .toast.show { top: 20px; }
+
         /* HEADER */
         header {
-            height: 60vh;
+            height: 50vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -28,128 +44,92 @@
 
         /* PRODUCTS SECTION */
         .products {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 40px;
-            padding: 20px 15px 100px;
+            display: flex; flex-direction: column; align-items: center;
+            gap: 40px; padding: 20px 15px 120px;
         }
 
         /* CARD STYLE */
         .card {
-            width: 100%;
-            max-width: 450px;
-            background: #111;
-            border-radius: 14px;
-            overflow: hidden;
-            text-align: center;
-            position: relative;
-            border: 1px solid #222;
+            width: 100%; max-width: 450px; background: #111;
+            border-radius: 14px; overflow: hidden; border: 1px solid #222;
         }
-        .card img { width: 100%; display: block; filter: grayscale(0.2); }
+        .card img { width: 100%; display: block; }
         .badge {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            padding: 6px 12px;
-            font-size: 10px;
-            font-weight: 600;
-            border-radius: 6px;
-            text-transform: uppercase;
+            position: absolute; top: 12px; left: 12px;
+            padding: 6px 12px; font-size: 10px; font-weight: 600;
+            border-radius: 6px; text-transform: uppercase; z-index: 2;
         }
-        .pre { background: #00c853; color: #fff; }
+        .pre { background: #00c853; }
         .ready { background: #fff; color: #000; }
-        .sold { background: #ff3b3b; color: #fff; }
-
-        /* BUTTONS */
-        button {
-            background: #fff;
-            color: #000;
-            border: none;
-            padding: 14px;
-            width: 100%;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        button:disabled { background: #222; color: #555; cursor: not-allowed; }
+        .sold { background: #ff3b3b; }
 
         /* PAGE TRANSITIONS */
         .page {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-            background: #0a0a0a;
-            opacity: 0;
-            transform: translateX(20px);
-            transition: 0.4s;
-            pointer-events: none;
-            z-index: 1;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            overflow-y: auto; background: #0a0a0a; opacity: 0;
+            transform: translateX(20px); transition: 0.4s;
+            pointer-events: none; z-index: 1;
         }
         .page.active { opacity: 1; transform: translateX(0); pointer-events: auto; z-index: 10; }
 
+        /* DETAIL IMAGES (2 IMAGES SIDE-BY-SIDE) */
+        .img-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+            margin-top: 50px; padding: 10px 0;
+        }
+        .img-grid img {
+            width: 100%; border-radius: 12px; border: 1px solid #222;
+            object-fit: cover; aspect-ratio: 4/5;
+        }
+
         /* OPTIONS STYLING */
-        .detail-container { max-width: 500px; margin: auto; padding: 80px 20px 120px; }
+        .detail-container { max-width: 500px; margin: auto; padding: 20px 20px 150px; }
         .option-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
         .option-box div {
-            padding: 14px;
-            border: 1px solid #333;
-            text-align: center;
-            border-radius: 8px;
-            cursor: pointer;
-            background: #111;
-            font-size: 14px;
+            padding: 14px; border: 1px solid #333; text-align: center;
+            border-radius: 8px; cursor: pointer; background: #111; font-size: 14px;
         }
         .option-box div.active { background: #fff; color: #000; border-color: #fff; }
         .option-box div.disabled { opacity: 0.2; cursor: not-allowed; border: 1px dashed #444; }
-        .section-label { margin-top: 25px; font-size: 12px; font-weight: 600; color: #888; letter-spacing: 1px; }
+        .section-label { margin-top: 25px; font-size: 12px; font-weight: 600; color: #888; }
 
-        /* FORM */
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-size: 11px; color: #666; font-weight: 600; }
+        /* SIZE GUIDE LINK */
+        .size-guide-btn {
+            display: inline-block; margin-top: 10px; font-size: 11px;
+            color: #00c853; text-decoration: underline; cursor: pointer;
+        }
+
+        /* POPUP MODAL */
+        .modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+            display: none; justify-content: center; align-items: center;
+            z-index: 2000; padding: 20px;
+        }
+        .modal img { max-width: 100%; border-radius: 10px; }
+
+        /* FORM & BUTTONS */
         input, textarea {
             width: 100%; padding: 16px; background: #111; border: 1px solid #222;
-            color: #fff; border-radius: 10px; font-family: inherit;
+            color: #fff; border-radius: 10px; margin-top: 8px;
         }
-        input:focus { border-color: #fff; outline: none; }
-
-        /* SUMMARY */
-        .summary-box { background: #111; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #222; }
-        .line { border-top: 1px solid #333; margin: 15px 0; }
-
-        /* ANIMATION & NOTIF */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+        button {
+            background: #fff; color: #000; border: none; padding: 16px;
+            width: 100%; font-weight: 600; border-radius: 8px; cursor: pointer;
         }
+        .sticky-btn { position: fixed; bottom: 0; left: 0; width: 100%; padding: 20px; background: #0a0a0a; z-index: 100; }
+        
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
         .shake { animation: shake 0.2s ease-in-out 0s 2; }
-        .toast {
-            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-            background: #ff3b3b; color: #fff; padding: 12px 25px; border-radius: 30px;
-            transition: 0.5s; z-index: 9999; font-weight: 600; font-size: 13px;
-        }
-        .toast.show { top: 20px; }
-
-        .loader {
-            position: fixed; inset: 0; background: #000; display: flex;
-            justify-content: center; align-items: center; z-index: 10000;
-            font-size: 20px; letter-spacing: 5px; transition: 0.5s;
-        }
-        .loader.hide { opacity: 0; pointer-events: none; }
-
-        .back-btn { position: fixed; top: 20px; left: 20px; z-index: 50; cursor: pointer; opacity: 0.7; }
-        .sticky-btn { position: fixed; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(transparent, #000); z-index: 40; }
     </style>
 </head>
 <body>
 
     <div class="loader" id="loader">GLORIAM</div>
-    <div id="toast" class="toast">Mohon lengkapi pilihan!</div>
+    <div id="toast" class="toast">Please complete the selection!</div>
+
+    <div class="modal" id="sizeModal" onclick="closeModal()">
+        <img src="https://via.placeholder.com/400x500/111/fff?text=SIZE+CHART+IMAGE" alt="Size Guide">
+    </div>
 
     <div class="page active" id="home">
         <header>
@@ -160,68 +140,56 @@
     </div>
 
     <div class="page" id="detail">
-        <div class="back-btn" onclick="showPage('home')">← BACK</div>
+        <div style="position:fixed; top:20px; left:20px; z-index:50;" onclick="showPage('home')">← BACK</div>
         <div class="detail-container">
+            <div class="img-grid" id="detImgs"></div>
             <h2 id="detName">Product</h2>
             <p id="detPrice" style="color:#00c853; font-weight:600;"></p>
             <div id="colorArea"></div>
             <div id="sizeArea"></div>
+            <span class="size-guide-btn" onclick="openModal(event)">Size Guide (Sizing Information)</span>
         </div>
         <div class="sticky-btn"><button onclick="validateDetail()">NEXT</button></div>
     </div>
 
     <div class="page" id="form">
-        <div class="back-btn" onclick="showPage('detail')">← BACK</div>
-        <div class="form-container detail-container">
+        <div style="position:fixed; top:20px; left:20px; z-index:50;" onclick="showPage('detail')">← BACK</div>
+        <div class="detail-container">
             <h3>SHIPPING INFO</h3>
-            <div class="form-group">
-                <label>NAMA LENGKAP</label>
-                <input type="text" id="inName" placeholder="Masukkan nama...">
-            </div>
-            <div class="form-group">
-                <label>NO HANDPHONE (WA)</label>
-                <input type="number" id="inPhone" placeholder="0812...">
-            </div>
-            <div class="form-group">
-                <label>ALAMAT LENGKAP</label>
-                <textarea id="inAddress" rows="3" placeholder="Nama jalan, RT/RW, Kec, Kota..."></textarea>
-            </div>
-            <p style="font-size:11px; color:#666; line-height:1.5;">* Isi sesuai dan lengkap untuk memudahkan proses pengiriman.</p>
+            <input type="text" id="inName" placeholder="Full Name">
+            <input type="number" id="inPhone" placeholder="WhatsApp Number">
+            <textarea id="inAddress" rows="3" placeholder="Full Address (Street, City, Postcode)"></textarea>
+            <p style="font-size:10px; color:#666; margin-top:10px;">* Isi sesuai dan lengkap untuk memudahkan proses pengiriman.</p>
         </div>
         <div class="sticky-btn"><button onclick="validateForm()">CONTINUE</button></div>
     </div>
 
     <div class="page" id="summary">
-        <div class="back-btn" onclick="showPage('form')">← BACK</div>
-        <div class="summary-container detail-container">
+        <div style="position:fixed; top:20px; left:20px; z-index:50;" onclick="showPage('form')">← BACK</div>
+        <div class="detail-container">
             <h3>ORDER SUMMARY</h3>
-            <div class="summary-box">
+            <div style="background:#111; padding:20px; border-radius:12px; border:1px solid #222;">
                 <h4 id="sumProd" style="margin:0;">-</h4>
                 <p id="sumVar" style="font-size:13px; opacity:0.7;">-</p>
-                <h4 id="sumPrice" style="color:#00c853; margin:10px 0 0;">-</h4>
-                <div class="line"></div>
-                <p id="sumCust" style="font-size:13px; margin:0; line-height:1.6;"></p>
+                <h4 id="sumPrice" style="color:#00c853; margin:10px 0;">-</h4>
+                <hr style="border:0; border-top:1px solid #333;">
+                <p id="sumCust" style="font-size:12px; line-height:1.6;"></p>
             </div>
-            <div style="background:#1a1a1a; padding:15px; border-radius:10px; font-size:12px;">
-                <p style="margin:0 0 5px;"><strong>PEMBAYARAN:</strong></p>
-                <p style="margin:0; opacity:0.8;">Mandiri: 1370023790229 (Dias A.)</p>
-                <p style="margin:0; opacity:0.8;">DANA: 081910421976</p>
-            </div>
+            <p style="font-size:11px; margin-top:20px;"><strong>PAYMENT:</strong><br>Mandiri: 1370023790229 (Dias A.)<br>DANA: 081910421976</p>
         </div>
         <div class="sticky-btn"><button onclick="sendWA()" style="background:#00c853; color:#fff;">CHECKOUT (WA)</button></div>
     </div>
 
     <script>
         const products = [
-            { id: 1, name: "Soccer Addict", price: 110000, badge: "pre", status: "PRE ORDER", colors: ["Black", "Green"], sizes: ["S", "M", "L", "XL", "XXL", "XXXL"], stock: ["S", "M", "L", "XL", "XXL", "XXXL"] },
-            { id: 2, name: "Sleman Soccer", price: 100000, badge: "ready", status: "READY STOCK", colors: ["White"], sizes: ["S", "M", "L", "XL", "XXL", "XXXL"], stock: ["S", "M", "L", "XL", "XXL", "XXXL"] },
-            { id: 3, name: "Bless Home", price: 100000, badge: "ready", status: "READY STOCK", colors: ["Black"], sizes: ["S", "M", "L", "XL", "XXL", "XXXL"], stock: ["M", "L"] },
-            { id: 4, name: "Take Me Home", price: 0, badge: "sold", status: "SOLD OUT", colors: [], sizes: [], stock: [] }
+            { id: 1, name: "Soccer Addict", price: 110000, badge: "pre", status: "PRE ORDER", colors: ["Black", "Green"], sizes: ["S", "M", "L", "XL", "XXL", "XXXL"], stock: ["S", "M", "L", "XL", "XXL", "XXXL"], imgs: ["https://via.placeholder.com/500x600/111/fff?text=Soccer+Addict+1", "https://via.placeholder.com/500x600/222/fff?text=Soccer+Addict+2"] },
+            { id: 2, name: "Sleman Soccer", price: 100000, badge: "ready", status: "READY STOCK", colors: ["White"], sizes: ["S", "M", "L", "XL", "XXL", "XXXL"], stock: ["S", "M", "L", "XL", "XXL", "XXXL"], imgs: ["https://via.placeholder.com/500x600/111/fff?text=Sleman+Soccer+1", "https://via.placeholder.com/500x600/222/fff?text=Sleman+Soccer+2"] },
+            { id: 3, name: "Bless Home", price: 100000, badge: "ready", status: "READY STOCK", colors: ["Black"], sizes: ["S", "M", "L", "XL", "XXL", "XXXL"], stock: ["M", "L"], imgs: ["https://via.placeholder.com/500x600/111/fff?text=Bless+Home+1", "https://via.placeholder.com/500x600/222/fff?text=Bless+Home+2"] },
+            { id: 4, name: "Take Me Home", price: 0, badge: "sold", status: "SOLD OUT", colors: [], sizes: [], stock: [], imgs: ["https://via.placeholder.com/500x600/333/fff?text=SOLD+OUT"] }
         ];
 
         let cart = { prod: null, size: '', color: '' };
 
-        // 1 DETIK LOAD SCREEN
         window.onload = () => {
             renderHome();
             setTimeout(() => document.getElementById('loader').classList.add('hide'), 1000);
@@ -232,15 +200,13 @@
             products.forEach(p => {
                 const isSold = p.badge === 'sold';
                 container.innerHTML += `
-                    <div class="card">
+                    <div class="card" style="position:relative;">
                         <div class="badge ${p.badge}">${p.status}</div>
-                        <img src="https://via.placeholder.com/500x600/111/fff?text=${p.name}">
+                        <img src="${p.imgs[0]}">
                         <div style="padding:20px">
                             <h3>${p.name}</h3>
-                            <p style="opacity:0.6">${isSold ? 'Stok Habis' : 'Rp' + p.price.toLocaleString()}</p>
-                            <button ${isSold ? 'disabled' : ''} onclick="goDetail(${p.id})">
-                                ${isSold ? 'OUT OF STOCK' : 'SELECT'}
-                            </button>
+                            <p style="opacity:0.6">${isSold ? 'Out of Stock' : 'Rp' + p.price.toLocaleString()}</p>
+                            <button ${isSold ? 'disabled' : ''} onclick="goDetail(${p.id})">${isSold ? 'SOLD OUT' : 'SELECT'}</button>
                         </div>
                     </div>
                 `;
@@ -259,23 +225,19 @@
             document.getElementById('detName').innerText = p.name;
             document.getElementById('detPrice').innerText = `Rp${p.price.toLocaleString()}`;
             
+            // Render 2 Images KIRI KANAN
+            document.getElementById('detImgs').innerHTML = p.imgs.map(i => `<img src="${i}">`).join('');
+
             // Render Color
-            let cHTML = '';
-            if(p.colors.length > 0) {
-                cHTML = `<div class="section-label">PILIH WARNA</div><div class="option-box">`;
-                p.colors.forEach(c => {
-                    cHTML += `<div class="${cart.color === c ? 'active' : ''}" onclick="selOpt('color','${c}',this)">${c}</div>`;
-                });
-                cHTML += `</div>`;
-            }
-            document.getElementById('colorArea').innerHTML = cHTML;
+            let cHTML = `<div class="section-label">COLOR</div><div class="option-box">`;
+            p.colors.forEach(c => cHTML += `<div class="${cart.color === c ? 'active' : ''}" onclick="selOpt('color','${c}',this)">${c}</div>`);
+            document.getElementById('colorArea').innerHTML = cHTML + `</div>`;
 
             // Render Size
-            let sHTML = `<div class="section-label">PILIH SIZE</div><div class="option-box">`;
-            const allSizes = ["S", "M", "L", "XL", "XXL", "XXXL"];
-            allSizes.forEach(s => {
-                const isAvailable = p.stock.includes(s);
-                sHTML += `<div class="${isAvailable ? '' : 'disabled'}" onclick="${isAvailable ? `selOpt('size','${s}',this)` : ''}">${s}</div>`;
+            let sHTML = `<div class="section-label">SIZE</div><div class="option-box">`;
+            ["S", "M", "L", "XL", "XXL", "XXXL"].forEach(s => {
+                const isAvail = p.stock.includes(s);
+                sHTML += `<div class="${isAvail ? '' : 'disabled'}" onclick="${isAvail ? `selOpt('size','${s}',this)` : ''}">${s}</div>`;
             });
             document.getElementById('sizeArea').innerHTML = sHTML + `</div>`;
             
@@ -288,19 +250,18 @@
             el.classList.add('active');
         }
 
+        function openModal(e) { e.stopPropagation(); document.getElementById('sizeModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('sizeModal').style.display = 'none'; }
+
         function notify(msg) {
             const t = document.getElementById('toast');
-            t.innerText = msg;
-            t.classList.add('show');
+            t.innerText = msg; t.classList.add('show');
             document.querySelector('.page.active').classList.add('shake');
-            setTimeout(() => {
-                t.classList.remove('show');
-                document.querySelector('.page.active').classList.remove('shake');
-            }, 2500);
+            setTimeout(() => { t.classList.remove('show'); document.querySelector('.page.active').classList.remove('shake'); }, 2500);
         }
 
         function validateDetail() {
-            if(!cart.color || !cart.size) return notify("Pilih Warna & Size!");
+            if(!cart.color || !cart.size) return notify("Please select Color & Size!");
             showPage('form');
         }
 
@@ -308,13 +269,12 @@
             const n = document.getElementById('inName').value;
             const p = document.getElementById('inPhone').value;
             const a = document.getElementById('inAddress').value;
-            if(!n || !p || !a) return notify("Lengkapi Data Pengiriman!");
+            if(!n || !p || !a) return notify("Please complete shipping data!");
             
             document.getElementById('sumProd').innerText = cart.prod.name;
-            document.getElementById('sumVar').innerText = `Warna: ${cart.color} | Size: ${cart.size}`;
+            document.getElementById('sumVar').innerText = `Color: ${cart.color} | Size: ${cart.size}`;
             document.getElementById('sumPrice').innerText = `Rp${cart.prod.price.toLocaleString()}`;
             document.getElementById('sumCust').innerHTML = `<strong>${n}</strong><br>${p}<br>${a}`;
-            
             showPage('summary');
         }
 
