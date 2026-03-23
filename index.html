@@ -295,4 +295,12 @@
 
         function sendWA() {
             const n = document.getElementById('inName').value, p = document.getElementById('inPhone').value, a = document.getElementById('inAddress').value;
-            const text = `*GLORIAM ORDER*\n\n${cart.prod.name}\nWarna: ${cart.color}\nSize: ${cart.size}\nTotal: Rp${cart.prod.
+            const text = `*GLORIAM ORDER*\n\n${cart.prod.name}\nWarna: ${cart.color}\nSize: ${cart.size}\nTotal: Rp${cart.prod.price}\n\n*Data Pengiriman*\nNama: ${n}\nWhatsApp: ${p}\nAlamat: ${a}`;
+            window.open(`https://wa.me/6283898588562?text=${encodeURIComponent(text)}`);
+        }
+
+        function openSize() { vibrate(30); document.getElementById('sizeModal').style.display='flex'; }
+        function closeSize() { document.getElementById('sizeModal').style.display='none'; }
+    </script>
+</body>
+</html>
